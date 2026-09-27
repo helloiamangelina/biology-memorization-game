@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biology Memorization Game</title>
+  <style>
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    :root {
+      --bg1: #f4f7ff;
+      --bg2: #eefaf5;
+      --ink: #1d2433;
+      --muted: #657083;
+      --card: #ffffff;
+      --primary: #5a67d8;
+      --primary2: #7c5ce7;
+      --good: #1f9d55;
+      --bad: #d64545;
+      --shadow: 0 10px 28px rgba(38, 49, 82, 0.12);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    button { font: inherit; }
+
+    .app {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 34px 0 64px;
+    }
+
+    .screen { min-height: 70vh; }
+
+    .hero {
+      text-align: center;
+      margin: 12px auto 34px;
+    }
+
+    .hero-emoji { font-size: 58px; line-height: 1; }
+    .hero h1 { margin: 10px 0 8px; font-size: clamp(34px, 5vw, 54px); }
+    .hero p { margin: 0; color: var(--muted); font-size: 19px; }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+    }
+
+    .topic-card, .mode-card, .nav-btn, .action-btn {
+      border: 0;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .topic-card:hover, .mode-card:hover, .nav-btn:hover, .action-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px rgba(38, 49, 82, 0.16);
+    }
+
+    .topic-card {
+      min-height: 132px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .topic-card .emoji { font-size: 38px; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .nav-btn {
+      padding: 11px 16px;
+      font-weight: 750;
+    }
+
+    .topic-heading {
+      text-align: center;
+      flex: 1;
+    }
+
+    .topic-heading h2 { margin: 0; font-size: 34px; }
+    .topic-heading p { margin: 5px 0 0; color: var(--muted); }
+
+    .mode-grid {
+      width: min(720px, 100%);
+      margin: 46px auto 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .mode-card {
+      min-height: 220px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .mode-card .emoji { font-size: 54px; }
+    .mode-card strong { font-size: 27px; }
+    .mode-card span:last-child { color: var(--muted); line-height: 1.45; }
+
+    .group-title {
+      margin: 28px 0 12px;
+      font-size: 21px;
+    }
+
+    .study-grid, .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+    }
+
+    .study-card, .answer-card {
+      border: 3px solid transparent;
+      border-radius: 18px;
+      background: var(--card);
+      box-shadow: 0 7px 20px rgba(38, 49, 82, 0.10);
+      min-height: 128px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      text-align: center;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease;
+    }
+
+    .study-card { cursor: pointer; }
+    .study-card:hover, .answer-card:hover { transform: translateY(-3px); }
+    .item-emoji { font-size: 34px; line-height: 1; }
+    .item-name { font-size: 18px; font-weight: 850; }
+    .item-sub { color: var(--muted); font-size: 12px; }
+
+    .info-panel {
+      width: min(760px, 100%);
+      margin: 34px auto 0;
+      background: white;
+      box-shadow: var(--shadow);
+      border-radius: 22px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .info-panel .big-emoji { font-size: 48px; }
+    .info-panel h3 { margin: 0 0 8px; font-size: 24px; }
+    .info-panel p { margin: 0; color: #4f5a6a; line-height: 1.5; }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 12px 0 22px;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 5px 16px rgba(38,49,82,.09);
+      padding: 11px 18px;
+      min-width: 130px;
+      text-align: center;
+    }
+
+    .stat small { display: block; color: var(--muted); margin-bottom: 3px; }
+    .stat strong { font-size: 20px; }
+
+    .instruction { text-align: center; color: var(--muted); font-weight: 700; }
+
+    .clue-card {
+      width: min(650px, 100%);
+      margin: 14px auto 16px;
+      min-height: 118px;
+      border: 3px solid #e1bf35;
+      background: linear-gradient(135deg, #fff8c9, #ffe99d);
+      border-radius: 22px;
+      box-shadow: 0 10px 26px rgba(115, 93, 20, 0.15);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 23px;
+      line-height: 1.4;
+      font-weight: 850;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .clue-card:active { cursor: grabbing; }
+    .clue-card.selected { outline: 4px solid rgba(90,103,216,.25); }
+
+    .feedback {
+      min-height: 32px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 850;
+      margin: 4px 0 10px;
+    }
+
+    .feedback.good { color: var(--good); }
+    .feedback.bad { color: var(--bad); }
+
+    .answer-card { cursor: pointer; }
+    .answer-card.dragover { border-color: var(--primary); background: #eef0ff; transform: scale(1.03); }
+    .answer-card.correct { border-color: var(--good); background: #e4f9ec; }
+    .answer-card.wrong { border-color: var(--bad); background: #ffe8e8; animation: shake .22s; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .finish {
+      width: min(650px, 100%);
+      margin: 70px auto 0;
+      text-align: center;
+      background: white;
+      box-shadow: var(--shadow);
+      border-radius: 28px;
+      padding: 42px 28px;
+    }
+
+    .finish .emoji { font-size: 72px; }
+    .finish h2 { font-size: 36px; margin: 10px 0 10px; }
+    .finish p { color: var(--muted); font-size: 19px; }
+    .finish-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+    .action-btn { padding: 13px 18px; font-weight: 800; }
+    .action-btn.primary { background: linear-gradient(135deg, var(--primary), var(--primary2)); color: white; }
+
+    @media (max-width: 700px) {
+      .mode-grid { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; }
+      .topic-heading h2 { font-size: 28px; }
+      .study-grid, .answer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .item-name { font-size: 16px; }
+      .item-sub { display: none; }
+      .info-panel { grid-template-columns: 1fr; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="homeScreen" class="screen">
+      <div class="hero">
+        <div class="hero-emoji">🧬</div>
+        <h1>Biology Memorization Game</h1>
+        <p>Pick a topic, learn the cards, then spam the game until you know everything.</p>
+      </div>
+      <div id="topicGrid" class="topic-grid"></div>
+    </section>
+
+    <section id="topicScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="topicHomeBtn">← Home</button>
+        <div class="topic-heading">
+          <h2 id="topicTitle"></h2>
+          <p>Choose a mode.</p>
+        </div>
+        <div style="width:86px"></div>
+      </div>
+      <div class="mode-grid">
+        <button class="mode-card" id="learnBtn">
+          <span class="emoji">📚</span>
+          <strong>Learn</strong>
+          <span>Click every item to see its function or defining trait.</span>
+        </button>
+        <button class="mode-card" id="playBtn">
+          <span class="emoji">🎮</span>
+          <strong>Play</strong>
+          <span>Drag each clue to the correct answer until you get it right.</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="learnScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="learnBackBtn">← Back</button>
+        <div class="topic-heading">
+          <h2 id="learnTitle"></h2>
+          <p>Click a card. Learn it once. Then go straight to the game.</p>
+        </div>
+        <div style="width:86px"></div>
+      </div>
+      <div id="learnGroups"></div>
+      <div id="infoPanel" class="info-panel"></div>
+    </section>
+
+    <section id="gameScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="gameBackBtn">← Back</button>
+        <div class="topic-heading">
+          <h2 id="gameTitle"></h2>
+          <p>Drag the clue to an answer. Wrong guesses stay in play.</p>
+        </div>
+        <button class="nav-btn" id="restartBtn">↻ Restart</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><small>Progress</small><strong id="progressStat">0 / 0</strong></div>
+        <div class="stat"><small>Attempts</small><strong id="attemptStat">0</strong></div>
+        <div class="stat"><small>Mistakes</small><strong id="mistakeStat">0</strong></div>
+      </div>
+
+      <div class="instruction">Drag this clue onto the correct card. You can also click an answer if dragging is annoying.</div>
+      <div id="clueCard" class="clue-card" draggable="true"></div>
+      <div id="feedback" class="feedback"></div>
+      <div id="answerGrid" class="answer-grid"></div>
+    </section>
+
+    <section id="finishScreen" class="screen" hidden>
+      <div class="finish">
+        <div class="emoji">🏆</div>
+        <h2 id="finishTitle">Finished!</h2>
+        <p id="finishText"></p>
+        <div class="finish-actions">
+          <button class="action-btn primary" id="playAgainBtn">🎮 Play again</button>
+          <button class="action-btn" id="reviewBtn">📚 Review</button>
+          <button class="action-btn" id="finishHomeBtn">🏠 Home</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const topics = {
+  "vitamins": {
+    "title": "Vitamins",
+    "icon": "💊",
+    "groups": {
+      "water": "💧 Water-soluble",
+      "fat": "🧈 Fat-soluble (ADEK)"
+    },
+    "items": [
+      {
+        "name": "B1",
+        "sub": "Thiamine",
+        "icon": "🍞",
+        "group": "water",
+        "clue": "Carbohydrate metabolism + nerve function",
+        "detail": "Helps convert carbohydrates into usable energy and supports normal nerve function."
+      },
+      {
+        "name": "B2",
+        "sub": "Riboflavin",
+        "icon": "⚡",
+        "group": "water",
+        "clue": "FAD + FMN",
+        "detail": "Forms the coenzymes FAD and FMN, which help drive energy-producing redox reactions."
+      },
+      {
+        "name": "B3",
+        "sub": "Niacin",
+        "icon": "🔋",
+        "group": "water",
+        "clue": "NAD + NADP",
+        "detail": "Forms NAD and NADP, major electron carriers used throughout metabolism."
+      },
+      {
+        "name": "B5",
+        "sub": "Pantothenic acid",
+        "icon": "⚙️",
+        "group": "water",
+        "clue": "Coenzyme A (CoA)",
+        "detail": "A component of coenzyme A, central to transfer of acyl groups in metabolism."
+      },
+      {
+        "name": "B6",
+        "sub": "Pyridoxine",
+        "icon": "🧬",
+        "group": "water",
+        "clue": "Amino acid metabolism",
+        "detail": "Acts in many reactions involving amino acids and neurotransmitter synthesis."
+      },
+      {
+        "name": "B7",
+        "sub": "Biotin",
+        "icon": "➕",
+        "group": "water",
+        "clue": "Carboxylation",
+        "detail": "Carries CO₂ in carboxylation reactions used in fatty-acid synthesis and gluconeogenesis."
+      },
+      {
+        "name": "B9",
+        "sub": "Folate",
+        "icon": "🩸",
+        "group": "water",
+        "clue": "DNA synthesis + red blood cells",
+        "detail": "Provides one-carbon units needed for nucleotide synthesis and normal red blood cell formation."
+      },
+      {
+        "name": "B12",
+        "sub": "Cobalamin",
+        "icon": "🧠",
+        "group": "water",
+        "clue": "DNA + red blood cells + nerves",
+        "detail": "Supports DNA synthesis, red blood cell formation, and normal nervous-system function."
+      },
+      {
+        "name": "C",
+        "sub": "Ascorbic acid",
+        "icon": "🍊",
+        "group": "water",
+        "clue": "Collagen + antioxidant",
+        "detail": "Required for collagen synthesis and also acts as an antioxidant."
+      },
+      {
+        "name": "A",
+        "sub": "Retinoids",
+        "icon": "👁️",
+        "group": "fat",
+        "clue": "Vision + epithelium",
+        "detail": "Important for vision, epithelial tissues, growth, and immune function."
+      },
+      {
+        "name": "D",
+        "sub": "Calciferol",
+        "icon": "🦴",
+        "group": "fat",
+        "clue": "Calcium absorption + bones",
+        "detail": "Promotes intestinal calcium absorption and helps maintain bone mineralization."
+      },
+      {
+        "name": "E",
+        "sub": "Tocopherols",
+        "icon": "🛡️",
+        "group": "fat",
+        "clue": "Antioxidant; protects membranes",
+        "detail": "A lipid-soluble antioxidant that protects cell membranes from oxidative damage."
+      },
+      {
+        "name": "K",
+        "sub": "Phylloquinone / menaquinones",
+        "icon": "🩹",
+        "group": "fat",
+        "clue": "Blood clotting",
+        "detail": "Needed to activate several proteins involved in normal blood coagulation."
+      }
+    ]
+  },
+  "biomes": {
+    "title": "Biomes",
+    "icon": "🌎",
+    "groups": {
+      "terrestrial": "🌿 Campbell terrestrial biomes",
+      "aquatic": "🌊 Campbell aquatic biomes",
+      "extras": "🏆 Science Bowl extras"
+    },
+    "items": [
+      {
+        "name": "Tropical forest",
+        "sub": "Rainforest / seasonal forest",
+        "icon": "🌴",
+        "group": "terrestrial",
+        "clue": "Warm year-round; high rainfall; layered canopy",
+        "detail": "Tropical forests are warm year-round. Rainfall is generally high, and tropical rainforests have extremely high biodiversity."
+      },
+      {
+        "name": "Desert",
+        "icon": "🏜️",
+        "group": "terrestrial",
+        "clue": "Very low precipitation; water limitation",
+        "detail": "Deserts receive very little precipitation; organisms show strong adaptations for conserving water and tolerating temperature extremes."
+      },
+      {
+        "name": "Savanna",
+        "icon": "🦒",
+        "group": "terrestrial",
+        "clue": "Warm grassland; seasonal rainfall; scattered trees",
+        "detail": "Savannas are warm year-round, with distinct wet and dry seasons and grasses mixed with scattered trees."
+      },
+      {
+        "name": "Chaparral",
+        "sub": "Mediterranean shrubland",
+        "icon": "🔥",
+        "group": "terrestrial",
+        "clue": "Mild wet winters + hot dry summers + fire",
+        "detail": "Chaparral has dense evergreen shrubs, cool or mild wet winters, hot dry summers, and frequent fire."
+      },
+      {
+        "name": "Temperate grassland",
+        "sub": "Prairie / steppe",
+        "icon": "🌾",
+        "group": "terrestrial",
+        "clue": "Grasses; seasonal temperatures; fertile soil",
+        "detail": "Temperate grasslands have seasonal temperatures, moderate precipitation, frequent fire or grazing, and often deep fertile soils."
+      },
+      {
+        "name": "Northern coniferous forest",
+        "sub": "Taiga / boreal forest",
+        "icon": "🌲",
+        "group": "terrestrial",
+        "clue": "Long cold winters + evergreen conifers",
+        "detail": "The taiga has long cold winters, short wet summers, and forests dominated by cone-bearing evergreen trees."
+      },
+      {
+        "name": "Temperate broadleaf forest",
+        "sub": "Temperate deciduous forest",
+        "icon": "🍂",
+        "group": "terrestrial",
+        "clue": "Four seasons + broadleaf trees that drop leaves",
+        "detail": "Moderate precipitation and strong seasons support broadleaf deciduous trees, shrubs, and a diverse understory."
+      },
+      {
+        "name": "Tundra",
+        "sub": "Arctic tundra",
+        "icon": "❄️",
+        "group": "terrestrial",
+        "clue": "Permafrost + very short growing season + no tall trees",
+        "detail": "Tundra is cold, windy, and low in precipitation, with permafrost and a short growing season."
+      },
+      {
+        "name": "Lake",
+        "sub": "Littoral / limnetic / profundal zones",
+        "icon": "🏞️",
+        "group": "aquatic",
+        "clue": "Standing freshwater; zones change with depth and light",
+        "detail": "Lakes and ponds are standing freshwater systems with distinct zones based on depth, light, and distance from shore."
+      },
+      {
+        "name": "Wetland",
+        "icon": "🪷",
+        "group": "aquatic",
+        "clue": "Soil is saturated or covered by water",
+        "detail": "Wetlands include marshes, swamps, and bogs. Their soils are water-saturated for part or all of the year."
+      },
+      {
+        "name": "Stream / river",
+        "icon": "🏞️",
+        "group": "aquatic",
+        "clue": "Flowing freshwater; current shapes community",
+        "detail": "Streams and rivers are flowing-water ecosystems; oxygen, nutrients, and species composition change from headwaters downstream."
+      },
+      {
+        "name": "Estuary",
+        "icon": "🦀",
+        "group": "aquatic",
+        "clue": "Freshwater mixes with seawater; highly productive",
+        "detail": "Estuaries are brackish transition zones where rivers meet the ocean and are among the most productive ecosystems."
+      },
+      {
+        "name": "Intertidal zone",
+        "icon": "🌊",
+        "group": "aquatic",
+        "clue": "Between high and low tide; alternates air and seawater",
+        "detail": "Intertidal organisms tolerate wave action, drying, temperature shifts, and repeated immersion and exposure."
+      },
+      {
+        "name": "Oceanic pelagic zone",
+        "sub": "Open ocean",
+        "icon": "🐋",
+        "group": "aquatic",
+        "clue": "Vast open ocean away from shore",
+        "detail": "The oceanic pelagic zone is the open ocean; light and nutrients strongly influence productivity with depth and latitude."
+      },
+      {
+        "name": "Coral reef",
+        "icon": "🪸",
+        "group": "aquatic",
+        "clue": "Warm, shallow, clear water + extreme diversity",
+        "detail": "Reef-building corals form highly diverse marine ecosystems, usually in warm shallow water with low nutrient levels."
+      },
+      {
+        "name": "Marine benthic zone",
+        "sub": "Seafloor",
+        "icon": "🐚",
+        "group": "aquatic",
+        "clue": "Bottom surface beneath all marine waters",
+        "detail": "The benthic zone is the seafloor, ranging from shallow coastal sediments to the deep abyssal ocean floor."
+      },
+      {
+        "name": "Alpine tundra",
+        "icon": "🏔️",
+        "group": "extras",
+        "clue": "Tundra above tree line; usually lacks permafrost",
+        "detail": "Alpine tundra occurs at high elevations above the tree line. It is cold and windy but generally does not have the continuous permafrost typical of Arctic tundra."
+      },
+      {
+        "name": "Temperate rainforest",
+        "icon": "🌧️",
+        "group": "extras",
+        "clue": "Cool or mild + extremely wet + giant conifers",
+        "detail": "Temperate rainforests occur in cool coastal climates with abundant precipitation and exceptionally large, long-lived trees."
+      }
+    ]
+  },
+  "hormones": {
+    "title": "Hormones",
+    "icon": "🧪",
+    "groups": {
+      "pituitary": "🧠 Hypothalamus / pituitary",
+      "thyroid": "🦋 Thyroid / calcium balance",
+      "metabolic": "⚡ Pancreas / adrenal glands",
+      "reproductive": "🧬 Reproductive / other",
+      "extras": "🏆 Science Bowl extras"
+    },
+    "items": [
+      {
+        "name": "ADH",
+        "sub": "Vasopressin",
+        "icon": "💧",
+        "group": "pituitary",
+        "clue": "Kidneys retain water; collecting ducts become more permeable",
+        "detail": "ADH is released from the posterior pituitary and increases water reabsorption in kidney collecting ducts."
+      },
+      {
+        "name": "Oxytocin",
+        "icon": "🤱",
+        "group": "pituitary",
+        "clue": "Uterine contractions + milk ejection",
+        "detail": "Oxytocin is released from the posterior pituitary and drives uterine contractions and milk let-down by positive feedback."
+      },
+      {
+        "name": "Growth hormone",
+        "sub": "GH",
+        "icon": "📏",
+        "group": "pituitary",
+        "clue": "Body growth; stimulates IGF-1",
+        "detail": "GH from the anterior pituitary stimulates growth, protein synthesis, and liver production of IGF-1."
+      },
+      {
+        "name": "Prolactin",
+        "sub": "PRL",
+        "icon": "🥛",
+        "group": "pituitary",
+        "clue": "Milk production",
+        "detail": "Prolactin from the anterior pituitary stimulates mammary glands to synthesize milk."
+      },
+      {
+        "name": "TSH",
+        "sub": "Thyroid-stimulating hormone",
+        "icon": "🦋",
+        "group": "pituitary",
+        "clue": "Stimulates thyroid to release T3/T4",
+        "detail": "TSH from the anterior pituitary promotes thyroid hormone synthesis and secretion."
+      },
+      {
+        "name": "ACTH",
+        "sub": "Adrenocorticotropic hormone",
+        "icon": "⚡",
+        "group": "pituitary",
+        "clue": "Stimulates adrenal cortex; especially cortisol",
+        "detail": "ACTH from the anterior pituitary stimulates the adrenal cortex, particularly glucocorticoid secretion."
+      },
+      {
+        "name": "FSH",
+        "sub": "Follicle-stimulating hormone",
+        "icon": "🥚",
+        "group": "pituitary",
+        "clue": "Follicle growth + spermatogenesis",
+        "detail": "FSH supports ovarian follicle development and sperm production."
+      },
+      {
+        "name": "LH",
+        "sub": "Luteinizing hormone",
+        "icon": "🌙",
+        "group": "pituitary",
+        "clue": "Ovulation + testosterone secretion",
+        "detail": "LH triggers ovulation and corpus luteum formation in ovaries and stimulates testosterone production in testes."
+      },
+      {
+        "name": "T3/T4",
+        "sub": "Thyroid hormones",
+        "icon": "🔥",
+        "group": "thyroid",
+        "clue": "Increase metabolic rate; support growth and development",
+        "detail": "Thyroid hormones increase cellular metabolism and are crucial for normal growth and nervous-system development."
+      },
+      {
+        "name": "PTH",
+        "sub": "Parathyroid hormone",
+        "icon": "⬆️",
+        "group": "thyroid",
+        "clue": "Raises blood Ca²⁺",
+        "detail": "PTH increases blood calcium by acting on bone and kidney and by promoting vitamin D activation."
+      },
+      {
+        "name": "Calcitonin",
+        "icon": "⬇️",
+        "group": "thyroid",
+        "clue": "Lowers blood Ca²⁺ by inhibiting bone resorption",
+        "detail": "Calcitonin from thyroid C cells can lower blood calcium, largely by reducing osteoclast activity."
+      },
+      {
+        "name": "Insulin",
+        "icon": "📉",
+        "group": "metabolic",
+        "clue": "Lowers blood glucose; promotes uptake and storage",
+        "detail": "Pancreatic beta cells release insulin when blood glucose rises; insulin promotes glucose uptake and glycogen/fat synthesis."
+      },
+      {
+        "name": "Glucagon",
+        "icon": "📈",
+        "group": "metabolic",
+        "clue": "Raises blood glucose; liver releases fuel",
+        "detail": "Pancreatic alpha cells release glucagon during fasting; it stimulates glycogen breakdown and glucose production."
+      },
+      {
+        "name": "Epinephrine",
+        "sub": "Adrenaline",
+        "icon": "🚨",
+        "group": "metabolic",
+        "clue": "Rapid fight-or-flight; increases heart output and fuel",
+        "detail": "The adrenal medulla releases epinephrine during acute stress, rapidly mobilizing glucose and increasing cardiovascular activity."
+      },
+      {
+        "name": "Norepinephrine",
+        "sub": "Noradrenaline",
+        "icon": "⚠️",
+        "group": "metabolic",
+        "clue": "Fight-or-flight; especially vasoconstriction",
+        "detail": "Norepinephrine acts as both a hormone and neurotransmitter and strongly increases vascular tone during stress."
+      },
+      {
+        "name": "Cortisol",
+        "sub": "Glucocorticoid",
+        "icon": "⏳",
+        "group": "metabolic",
+        "clue": "Long-term stress; raises fuel availability",
+        "detail": "Cortisol from the adrenal cortex promotes longer-term stress responses, including glucose production and protein/fat breakdown."
+      },
+      {
+        "name": "Aldosterone",
+        "sub": "Mineralocorticoid",
+        "icon": "🧂",
+        "group": "metabolic",
+        "clue": "Retains Na⁺; secretes K⁺; water follows",
+        "detail": "Aldosterone from the adrenal cortex increases renal sodium reabsorption and potassium secretion, helping raise blood volume."
+      },
+      {
+        "name": "Estrogen",
+        "icon": "🌸",
+        "group": "reproductive",
+        "clue": "Female reproductive development + endometrial growth",
+        "detail": "Estrogens support female reproductive tissues, secondary sex characteristics, bone maintenance, and menstrual-cycle regulation."
+      },
+      {
+        "name": "Progesterone",
+        "icon": "🫶",
+        "group": "reproductive",
+        "clue": "Maintains uterine lining; supports pregnancy",
+        "detail": "Progesterone prepares and maintains the endometrium and helps support pregnancy."
+      },
+      {
+        "name": "Testosterone",
+        "icon": "💪",
+        "group": "reproductive",
+        "clue": "Male reproductive development + supports sperm production",
+        "detail": "Testosterone supports male reproductive tissues, secondary sex characteristics, and spermatogenesis."
+      },
+      {
+        "name": "Melatonin",
+        "icon": "🌙",
+        "group": "reproductive",
+        "clue": "Darkness signal; circadian timing",
+        "detail": "The pineal gland secretes melatonin mainly at night, helping synchronize circadian rhythms."
+      },
+      {
+        "name": "GnRH",
+        "sub": "Gonadotropin-releasing hormone",
+        "icon": "🎛️",
+        "group": "extras",
+        "clue": "Hypothalamus tells pituitary to release FSH and LH",
+        "detail": "GnRH is a hypothalamic releasing hormone that stimulates anterior-pituitary secretion of FSH and LH."
+      },
+      {
+        "name": "hCG",
+        "sub": "Human chorionic gonadotropin",
+        "icon": "🤰",
+        "group": "extras",
+        "clue": "Early pregnancy; maintains corpus luteum",
+        "detail": "The early embryo/placenta secretes hCG, which maintains the corpus luteum and progesterone production early in pregnancy."
+      },
+      {
+        "name": "Erythropoietin",
+        "sub": "EPO",
+        "icon": "🩸",
+        "group": "extras",
+        "clue": "Kidney hormone that increases red blood cell production",
+        "detail": "Low oxygen stimulates the kidneys to release EPO, which promotes erythrocyte production in bone marrow."
+      }
+    ]
+  },
+  "aminoAcids": {
+    "title": "Amino Acids",
+    "icon": "🧬",
+    "groups": {
+      "nonpolar": "🟤 Nonpolar",
+      "aromatic": "🟣 Aromatic",
+      "polar": "🔵 Polar uncharged",
+      "acidic": "🔴 Acidic (negative)",
+      "basic": "🟢 Basic (positive)",
+      "concepts": "🏆 Science Bowl amino-acid chemistry"
+    },
+    "items": [
+      {
+        "name": "Glycine",
+        "sub": "Gly / G",
+        "icon": "⚪",
+        "group": "nonpolar",
+        "clue": "Smallest amino acid; side chain = H",
+        "detail": "Glycine has only hydrogen as its side chain, making it the smallest and most flexible amino acid."
+      },
+      {
+        "name": "Alanine",
+        "sub": "Ala / A",
+        "icon": "•",
+        "group": "nonpolar",
+        "clue": "Methyl side chain (–CH₃)",
+        "detail": "Alanine has a simple methyl side chain and is small and nonpolar."
+      },
+      {
+        "name": "Valine",
+        "sub": "Val / V",
+        "icon": "🌿",
+        "group": "nonpolar",
+        "clue": "Branched-chain essential amino acid; isopropyl side chain",
+        "detail": "Valine is a hydrophobic branched-chain amino acid and is essential in the human diet."
+      },
+      {
+        "name": "Leucine",
+        "sub": "Leu / L",
+        "icon": "💪",
+        "group": "nonpolar",
+        "clue": "Branched-chain essential amino acid; isobutyl side chain",
+        "detail": "Leucine is an essential BCAA and a strong signal for muscle protein synthesis."
+      },
+      {
+        "name": "Isoleucine",
+        "sub": "Ile / I",
+        "icon": "🔀",
+        "group": "nonpolar",
+        "clue": "Branched-chain essential amino acid; structural isomer of leucine",
+        "detail": "Isoleucine is an essential hydrophobic BCAA with the same molecular formula as leucine but different connectivity."
+      },
+      {
+        "name": "Methionine",
+        "sub": "Met / M",
+        "icon": "▶️",
+        "group": "nonpolar",
+        "clue": "Sulfur thioether; usually first amino acid from AUG",
+        "detail": "Methionine is an essential sulfur-containing amino acid and is encoded by the standard start codon AUG."
+      },
+      {
+        "name": "Proline",
+        "sub": "Pro / P",
+        "icon": "↪️",
+        "group": "nonpolar",
+        "clue": "Side chain loops back to amino nitrogen; rigid kink-maker",
+        "detail": "Proline's cyclic structure restricts backbone rotation and often creates bends in proteins."
+      },
+      {
+        "name": "Phenylalanine",
+        "sub": "Phe / F",
+        "icon": "⬡",
+        "group": "aromatic",
+        "clue": "Hydrophobic benzene ring; precursor of tyrosine",
+        "detail": "Phenylalanine is an essential aromatic amino acid that can be converted into tyrosine."
+      },
+      {
+        "name": "Tyrosine",
+        "sub": "Tyr / Y",
+        "icon": "🎯",
+        "group": "aromatic",
+        "clue": "Phenol ring; catecholamine + thyroid-hormone precursor",
+        "detail": "Tyrosine is aromatic and is used to make dopamine, norepinephrine, epinephrine, and thyroid hormones."
+      },
+      {
+        "name": "Tryptophan",
+        "sub": "Trp / W",
+        "icon": "🌙",
+        "group": "aromatic",
+        "clue": "Indole ring; serotonin + melatonin precursor",
+        "detail": "Tryptophan is an essential aromatic amino acid containing nitrogen in an indole ring; it is a precursor to serotonin and melatonin."
+      },
+      {
+        "name": "Serine",
+        "sub": "Ser / S",
+        "icon": "💧",
+        "group": "polar",
+        "clue": "Hydroxyl side chain; common phosphorylation site",
+        "detail": "Serine is polar because of its –OH group and is frequently phosphorylated in signaling proteins."
+      },
+      {
+        "name": "Threonine",
+        "sub": "Thr / T",
+        "icon": "💧",
+        "group": "polar",
+        "clue": "Essential hydroxyl amino acid; phosphorylation site",
+        "detail": "Threonine is an essential polar amino acid with a hydroxyl group that can be phosphorylated."
+      },
+      {
+        "name": "Cysteine",
+        "sub": "Cys / C",
+        "icon": "🔗",
+        "group": "polar",
+        "clue": "Thiol (–SH); forms disulfide bonds",
+        "detail": "Two cysteine residues can oxidize to form a disulfide bridge that stabilizes protein structure."
+      },
+      {
+        "name": "Asparagine",
+        "sub": "Asn / N",
+        "icon": "🧩",
+        "group": "polar",
+        "clue": "Amide of aspartate",
+        "detail": "Asparagine is a polar uncharged amino acid with a carboxamide side chain."
+      },
+      {
+        "name": "Glutamine",
+        "sub": "Gln / Q",
+        "icon": "🚚",
+        "group": "polar",
+        "clue": "Amide of glutamate; major nitrogen carrier",
+        "detail": "Glutamine is a polar amide amino acid and a major carrier/donor of nitrogen in metabolism."
+      },
+      {
+        "name": "Aspartate",
+        "sub": "Asp / D",
+        "icon": "➖",
+        "group": "acidic",
+        "clue": "Short acidic side chain; negatively charged at physiological pH",
+        "detail": "Aspartate has an extra carboxylate group and is usually negatively charged near physiological pH."
+      },
+      {
+        "name": "Glutamate",
+        "sub": "Glu / E",
+        "icon": "⚡",
+        "group": "acidic",
+        "clue": "Longer acidic side chain; major excitatory neurotransmitter",
+        "detail": "Glutamate is negatively charged near physiological pH and also acts as the major excitatory neurotransmitter in the CNS."
+      },
+      {
+        "name": "Lysine",
+        "sub": "Lys / K",
+        "icon": "➕",
+        "group": "basic",
+        "clue": "Terminal amino group; positive; essential",
+        "detail": "Lysine has a positively charged terminal amino group and is essential in the human diet."
+      },
+      {
+        "name": "Arginine",
+        "sub": "Arg / R",
+        "icon": "💨",
+        "group": "basic",
+        "clue": "Guanidinium group; strongly basic; nitric-oxide precursor",
+        "detail": "Arginine's guanidinium side chain is positively charged; arginine is used to produce nitric oxide."
+      },
+      {
+        "name": "Histidine",
+        "sub": "His / H",
+        "icon": "⚗️",
+        "group": "basic",
+        "clue": "Imidazole ring; can gain/lose H⁺ near physiological pH",
+        "detail": "Histidine's imidazole side chain makes it especially useful in enzyme active sites and acid-base catalysis."
+      },
+      {
+        "name": "Zwitterion",
+        "icon": "±",
+        "group": "concepts",
+        "clue": "Molecule with both positive and negative charges but net charge can be zero",
+        "detail": "Free amino acids commonly exist as zwitterions: the amino group is protonated and the carboxyl group is deprotonated."
+      },
+      {
+        "name": "Isoelectric point",
+        "sub": "pI",
+        "icon": "⚖️",
+        "group": "concepts",
+        "clue": "pH at which an amino acid/protein has zero net charge",
+        "detail": "At the isoelectric point, positive and negative charges balance so the molecule has no net electrical charge."
+      },
+      {
+        "name": "Peptide bond",
+        "icon": "🔗",
+        "group": "concepts",
+        "clue": "Covalent bond joining amino acids by dehydration",
+        "detail": "A peptide bond forms between the carboxyl group of one amino acid and the amino group of another, releasing water."
+      },
+      {
+        "name": "Essential amino acid",
+        "icon": "🍽️",
+        "group": "concepts",
+        "clue": "Must be obtained from diet because the body cannot make enough",
+        "detail": "An essential amino acid cannot be synthesized by the human body in sufficient quantity and therefore must come from food."
+      }
+    ]
+  },
+  "antibodies": {
+    "title": "Antibodies",
+    "icon": "🛡️",
+    "groups": {
+      "classes": "🛡️ Immunoglobulin classes",
+      "structure": "🧩 Antibody structure",
+      "actions": "⚔️ What antibodies do",
+      "extras": "🏆 Science Bowl extras"
+    },
+    "items": [
+      {
+        "name": "IgG",
+        "icon": "👶",
+        "group": "classes",
+        "clue": "Most abundant serum antibody; major secondary response; crosses placenta",
+        "detail": "IgG dominates in blood during secondary immune responses, opsonizes pathogens, activates complement, and can cross the placenta."
+      },
+      {
+        "name": "IgA",
+        "icon": "💧",
+        "group": "classes",
+        "clue": "Mucosal secretions: saliva, tears, mucus, breast milk",
+        "detail": "IgA protects mucosal surfaces and is commonly secreted as a dimer in body fluids such as saliva and breast milk."
+      },
+      {
+        "name": "IgM",
+        "icon": "🚨",
+        "group": "classes",
+        "clue": "First secreted antibody in a primary response; pentamer",
+        "detail": "IgM is usually the first antibody released after initial antigen exposure and is highly effective at activating complement."
+      },
+      {
+        "name": "IgE",
+        "icon": "🤧",
+        "group": "classes",
+        "clue": "Allergies + defense against parasitic worms",
+        "detail": "IgE binds mast cells and basophils and can trigger histamine release; it also helps defend against helminths."
+      },
+      {
+        "name": "IgD",
+        "icon": "🅱️",
+        "group": "classes",
+        "clue": "B-cell receptor on naïve B cells",
+        "detail": "IgD is found mainly on the surface of naïve B cells, where it functions as part of the antigen receptor."
+      },
+      {
+        "name": "Heavy chain",
+        "icon": "🏋️",
+        "group": "structure",
+        "clue": "Long immunoglobulin polypeptide; determines antibody class",
+        "detail": "Each antibody contains two identical heavy chains. The heavy-chain constant region determines whether it is IgG, IgA, IgM, IgE, or IgD."
+      },
+      {
+        "name": "Light chain",
+        "icon": "🪶",
+        "group": "structure",
+        "clue": "Shorter immunoglobulin polypeptide; two per antibody",
+        "detail": "Each antibody contains two identical light chains paired with the heavy chains."
+      },
+      {
+        "name": "Variable region",
+        "icon": "🎯",
+        "group": "structure",
+        "clue": "Highly diverse tip region that determines antigen specificity",
+        "detail": "Variable regions of heavy and light chains combine to make the antigen-binding sites."
+      },
+      {
+        "name": "Constant region",
+        "icon": "🧱",
+        "group": "structure",
+        "clue": "Less variable region that determines effector properties",
+        "detail": "Constant regions interact with immune cells and complement and give antibody classes their characteristic functions."
+      },
+      {
+        "name": "Fab region",
+        "sub": "Fragment antigen-binding",
+        "icon": "👐",
+        "group": "structure",
+        "clue": "The two arms that bind antigen",
+        "detail": "Each Fab arm contains one antigen-binding site made from variable regions of a heavy and light chain."
+      },
+      {
+        "name": "Fc region",
+        "sub": "Fragment crystallizable",
+        "icon": "🧲",
+        "group": "structure",
+        "clue": "Stem that binds Fc receptors and complement",
+        "detail": "The Fc portion is formed by heavy-chain constant regions and recruits immune effector mechanisms."
+      },
+      {
+        "name": "Neutralization",
+        "icon": "🚫",
+        "group": "actions",
+        "clue": "Antibody blocks virus/toxin from binding or entering cells",
+        "detail": "Neutralizing antibodies coat pathogens or toxins and prevent them from interacting with host-cell targets."
+      },
+      {
+        "name": "Opsonization",
+        "icon": "🎯",
+        "group": "actions",
+        "clue": "Antibody coats pathogen to make phagocytosis easier",
+        "detail": "Opsonizing antibodies tag microbes so macrophages and neutrophils can recognize and engulf them more efficiently."
+      },
+      {
+        "name": "Complement activation",
+        "icon": "💥",
+        "group": "actions",
+        "clue": "Antibody triggers plasma-protein cascade that can lyse microbes",
+        "detail": "Antigen-bound antibodies, especially IgM and some IgG, can initiate the classical complement pathway."
+      },
+      {
+        "name": "Agglutination",
+        "icon": "🧲",
+        "group": "actions",
+        "clue": "Cross-linking causes cells or particles to clump",
+        "detail": "Because antibodies have multiple binding sites, they can cross-link antigens and form clumps that are easier to clear."
+      },
+      {
+        "name": "V(D)J recombination",
+        "icon": "🧬",
+        "group": "extras",
+        "clue": "Gene-segment rearrangement creates huge antibody diversity",
+        "detail": "Developing B cells assemble variable-region genes from V, D, and J gene segments, generating many possible antigen receptors."
+      },
+      {
+        "name": "Class switching",
+        "icon": "🔄",
+        "group": "extras",
+        "clue": "B cell changes antibody isotype without changing antigen specificity",
+        "detail": "Class-switch recombination changes the heavy-chain constant region, for example from IgM to IgG, while preserving the same variable region."
+      },
+      {
+        "name": "Affinity maturation",
+        "icon": "📈",
+        "group": "extras",
+        "clue": "Later antibodies bind antigen more tightly",
+        "detail": "Somatic hypermutation followed by selection in germinal centers increases average antibody affinity during an immune response."
+      }
+    ]
+  },
+  "plantCells": {
+    "title": "Plant Cells",
+    "icon": "🌱",
+    "groups": {
+      "plantSpecific": "🌿 Plant-specific / especially important",
+      "chloroplast": "☀️ Chloroplast details",
+      "shared": "🔬 Shared eukaryotic organelles",
+      "extras": "🏆 Science Bowl extras"
+    },
+    "items": [
+      {
+        "name": "Cell wall",
+        "icon": "🧱",
+        "group": "plantSpecific",
+        "clue": "Cellulose-rich support layer outside plasma membrane",
+        "detail": "Plant cell walls resist expansion, provide support, protect the cell, and help prevent excessive water uptake."
+      },
+      {
+        "name": "Primary cell wall",
+        "icon": "🧱",
+        "group": "plantSpecific",
+        "clue": "Thin flexible wall laid down while a cell is growing",
+        "detail": "The primary wall is relatively thin and extensible so young plant cells can enlarge."
+      },
+      {
+        "name": "Secondary cell wall",
+        "icon": "🏰",
+        "group": "plantSpecific",
+        "clue": "Strong inner wall deposited after growth; often lignified",
+        "detail": "Many specialized plant cells add a thick secondary wall inside the primary wall after expansion stops."
+      },
+      {
+        "name": "Middle lamella",
+        "icon": "🧴",
+        "group": "plantSpecific",
+        "clue": "Pectin-rich layer that glues neighboring plant cells together",
+        "detail": "The middle lamella lies between adjacent primary walls and acts like a cellular cement."
+      },
+      {
+        "name": "Central vacuole",
+        "icon": "💧",
+        "group": "plantSpecific",
+        "clue": "Large storage compartment; maintains turgor pressure",
+        "detail": "The central vacuole stores water, ions, pigments, and wastes and helps maintain cell rigidity through turgor pressure."
+      },
+      {
+        "name": "Tonoplast",
+        "icon": "🫧",
+        "group": "plantSpecific",
+        "clue": "Membrane surrounding the central vacuole",
+        "detail": "The tonoplast regulates transport between the cytosol and the vacuole."
+      },
+      {
+        "name": "Plasmodesmata",
+        "icon": "🔗",
+        "group": "plantSpecific",
+        "clue": "Channels through cell walls connecting neighboring cytoplasm",
+        "detail": "Plasmodesmata allow water, solutes, and signals to pass directly between adjacent plant cells."
+      },
+      {
+        "name": "Chloroplast",
+        "icon": "☀️",
+        "group": "chloroplast",
+        "clue": "Organelle of photosynthesis; has its own DNA",
+        "detail": "Chloroplasts convert light energy into chemical energy and contain thylakoid membranes suspended in stroma."
+      },
+      {
+        "name": "Thylakoid",
+        "icon": "🥞",
+        "group": "chloroplast",
+        "clue": "Membrane sac where light reactions occur",
+        "detail": "Thylakoid membranes contain chlorophyll, photosystems, electron carriers, and ATP synthase."
+      },
+      {
+        "name": "Granum",
+        "sub": "plural: grana",
+        "icon": "🥞",
+        "group": "chloroplast",
+        "clue": "Stack of thylakoids",
+        "detail": "Grana are stacks of thylakoid discs that increase membrane surface area for the light reactions."
+      },
+      {
+        "name": "Stroma",
+        "icon": "🟢",
+        "group": "chloroplast",
+        "clue": "Fluid around thylakoids; Calvin cycle occurs here",
+        "detail": "The chloroplast stroma contains enzymes for the Calvin cycle plus chloroplast DNA and ribosomes."
+      },
+      {
+        "name": "Nucleus",
+        "icon": "🧠",
+        "group": "shared",
+        "clue": "Stores most DNA; controls gene expression",
+        "detail": "The nucleus houses most chromosomes and is the main site of DNA replication and transcription."
+      },
+      {
+        "name": "Mitochondrion",
+        "icon": "⚡",
+        "group": "shared",
+        "clue": "Cellular respiration + most aerobic ATP production",
+        "detail": "Mitochondria oxidize fuels and generate ATP through the citric acid cycle and oxidative phosphorylation."
+      },
+      {
+        "name": "Ribosome",
+        "icon": "🏭",
+        "group": "shared",
+        "clue": "Translates mRNA into protein",
+        "detail": "Ribosomes synthesize polypeptides; free ribosomes make many cytosolic proteins while bound ribosomes feed proteins into rough ER."
+      },
+      {
+        "name": "Rough ER",
+        "icon": "🧵",
+        "group": "shared",
+        "clue": "Ribosome-studded; makes secreted and membrane proteins",
+        "detail": "Rough ER synthesizes and begins processing proteins destined for secretion, membranes, or the endomembrane system."
+      },
+      {
+        "name": "Smooth ER",
+        "icon": "🫧",
+        "group": "shared",
+        "clue": "Lipid synthesis + detoxification + Ca²⁺ storage",
+        "detail": "Smooth ER produces lipids, metabolizes carbohydrates, detoxifies chemicals, and stores calcium in some cells."
+      },
+      {
+        "name": "Golgi apparatus",
+        "icon": "📦",
+        "group": "shared",
+        "clue": "Modify + sort + package proteins and lipids",
+        "detail": "Golgi cisternae receive vesicles from the ER and modify, sort, and ship their contents."
+      },
+      {
+        "name": "Plasma membrane",
+        "icon": "🚪",
+        "group": "shared",
+        "clue": "Selective phospholipid-bilayer barrier",
+        "detail": "The plasma membrane regulates exchange with the environment and participates in cell signaling."
+      },
+      {
+        "name": "Peroxisome",
+        "icon": "🧯",
+        "group": "shared",
+        "clue": "Oxidation reactions; catalase breaks down H₂O₂",
+        "detail": "Peroxisomes contain oxidative enzymes that remove hydrogens from substrates and catalase that converts hydrogen peroxide to water."
+      },
+      {
+        "name": "Cytoskeleton",
+        "icon": "🏗️",
+        "group": "shared",
+        "clue": "Shape + internal transport + cell division",
+        "detail": "Microtubules, microfilaments, and intermediate filaments organize the cell, move components, and help divide it."
+      },
+      {
+        "name": "Amyloplast",
+        "icon": "🥔",
+        "group": "extras",
+        "clue": "Colorless plastid that stores starch",
+        "detail": "Amyloplasts synthesize and store starch, especially in roots and storage tissues; dense amyloplasts also help gravity sensing."
+      },
+      {
+        "name": "Glyoxysome",
+        "icon": "🌱",
+        "group": "extras",
+        "clue": "Specialized plant peroxisome that converts stored fats toward sugars in germinating seeds",
+        "detail": "Glyoxysomes contain enzymes of the glyoxylate cycle, allowing seedlings to use stored lipids before photosynthesis is established."
+      }
+    ]
+  },
+  "plantHormones": {
+    "title": "Plant Hormones",
+    "icon": "🌿",
+    "groups": {
+      "classic": "🌱 Core Campbell hormones",
+      "expanded": "📘 Campbell expanded set",
+      "defense": "🏆 Defense / Science Bowl extras"
+    },
+    "items": [
+      {
+        "name": "Auxin",
+        "sub": "IAA is the main natural auxin",
+        "icon": "📏",
+        "group": "classic",
+        "clue": "Shoot cell elongation + apical dominance + phototropism",
+        "detail": "Auxin promotes elongation in shoots, helps maintain apical dominance, stimulates root formation, and redistributes during tropisms."
+      },
+      {
+        "name": "Cytokinin",
+        "icon": "➗",
+        "group": "classic",
+        "clue": "Cell division + lateral bud growth + delays senescence",
+        "detail": "Cytokinins promote cytokinesis, influence root/shoot development, release lateral buds from apical dominance, and delay leaf aging."
+      },
+      {
+        "name": "Gibberellin",
+        "sub": "GA",
+        "icon": "🌱",
+        "group": "classic",
+        "clue": "Stem elongation + seed germination + fruit growth",
+        "detail": "Gibberellins promote stem growth, break some seed dormancy, stimulate germination enzymes, and promote fruit growth."
+      },
+      {
+        "name": "Abscisic acid",
+        "sub": "ABA",
+        "icon": "🛑",
+        "group": "classic",
+        "clue": "Seed dormancy + stomatal closure during drought",
+        "detail": "ABA inhibits growth under some conditions, promotes seed dormancy, and signals guard cells to close stomata during water stress."
+      },
+      {
+        "name": "Ethylene",
+        "icon": "🍌",
+        "group": "classic",
+        "clue": "Gaseous hormone; fruit ripening + triple response",
+        "detail": "Ethylene promotes fruit ripening, leaf abscission/senescence, and the seedling triple response to obstacles."
+      },
+      {
+        "name": "Brassinosteroids",
+        "icon": "🌿",
+        "group": "expanded",
+        "clue": "Cell expansion/division + vascular development",
+        "detail": "Brassinosteroids work with other hormones to promote cell expansion, cell division, and vascular differentiation."
+      },
+      {
+        "name": "Jasmonates",
+        "icon": "🦷",
+        "group": "expanded",
+        "clue": "Wound/herbivore defense + developmental signals",
+        "detail": "Jasmonates coordinate responses to herbivory and wounding and also influence reproductive and developmental processes."
+      },
+      {
+        "name": "Strigolactones",
+        "icon": "✂️",
+        "group": "expanded",
+        "clue": "Suppress shoot branching + attract mycorrhizal fungi",
+        "detail": "Strigolactones help inhibit axillary bud growth and are released by roots as signals that recruit arbuscular mycorrhizal fungi."
+      },
+      {
+        "name": "Salicylic acid",
+        "icon": "🛡️",
+        "group": "defense",
+        "clue": "Systemic acquired resistance against pathogens",
+        "detail": "Salicylic acid is a plant defense signal important in local defense and systemic acquired resistance after pathogen attack."
+      },
+      {
+        "name": "Systemin",
+        "icon": "🚨",
+        "group": "defense",
+        "clue": "Peptide wound signal that helps activate anti-herbivore defenses",
+        "detail": "In some plants, systemin is a peptide signal released after wounding that helps induce defensive gene expression."
+      }
+    ]
+  },
+  "animalPhyla": {
+    "title": "Animal Phyla",
+    "icon": "🐙",
+    "groups": {
+      "early": "🌊 Early-diverging animals",
+      "loph": "🌀 Lophotrochozoans",
+      "ecdy": "🦗 Ecdysozoans",
+      "deut": "⭐ Deuterostomes",
+      "extras": "🏆 Campbell / Science Bowl extras"
+    },
+    "items": [
+      {
+        "name": "Porifera",
+        "sub": "Sponges",
+        "icon": "🧽",
+        "group": "early",
+        "clue": "Pores + choanocytes + no true tissues",
+        "detail": "Sponges are suspension feeders with choanocytes, porous bodies, and no true tissues or organs."
+      },
+      {
+        "name": "Cnidaria",
+        "sub": "Jellies, corals, hydras",
+        "icon": "🪼",
+        "group": "early",
+        "clue": "Cnidocytes with nematocysts; radial symmetry",
+        "detail": "Cnidarians are diploblastic animals with a gastrovascular cavity and stinging cnidocytes."
+      },
+      {
+        "name": "Ctenophora",
+        "sub": "Comb jellies",
+        "icon": "✨",
+        "group": "early",
+        "clue": "Eight rows of ciliary combs; colloblasts",
+        "detail": "Ctenophores are marine animals that swim using rows of fused cilia called comb plates and capture prey with sticky colloblasts."
+      },
+      {
+        "name": "Platyhelminthes",
+        "sub": "Flatworms",
+        "icon": "➖",
+        "group": "loph",
+        "clue": "Dorsoventrally flat; no body cavity; incomplete gut in many",
+        "detail": "Flatworms are bilateral triploblasts without a true coelom; the group includes planarians, flukes, and tapeworms."
+      },
+      {
+        "name": "Syndermata / Rotifera",
+        "sub": "Rotifers + acanthocephalans",
+        "icon": "⚙️",
+        "group": "loph",
+        "clue": "Microscopic rotifers with ciliated corona; complete digestive tract",
+        "detail": "Campbell 12e groups rotifers with acanthocephalans in Syndermata; rotifers have a ciliated crown and complete alimentary canal."
+      },
+      {
+        "name": "Ectoprocta",
+        "sub": "Bryozoans",
+        "icon": "🏘️",
+        "group": "loph",
+        "clue": "Sessile colonial lophophorates in tough exoskeleton",
+        "detail": "Ectoprocts usually live in colonies and use a ciliated lophophore for suspension feeding."
+      },
+      {
+        "name": "Brachiopoda",
+        "sub": "Lamp shells",
+        "icon": "🐚",
+        "group": "loph",
+        "clue": "Lophophore + dorsal/ventral shell halves",
+        "detail": "Brachiopods resemble clams externally but have dorsal and ventral valves and feed with a lophophore."
+      },
+      {
+        "name": "Mollusca",
+        "sub": "Snails, clams, squid",
+        "icon": "🐌",
+        "group": "loph",
+        "clue": "Muscular foot + mantle + visceral mass",
+        "detail": "Most molluscs share a body plan with a muscular foot, visceral mass, and mantle; many also have a radula."
+      },
+      {
+        "name": "Annelida",
+        "sub": "Segmented worms",
+        "icon": "🪱",
+        "group": "loph",
+        "clue": "True segmentation + coelom; earthworms and leeches",
+        "detail": "Annelids are segmented coelomate worms; repeated segments allow specialized movement and organ functions."
+      },
+      {
+        "name": "Nematoda",
+        "sub": "Roundworms",
+        "icon": "〰️",
+        "group": "ecdy",
+        "clue": "Unsegmented round body + pseudocoelom + molts cuticle",
+        "detail": "Nematodes have a complete digestive tract, a tough cuticle that molts, and a fluid-filled pseudocoelom."
+      },
+      {
+        "name": "Arthropoda",
+        "sub": "Insects, crustaceans, chelicerates, myriapods",
+        "icon": "🦀",
+        "group": "ecdy",
+        "clue": "Chitinous exoskeleton + jointed appendages + molting",
+        "detail": "Arthropods are the most species-rich animal phylum and have jointed appendages, segmented bodies, and a chitinous exoskeleton."
+      },
+      {
+        "name": "Echinodermata",
+        "sub": "Sea stars, urchins",
+        "icon": "⭐",
+        "group": "deut",
+        "clue": "Water vascular system + tube feet; adults radial",
+        "detail": "Echinoderms are marine deuterostomes with a water vascular system and pentaradial symmetry as adults."
+      },
+      {
+        "name": "Hemichordata",
+        "sub": "Acorn worms",
+        "icon": "🌊",
+        "group": "deut",
+        "clue": "Marine deuterostomes with pharyngeal slits",
+        "detail": "Hemichordates include acorn worms and share deuterostome development and pharyngeal slits with chordates."
+      },
+      {
+        "name": "Chordata",
+        "icon": "🐟",
+        "group": "deut",
+        "clue": "Notochord + dorsal hollow nerve cord + pharyngeal slits + post-anal tail",
+        "detail": "All chordates possess four hallmark structures at least during embryonic development."
+      },
+      {
+        "name": "Acoela",
+        "sub": "Acoel flatworms",
+        "icon": "🫧",
+        "group": "extras",
+        "clue": "Very simple bilateral animals; saclike gut; separate from true flatworms",
+        "detail": "Acoels were once grouped with flatworms but molecular evidence places them as a distinct early-branching bilaterian lineage."
+      },
+      {
+        "name": "Placozoa",
+        "sub": "Trichoplax and relatives",
+        "icon": "🔬",
+        "group": "extras",
+        "clue": "Extremely simple flattened animals with few cell types",
+        "detail": "Placozoans are tiny, simple animals lacking organs and a conventional nervous system."
+      }
+    ]
+  },
+  "protistPhyla": {
+    "title": "Protist Groups",
+    "icon": "🦠",
+    "groups": {
+      "excavata": "🟢 Excavata",
+      "stramenopiles": "🌊 SAR — Stramenopiles",
+      "alveolates": "🧫 SAR — Alveolates",
+      "rhizarians": "🕸️ SAR — Rhizarians",
+      "archaeplastida": "🌿 Archaeplastida",
+      "unikonta": "🫧 Unikonta / Amoebozoa",
+      "framework": "🏆 Supergroup framework"
+    },
+    "items": [
+      {
+        "name": "Diplomonads",
+        "sub": "Example: Giardia",
+        "icon": "👀",
+        "group": "excavata",
+        "clue": "Two nuclei + multiple flagella + reduced mitochondria (mitosomes)",
+        "detail": "Diplomonads are anaerobic excavates with modified mitochondria called mitosomes; Giardia is a well-known parasite."
+      },
+      {
+        "name": "Parabasalids",
+        "sub": "Example: Trichomonas",
+        "icon": "〰️",
+        "group": "excavata",
+        "clue": "Reduced mitochondria called hydrogenosomes",
+        "detail": "Parabasalids have hydrogenosomes instead of typical mitochondria; some are symbionts and others are parasites."
+      },
+      {
+        "name": "Euglenozoans",
+        "sub": "Euglena + Trypanosoma",
+        "icon": "🟢",
+        "group": "excavata",
+        "clue": "Flagella with spiral/crystalline rod; includes euglenids and kinetoplastids",
+        "detail": "Euglenozoans include photosynthetic/mixotrophic euglenids and parasitic kinetoplastids such as Trypanosoma."
+      },
+      {
+        "name": "Diatoms",
+        "icon": "💎",
+        "group": "stramenopiles",
+        "clue": "Glass-like silica walls (frustules); major phytoplankton",
+        "detail": "Diatoms are photosynthetic stramenopiles encased in intricately patterned silica shells."
+      },
+      {
+        "name": "Golden algae",
+        "sub": "Chrysophytes",
+        "icon": "✨",
+        "group": "stramenopiles",
+        "clue": "Yellow-brown accessory pigments; mostly unicellular/colonial",
+        "detail": "Golden algae are mainly freshwater and marine photosynthetic stramenopiles colored by carotenoids."
+      },
+      {
+        "name": "Brown algae",
+        "sub": "Kelps",
+        "icon": "🌿",
+        "group": "stramenopiles",
+        "clue": "Largest multicellular protists; kelp forests",
+        "detail": "Brown algae are multicellular marine stramenopiles, including giant kelps, with fucoxanthin pigment."
+      },
+      {
+        "name": "Oomycetes",
+        "sub": "Water molds",
+        "icon": "💧",
+        "group": "stramenopiles",
+        "clue": "Fungus-like stramenopiles; cellulose walls; includes potato-blight pathogen",
+        "detail": "Oomycetes resemble fungi but are stramenopiles; their cell walls contain cellulose rather than chitin."
+      },
+      {
+        "name": "Dinoflagellates",
+        "icon": "🌊",
+        "group": "alveolates",
+        "clue": "Two flagella + cellulose plates; red tides; coral symbionts",
+        "detail": "Dinoflagellates are alveolates common in marine plankton; some cause harmful blooms and others live symbiotically in corals."
+      },
+      {
+        "name": "Apicomplexans",
+        "sub": "Example: Plasmodium",
+        "icon": "🦟",
+        "group": "alveolates",
+        "clue": "Obligate parasites with apical complex",
+        "detail": "Apicomplexans use an apical complex to enter host cells; Plasmodium causes malaria."
+      },
+      {
+        "name": "Ciliates",
+        "sub": "Example: Paramecium",
+        "icon": "🧹",
+        "group": "alveolates",
+        "clue": "Covered with cilia; macro- and micronuclei",
+        "detail": "Ciliates use cilia for movement/feeding and typically have a macronucleus plus one or more micronuclei."
+      },
+      {
+        "name": "Foraminiferans",
+        "sub": "Forams",
+        "icon": "🐚",
+        "group": "rhizarians",
+        "clue": "Porous calcium-carbonate tests + threadlike pseudopodia",
+        "detail": "Forams are mostly marine rhizarians with chambered tests and reticulating pseudopodia extending through pores."
+      },
+      {
+        "name": "Radiolarians",
+        "icon": "✨",
+        "group": "rhizarians",
+        "clue": "Intricate silica skeletons + radiating pseudopodia",
+        "detail": "Radiolarians are mostly marine planktonic rhizarians with elaborate internal silica skeletons."
+      },
+      {
+        "name": "Cercozoans",
+        "icon": "🕸️",
+        "group": "rhizarians",
+        "clue": "Diverse amoeboid/flagellated rhizarians with thin pseudopodia",
+        "detail": "Cercozoans are a diverse rhizarian group including predators, parasites, and photosynthetic species."
+      },
+      {
+        "name": "Red algae",
+        "sub": "Rhodophytes",
+        "icon": "🔴",
+        "group": "archaeplastida",
+        "clue": "Phycoerythrin; mostly marine; no flagellated stages",
+        "detail": "Red algae are archaeplastids with red accessory pigments that allow photosynthesis at relatively great depth."
+      },
+      {
+        "name": "Chlorophytes",
+        "sub": "Green algae",
+        "icon": "🟩",
+        "group": "archaeplastida",
+        "clue": "Green-algal lineage including Chlamydomonas, Volvox, Ulva",
+        "detail": "Chlorophytes are one major green-algal clade with chlorophyll a and b."
+      },
+      {
+        "name": "Charophytes",
+        "sub": "Closest algal relatives of land plants",
+        "icon": "🌱",
+        "group": "archaeplastida",
+        "clue": "Green algae most closely related to land plants",
+        "detail": "Charophyte algae share key cellular and molecular traits with land plants and are their closest algal relatives."
+      },
+      {
+        "name": "Slime molds",
+        "icon": "🟡",
+        "group": "unikonta",
+        "clue": "Amoeboid feeding stage + spore-producing fruiting stage",
+        "detail": "Slime molds are amoebozoans that feed as amoeboid cells or masses and later make spore-bearing structures."
+      },
+      {
+        "name": "Tubulinids",
+        "sub": "Classic amoebas",
+        "icon": "🫧",
+        "group": "unikonta",
+        "clue": "Lobe-shaped pseudopodia used for movement and feeding",
+        "detail": "Tubulinids such as Amoeba proteus extend broad lobose pseudopodia to crawl and engulf prey."
+      },
+      {
+        "name": "Entamoebas",
+        "icon": "🦠",
+        "group": "unikonta",
+        "clue": "Parasitic amoebozoans; some infect vertebrate intestines",
+        "detail": "Entamoeba species are parasitic amoebozoans; E. histolytica can cause amoebic dysentery."
+      },
+      {
+        "name": "Excavata",
+        "icon": "⛏️",
+        "group": "framework",
+        "clue": "Supergroup containing diplomonads, parabasalids, and euglenozoans",
+        "detail": "In Campbell 12e, Excavata is one of four major eukaryotic supergroups used to organize protist diversity."
+      },
+      {
+        "name": "SAR",
+        "icon": "🔤",
+        "group": "framework",
+        "clue": "Supergroup = Stramenopiles + Alveolates + Rhizarians",
+        "detail": "The SAR clade is supported strongly by molecular data and contains enormous protist diversity."
+      },
+      {
+        "name": "Archaeplastida",
+        "icon": "🌿",
+        "group": "framework",
+        "clue": "Supergroup containing red algae, green algae, and land plants",
+        "detail": "Archaeplastids descend from the lineage that acquired a primary plastid from a cyanobacterium."
+      },
+      {
+        "name": "Unikonta",
+        "icon": "🧬",
+        "group": "framework",
+        "clue": "Campbell 12e supergroup containing amoebozoans + opisthokonts",
+        "detail": "Campbell 12e uses Unikonta for amoebozoans and opisthokonts; fungi and animals are opisthokonts."
+      }
+    ]
+  },
+  "fungiPhyla": {
+    "title": "Fungi Phyla + Key Fungal Terms",
+    "icon": "🍄",
+    "groups": {
+      "phyla": "🍄 Major Campbell fungal groups",
+      "structure": "🧵 Structures / life cycle",
+      "symbiosis": "🌱 Ecology / symbiosis"
+    },
+    "items": [
+      {
+        "name": "Chytrids",
+        "sub": "Chytridiomycota",
+        "icon": "💧",
+        "group": "phyla",
+        "clue": "Only major fungi with flagellated zoospores; many aquatic",
+        "detail": "Chytrids are early-diverging fungi, often aquatic, and produce flagellated spores or gametes."
+      },
+      {
+        "name": "Zygomycetes",
+        "sub": "Traditional group; e.g. Rhizopus",
+        "icon": "🍞",
+        "group": "phyla",
+        "clue": "Bread molds; resistant zygosporangium",
+        "detail": "Traditional introductory texts group Rhizopus-like molds as zygomycetes; sexual reproduction produces a thick-walled zygosporangium."
+      },
+      {
+        "name": "Glomeromycetes",
+        "sub": "Glomeromycota",
+        "icon": "🌱",
+        "group": "phyla",
+        "clue": "Arbuscular mycorrhizae inside plant roots",
+        "detail": "Glomeromycetes form arbuscular mycorrhizal associations with the roots of most plant species."
+      },
+      {
+        "name": "Ascomycetes",
+        "sub": "Ascomycota — sac fungi",
+        "icon": "🧫",
+        "group": "phyla",
+        "clue": "Asci make ascospores; yeasts, morels, truffles",
+        "detail": "Ascomycetes produce sexual spores in saclike asci; the phylum includes yeasts, morels, truffles, and many molds."
+      },
+      {
+        "name": "Basidiomycetes",
+        "sub": "Basidiomycota — club fungi",
+        "icon": "🍄",
+        "group": "phyla",
+        "clue": "Basidia make basidiospores; mushrooms, rusts, smuts",
+        "detail": "Basidiomycetes produce sexual spores on club-shaped basidia and include mushrooms, puffballs, rusts, and smuts."
+      },
+      {
+        "name": "Hypha",
+        "icon": "🧵",
+        "group": "structure",
+        "clue": "Long filament making up most fungal bodies",
+        "detail": "A hypha is a tubular filament that grows at its tip and absorbs nutrients after extracellular digestion."
+      },
+      {
+        "name": "Mycelium",
+        "icon": "🕸️",
+        "group": "structure",
+        "clue": "Interwoven mass/network of hyphae",
+        "detail": "The mycelium is the feeding body of most fungi, formed by a branching network of hyphae."
+      },
+      {
+        "name": "Septa",
+        "icon": "🚧",
+        "group": "structure",
+        "clue": "Cross-walls dividing fungal hyphae into compartments",
+        "detail": "Septa divide many hyphae into cells but often contain pores allowing cytoplasm and organelles to pass."
+      },
+      {
+        "name": "Coenocytic hypha",
+        "icon": "〰️",
+        "group": "structure",
+        "clue": "Hypha lacking septa; continuous multinucleate cytoplasm",
+        "detail": "Coenocytic fungi have hyphae without regular cross-walls, producing one large cytoplasmic compartment with many nuclei."
+      },
+      {
+        "name": "Plasmogamy",
+        "icon": "🤝",
+        "group": "structure",
+        "clue": "Fusion of fungal cytoplasm without nuclear fusion",
+        "detail": "Plasmogamy brings genetically different haploid nuclei into the same cytoplasm during fungal sexual reproduction."
+      },
+      {
+        "name": "Karyogamy",
+        "icon": "🧬",
+        "group": "structure",
+        "clue": "Fusion of haploid nuclei to make a diploid nucleus",
+        "detail": "Karyogamy follows plasmogamy and creates the usually brief diploid stage of many fungal life cycles."
+      },
+      {
+        "name": "Dikaryotic stage",
+        "sub": "n + n",
+        "icon": "2️⃣",
+        "group": "structure",
+        "clue": "Two genetically different haploid nuclei coexist per cell",
+        "detail": "In many ascomycetes and basidiomycetes, plasmogamy creates a prolonged dikaryotic stage before karyogamy."
+      },
+      {
+        "name": "Mycorrhiza",
+        "icon": "🌳",
+        "group": "symbiosis",
+        "clue": "Mutualism between fungal hyphae and plant roots",
+        "detail": "Mycorrhizal fungi increase plant mineral and water uptake while receiving sugars from the plant."
+      },
+      {
+        "name": "Lichen",
+        "icon": "🪨",
+        "group": "symbiosis",
+        "clue": "Fungus partnered with photosynthetic alga/cyanobacterium",
+        "detail": "A lichen is a symbiotic association in which a fungus houses a photosynthetic partner."
+      },
+      {
+        "name": "Haustorium",
+        "icon": "🪝",
+        "group": "symbiosis",
+        "clue": "Specialized parasitic hypha that penetrates host tissue for nutrients",
+        "detail": "Haustoria are modified hyphal tips used by some parasitic fungi to draw nutrients from living host cells."
+      },
+      {
+        "name": "Chitin",
+        "icon": "🧱",
+        "group": "symbiosis",
+        "clue": "Structural polysaccharide in fungal cell walls",
+        "detail": "Fungal cell walls contain chitin, unlike plant cell walls, which are rich in cellulose."
+      }
+    ]
+  },
+  "plantPhyla": {
+    "title": "Plant Groups / Phyla",
+    "icon": "🌳",
+    "groups": {
+      "nonvascular": "🌱 Nonvascular plants",
+      "seedless": "🌿 Seedless vascular plants",
+      "gymnosperms": "🌲 Gymnosperms",
+      "angiosperms": "🌸 Angiosperms",
+      "extras": "🏆 Science Bowl angiosperm extras"
+    },
+    "items": [
+      {
+        "name": "Liverworts",
+        "sub": "Marchantiophyta / hepatics",
+        "icon": "🍃",
+        "group": "nonvascular",
+        "clue": "Nonvascular; flat thallus or leafy gametophyte; gemma cups in some",
+        "detail": "Liverworts are bryophyte-grade nonvascular land plants with dominant gametophytes and swimming sperm."
+      },
+      {
+        "name": "Mosses",
+        "sub": "Bryophyta",
+        "icon": "🟢",
+        "group": "nonvascular",
+        "clue": "Nonvascular; leafy gametophyte; sporophyte grows from it",
+        "detail": "Mosses lack true vascular tissue; the gametophyte is the conspicuous generation and the sporophyte remains attached."
+      },
+      {
+        "name": "Hornworts",
+        "sub": "Anthocerotophyta",
+        "icon": "📯",
+        "group": "nonvascular",
+        "clue": "Nonvascular; long horn-shaped sporophytes",
+        "detail": "Hornworts are nonvascular plants named for their elongated, photosynthetic sporophytes."
+      },
+      {
+        "name": "Lycophytes",
+        "sub": "Club mosses, spike mosses, quillworts",
+        "icon": "🌿",
+        "group": "seedless",
+        "clue": "Seedless vascular plants with microphyll leaves",
+        "detail": "Lycophytes are an ancient vascular lineage characterized by microphylls—small leaves with a single unbranched vein."
+      },
+      {
+        "name": "Monilophytes",
+        "sub": "Ferns + horsetails",
+        "icon": "🌿",
+        "group": "seedless",
+        "clue": "Seedless vascular plants with megaphylls; spores often in sori",
+        "detail": "Monilophytes include ferns and horsetails; the sporophyte is dominant and swimming sperm still require water."
+      },
+      {
+        "name": "Cycads",
+        "sub": "Cycadophyta",
+        "icon": "🌴",
+        "group": "gymnosperms",
+        "clue": "Palm-like gymnosperms with large cones",
+        "detail": "Cycads are dioecious seed plants with large compound leaves and conspicuous cones."
+      },
+      {
+        "name": "Ginkgo",
+        "sub": "Ginkgophyta",
+        "icon": "🍂",
+        "group": "gymnosperms",
+        "clue": "One living species: Ginkgo biloba; fan-shaped leaves",
+        "detail": "Ginkgo biloba is the sole living representative of an ancient gymnosperm lineage."
+      },
+      {
+        "name": "Gnetophytes",
+        "sub": "Gnetophyta",
+        "icon": "🌵",
+        "group": "gymnosperms",
+        "clue": "Ephedra, Gnetum, Welwitschia; unusual gymnosperm group",
+        "detail": "Gnetophytes are a small and morphologically diverse gymnosperm lineage."
+      },
+      {
+        "name": "Conifers",
+        "sub": "Pinophyta / Coniferophyta",
+        "icon": "🌲",
+        "group": "gymnosperms",
+        "clue": "Needle/scale leaves + cones; largest gymnosperm group",
+        "detail": "Conifers such as pines and firs produce naked seeds on cone scales and are adapted to dry or cold conditions."
+      },
+      {
+        "name": "Angiosperms",
+        "sub": "Flowering plants",
+        "icon": "🌸",
+        "group": "angiosperms",
+        "clue": "Flowers + fruits + double fertilization",
+        "detail": "Angiosperms enclose ovules within carpels; after fertilization the ovary develops into a fruit, and double fertilization makes endosperm."
+      },
+      {
+        "name": "Monocots",
+        "icon": "🌾",
+        "group": "extras",
+        "clue": "1 cotyledon + parallel veins + scattered vascular bundles + fibrous roots",
+        "detail": "Monocots include grasses, lilies, and orchids; their classic traits include one cotyledon and parallel leaf venation."
+      },
+      {
+        "name": "Eudicots",
+        "icon": "🌻",
+        "group": "extras",
+        "clue": "2 cotyledons + netted veins + vascular bundles in ring + taproot common",
+        "detail": "Eudicots are the largest angiosperm clade and typically have two cotyledons, netlike venation, and flower parts in 4s or 5s."
+      }
+    ]
+  }
+};
+
+    const screenIds = ["homeScreen","topicScreen","learnScreen","gameScreen","finishScreen"];
+    let currentTopicKey = null;
+    let quizOrder = [];
+    let quizIndex = 0;
+    let attempts = 0;
+    let mistakes = 0;
+    let locked = false;
+
+    const $ = id => document.getElementById(id);
+
+    function showScreen(id) {
+      screenIds.forEach(screenId => $(screenId).hidden = screenId !== id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function shuffle(list) {
+      const a = [...list];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function renderHome() {
+      const grid = $("topicGrid");
+      grid.innerHTML = "";
+      Object.entries(topics).forEach(([key, topic]) => {
+        const btn = document.createElement("button");
+        btn.className = "topic-card";
+        btn.innerHTML = `<span class="emoji">${topic.icon}</span><span>${topic.title}</span>`;
+        btn.addEventListener("click", () => openTopic(key));
+        grid.appendChild(btn);
+      });
+    }
+
+    function openTopic(key) {
+      currentTopicKey = key;
+      const topic = topics[key];
+      $("topicTitle").textContent = `${topic.icon} ${topic.title}`;
+      showScreen("topicScreen");
+    }
+
+    function currentTopic() { return topics[currentTopicKey]; }
+
+    function createItemCard(item, className) {
+      const card = document.createElement("div");
+      card.className = className;
+      card.innerHTML = `
+        <div class="item-emoji">${item.icon || "🔹"}</div>
+        <div class="item-name">${item.name}</div>
+        ${item.sub ? `<div class="item-sub">${item.sub}</div>` : ""}
+      `;
+      return card;
+    }
+
+    function startLearn() {
+      const topic = currentTopic();
+      $("learnTitle").textContent = `📚 Learn ${topic.title}`;
+      const wrap = $("learnGroups");
+      wrap.innerHTML = "";
+
+      Object.entries(topic.groups).forEach(([groupKey, groupLabel]) => {
+        const items = topic.items.filter(item => item.group === groupKey);
+        if (!items.length) return;
+        const title = document.createElement("h3");
+        title.className = "group-title";
+        title.textContent = groupLabel;
+        wrap.appendChild(title);
+
+        const grid = document.createElement("div");
+        grid.className = "study-grid";
+        items.forEach(item => {
+          const card = createItemCard(item, "study-card");
+          card.addEventListener("click", () => showInfo(item));
+          grid.appendChild(card);
+        });
+        wrap.appendChild(grid);
+      });
+
+      $("infoPanel").innerHTML = `
+        <div class="big-emoji">👆</div>
+        <div><h3>Click any card</h3><p>Its quick clue and explanation will appear here.</p></div>
+      `;
+      showScreen("learnScreen");
+    }
+
+    function showInfo(item) {
+      $("infoPanel").innerHTML = `
+        <div class="big-emoji">${item.icon || "🔹"}</div>
+        <div>
+          <h3>${item.name}${item.sub ? ` — ${item.sub}` : ""}</h3>
+          <p><strong>Quick clue:</strong> ${item.clue}<br><br>${item.detail}</p>
+        </div>
+      `;
+    }
+
+    function startGame() {
+      const topic = currentTopic();
+      quizOrder = shuffle(topic.items);
+      quizIndex = 0;
+      attempts = 0;
+      mistakes = 0;
+      locked = false;
+      $("gameTitle").textContent = `🎮 ${topic.title} Game`;
+      buildAnswerGrid();
+      showScreen("gameScreen");
+      showQuestion();
+    }
+
+    function buildAnswerGrid() {
+      const grid = $("answerGrid");
+      grid.innerHTML = "";
+      currentTopic().items.forEach(item => {
+        const card = createItemCard(item, "answer-card");
+        card.dataset.name = item.name;
+
+        card.addEventListener("dragover", event => {
+          event.preventDefault();
+          if (!locked) card.classList.add("dragover");
+        });
+        card.addEventListener("dragleave", () => card.classList.remove("dragover"));
+        card.addEventListener("drop", event => {
+          event.preventDefault();
+          card.classList.remove("dragover");
+          checkAnswer(item, card);
+        });
+        card.addEventListener("click", () => checkAnswer(item, card));
+        grid.appendChild(card);
+      });
+    }
+
+    function showQuestion() {
+      if (quizIndex >= quizOrder.length) {
+        finishGame();
+        return;
+      }
+      locked = false;
+      clearAnswerStates();
+      $("feedback").textContent = "";
+      $("feedback").className = "feedback";
+      $("clueCard").textContent = quizOrder[quizIndex].clue;
+      updateStats();
+    }
+
+    function checkAnswer(selectedItem, selectedCard) {
+      if (locked) return;
+      attempts++;
+      const correct = quizOrder[quizIndex];
+
+      if (selectedItem.name === correct.name) {
+        locked = true;
+        selectedCard.classList.add("correct");
+        $("feedback").textContent = `✅ Correct — ${correct.name}!`;
+        $("feedback").className = "feedback good";
+        quizIndex++;
+        updateStats();
+        setTimeout(showQuestion, 650);
+      } else {
+        mistakes++;
+        selectedCard.classList.add("wrong");
+        $("feedback").textContent = "❌ Wrong — keep trying.";
+        $("feedback").className = "feedback bad";
+        updateStats();
+        setTimeout(() => selectedCard.classList.remove("wrong"), 420);
+      }
+    }
+
+    function clearAnswerStates() {
+      document.querySelectorAll("#answerGrid .answer-card").forEach(card => {
+        card.classList.remove("correct", "wrong", "dragover");
+      });
+    }
+
+    function updateStats() {
+      $("progressStat").textContent = `${quizIndex} / ${quizOrder.length}`;
+      $("attemptStat").textContent = attempts;
+      $("mistakeStat").textContent = mistakes;
+    }
+
+    function finishGame() {
+      const topic = currentTopic();
+      $("finishTitle").textContent = `${topic.icon} ${topic.title} complete!`;
+      $("finishText").textContent = mistakes === 0
+        ? `Perfect run: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
+        : `You finished all ${topic.items.length} items with ${mistakes} mistake${mistakes === 1 ? "" : "s"}. Play again and beat that.`;
+      showScreen("finishScreen");
+    }
+
+    $("clueCard").addEventListener("dragstart", event => {
+      if (locked) { event.preventDefault(); return; }
+      event.dataTransfer.setData("text/plain", "clue");
+      event.dataTransfer.effectAllowed = "move";
+    });
+
+    $("topicHomeBtn").addEventListener("click", () => showScreen("homeScreen"));
+    $("learnBackBtn").addEventListener("click", () => showScreen("topicScreen"));
+    $("gameBackBtn").addEventListener("click", () => showScreen("topicScreen"));
+    $("learnBtn").addEventListener("click", startLearn);
+    $("playBtn").addEventListener("click", startGame);
+    $("restartBtn").addEventListener("click", startGame);
+    $("playAgainBtn").addEventListener("click", startGame);
+    $("reviewBtn").addEventListener("click", startLearn);
+    $("finishHomeBtn").addEventListener("click", () => showScreen("homeScreen"));
+
+    renderHome();
+    showScreen("homeScreen");
+  </script>
+</body>
+</html>
+
