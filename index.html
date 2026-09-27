@@ -103,6 +103,25 @@
     .topic-heading h2 { margin: 0; font-size: 34px; }
     .topic-heading p { margin: 5px 0 0; color: var(--muted); }
 
+    .practice-section {
+      margin-top: 28px;
+      padding-top: 8px;
+    }
+    .practice-section + .practice-section {
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 2px solid rgba(92, 107, 192, 0.14);
+    }
+    .practice-section h3 {
+      margin: 0 0 7px;
+      font-size: 22px;
+    }
+    .practice-section .section-note {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
     .mode-grid {
       width: min(720px, 100%);
       margin: 46px auto 0;
@@ -444,23 +463,46 @@
         </div>
         <div style="width:86px"></div>
       </div>
-      <div class="mode-grid">
-        <button class="mode-card" id="learnBtn">
-          <span class="emoji">📚</span><strong>Learn</strong>
-          <span>Click the cards and see the key function or defining trait.</span>
-        </button>
-        <button class="mode-card" id="playBtn">
-          <span class="emoji">🎮</span><strong>Level 1 — Match</strong>
-          <span>See the clue and match it to the correct item.</span>
-        </button>
-        <button class="mode-card" id="writeBtn">
-          <span class="emoji">✍️</span><strong>Level 2 — Write</strong>
-          <span>See the item and type the key words for what it does.</span>
-        </button>
-        <button class="mode-card" id="codonBtn" hidden>
-          <span class="emoji">🧬</span><strong>Genetic Code</strong>
-          <span>Learn and drill mRNA codons → amino acids.</span>
-        </button>
+      <div class="practice-section">
+        <h3 id="primaryModeHeading">Functions &amp; defining traits</h3>
+        <p id="primaryModeNote" class="section-note">Learn what each item does, then practice matching and written recall.</p>
+        <div class="mode-grid">
+          <button class="mode-card" id="learnBtn">
+            <span class="emoji">📚</span><strong>Learn</strong>
+            <span>Click the cards and see the key function or defining trait.</span>
+          </button>
+          <button class="mode-card" id="playBtn">
+            <span class="emoji">🎮</span><strong>Level 1 — Match</strong>
+            <span>See the clue and match it to the correct item.</span>
+          </button>
+          <button class="mode-card" id="writeBtn">
+            <span class="emoji">✍️</span><strong>Level 2 — Write</strong>
+            <span>See the item and type the key words for what it does.</span>
+          </button>
+          <button class="mode-card" id="codonBtn" hidden>
+            <span class="emoji">🧬</span><strong>Genetic Code</strong>
+            <span>Learn and drill mRNA codons → amino acids.</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="vitaminDeficiencySection" class="practice-section" hidden>
+        <h3>⚠️ Vitamin deficiencies</h3>
+        <p class="section-note">A second vitamin track: learn what happens when each vitamin is missing, then drill the deficiency signs without relying on unique emoji clues.</p>
+        <div class="mode-grid">
+          <button class="mode-card" id="defLearnBtn">
+            <span class="emoji">📖</span><strong>Deficiencies — Learn</strong>
+            <span>Click each vitamin and learn its classic deficiency pattern.</span>
+          </button>
+          <button class="mode-card" id="defPlayBtn">
+            <span class="emoji">🎯</span><strong>Deficiencies — Level 1</strong>
+            <span>See a deficiency clue and match it to the vitamin.</span>
+          </button>
+          <button class="mode-card" id="defWriteBtn">
+            <span class="emoji">✍️</span><strong>Deficiencies — Level 2</strong>
+            <span>See the vitamin and type the key deficiency signs from memory.</span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -511,7 +553,7 @@
         <div class="stat"><small>Attempts</small><strong id="writeAttemptStat">0</strong></div>
         <div class="stat"><small>Mistakes</small><strong id="writeMistakeStat">0</strong></div>
       </div>
-      <div class="instruction">What are the key function / traits of this item?</div>
+      <div id="writeInstruction" class="instruction">What are the key function / traits of this item?</div>
       <div id="writePrompt" class="write-prompt"></div>
       <div class="write-box">
         <input id="writeInput" type="text" autocomplete="off" placeholder="Type key words here…" />
@@ -2202,6 +2244,85 @@
 };
 
 
+    // Separate vitamin-deficiency practice track.
+    // A generic warning icon is used for every item so the quiz cannot be solved by memorizing unique emojis.
+    const vitaminDeficiencyTopic = {
+      title: "Vitamin Deficiencies",
+      icon: "⚠️",
+      groups: {
+        water: "💧 Water-soluble deficiencies",
+        fat: "🧈 Fat-soluble deficiencies (ADEK)"
+      },
+      items: [
+        {
+          name: "B1", sub: "Thiamine", icon: "⚠️", group: "water",
+          clue: "Beriberi; Wernicke-Korsakoff; neuropathy or heart failure",
+          detail: "Thiamine deficiency can cause beriberi, with peripheral neuropathy and muscle weakness or cardiovascular failure and edema. Severe deficiency can also cause Wernicke-Korsakoff neurologic disease, especially in chronic alcohol misuse."
+        },
+        {
+          name: "B2", sub: "Riboflavin", icon: "⚠️", group: "water",
+          clue: "Angular cheilitis + glossitis + dermatitis",
+          detail: "Riboflavin deficiency (ariboflavinosis) classically causes cracks at the corners of the mouth, a sore or magenta tongue, and dermatitis."
+        },
+        {
+          name: "B3", sub: "Niacin", icon: "⚠️", group: "water",
+          clue: "Pellagra: dermatitis + diarrhea + dementia",
+          detail: "Niacin deficiency causes pellagra, remembered by the classic 3 Ds: dermatitis, diarrhea, and dementia; severe untreated disease may progress to death."
+        },
+        {
+          name: "B5", sub: "Pantothenic acid", icon: "⚠️", group: "water",
+          clue: "Very rare: fatigue + irritability + numbness or burning feet",
+          detail: "Pantothenic acid deficiency is very rare because B5 is widespread in foods. When severe, it can cause fatigue, irritability, gastrointestinal symptoms, and paresthesias such as numbness or burning feet."
+        },
+        {
+          name: "B6", sub: "Pyridoxine", icon: "⚠️", group: "water",
+          clue: "Dermatitis + anemia + neurologic symptoms",
+          detail: "Vitamin B6 deficiency can cause dermatitis, cheilosis or glossitis, anemia, and neurologic abnormalities such as irritability, confusion, neuropathy, or seizures in severe cases."
+        },
+        {
+          name: "B7", sub: "Biotin", icon: "⚠️", group: "water",
+          clue: "Rare: dermatitis + hair loss + neurologic symptoms",
+          detail: "Biotin deficiency is uncommon but can cause dermatitis, alopecia (hair loss), and neurologic symptoms such as lethargy, depression, hallucinations, or tingling."
+        },
+        {
+          name: "B9", sub: "Folate", icon: "⚠️", group: "water",
+          clue: "Megaloblastic anemia + fetal neural tube defects",
+          detail: "Folate deficiency impairs DNA synthesis, causing megaloblastic anemia. During pregnancy, inadequate folate raises the risk of fetal neural tube defects. Unlike B12 deficiency, folate deficiency does not typically cause the characteristic neurologic deficits of B12 deficiency."
+        },
+        {
+          name: "B12", sub: "Cobalamin", icon: "⚠️", group: "water",
+          clue: "Megaloblastic anemia + neurologic deficits",
+          detail: "Vitamin B12 deficiency causes megaloblastic anemia and can damage the nervous system, producing numbness, tingling, balance problems, or cognitive changes. The neurologic component helps distinguish it from folate deficiency."
+        },
+        {
+          name: "C", sub: "Ascorbic acid", icon: "⚠️", group: "water",
+          clue: "Scurvy: bleeding gums + bruising + poor wound healing",
+          detail: "Vitamin C deficiency causes scurvy because collagen synthesis is impaired. Classic signs include swollen or bleeding gums, easy bruising or petechiae, and poor wound healing."
+        },
+        {
+          name: "A", sub: "Vitamin A", icon: "⚠️", group: "fat",
+          clue: "Night blindness + xerophthalmia / dry eyes",
+          detail: "Vitamin A deficiency first commonly impairs dark adaptation, causing night blindness. More severe deficiency can cause xerophthalmia, drying and damage of the cornea and conjunctiva, and eventually blindness."
+        },
+        {
+          name: "D", sub: "Vitamin D", icon: "⚠️", group: "fat",
+          clue: "Rickets in children; osteomalacia in adults",
+          detail: "Vitamin D deficiency reduces calcium and phosphate mineralization of bone. It causes rickets with skeletal deformities in growing children and osteomalacia with weak, poorly mineralized bone in adults."
+        },
+        {
+          name: "E", sub: "Vitamin E", icon: "⚠️", group: "fat",
+          clue: "Hemolytic anemia + neurologic dysfunction",
+          detail: "Vitamin E deficiency is uncommon but can increase oxidative damage to cell membranes, causing hemolytic anemia and neurologic problems such as peripheral neuropathy or impaired coordination."
+        },
+        {
+          name: "K", sub: "Vitamin K", icon: "⚠️", group: "fat",
+          clue: "Easy bleeding / hemorrhage from impaired clotting",
+          detail: "Vitamin K deficiency reduces activation of several clotting factors, so blood coagulates poorly. The classic result is easy bruising, prolonged bleeding, or hemorrhage."
+        }
+      ]
+    };
+
+
     // Standard genetic code: mRNA codon (5′→3′) -> amino acid.
     const geneticCode = {
       UUU:"Phenylalanine", UUC:"Phenylalanine", UUA:"Leucine", UUG:"Leucine",
@@ -2235,6 +2356,7 @@
       "codonMenuScreen","codonLearnScreen","codonGameScreen","finishScreen"
     ];
     let currentTopicKey = null;
+    let practiceMode = "function"; // "function" or the separate vitamin "deficiency" track
     let quizOrder = [];
     let quizIndex = 0;
     let attempts = 0;
@@ -2286,13 +2408,24 @@
 
     function openTopic(key) {
       currentTopicKey = key;
+      practiceMode = "function";
       const topic = topics[key];
       $("topicTitle").textContent = `${topic.icon} ${topic.title}`;
       $("codonBtn").hidden = key !== "aminoAcids";
+      $("vitaminDeficiencySection").hidden = key !== "vitamins";
+      $("primaryModeHeading").textContent = key === "vitamins" ? "Functions & roles" : "Functions & defining traits";
+      $("primaryModeNote").textContent = key === "vitamins"
+        ? "First master what each vitamin does, then use the separate deficiency section below."
+        : "Learn what each item does, then practice matching and written recall.";
       showScreen("topicScreen");
     }
 
     function currentTopic() { return topics[currentTopicKey]; }
+    function practiceTopic() {
+      return currentTopicKey === "vitamins" && practiceMode === "deficiency"
+        ? vitaminDeficiencyTopic
+        : currentTopic();
+    }
 
     function createItemCard(item, className) {
       const card = document.createElement("div");
@@ -2307,8 +2440,8 @@
 
     // ---------- LEARN ----------
     function startLearn() {
-      const topic = currentTopic();
-      $("learnTitle").textContent = `📚 Learn ${topic.title}`;
+      const topic = practiceTopic();
+      $("learnTitle").textContent = practiceMode === "deficiency" ? `📖 Learn ${topic.title}` : `📚 Learn ${topic.title}`;
       const wrap = $("learnGroups");
       wrap.innerHTML = "";
 
@@ -2330,7 +2463,7 @@
         wrap.appendChild(grid);
       });
 
-      $("infoPanel").innerHTML = `<div class="big-emoji">👆</div><div><h3>Click any card</h3><p>Its quick clue and explanation will appear here.</p></div>`;
+      $("infoPanel").innerHTML = `<div class="big-emoji">👆</div><div><h3>Click any card</h3><p>${practiceMode === "deficiency" ? "Its classic deficiency clue and full explanation will appear here." : "Its quick clue and explanation will appear here."}</p></div>`;
       showScreen("learnScreen");
     }
 
@@ -2339,20 +2472,20 @@
         <div class="big-emoji">${item.icon || "🔹"}</div>
         <div>
           <h3>${item.name}${item.sub ? ` — ${item.sub}` : ""}</h3>
-          <p><strong>Quick clue:</strong> ${item.clue}<br><br>${item.detail}</p>
+          <p><strong>${practiceMode === "deficiency" ? "Deficiency signature" : "Quick clue"}:</strong> ${item.clue}<br><br>${item.detail}</p>
         </div>`;
     }
 
     // ---------- LEVEL 1: MATCH ----------
     function startGame() {
       finishMode = "level1";
-      const topic = currentTopic();
+      const topic = practiceTopic();
       quizOrder = shuffle(topic.items);
       quizIndex = 0;
       attempts = 0;
       mistakes = 0;
       locked = false;
-      $("gameTitle").textContent = `🎮 ${topic.title} — Level 1`;
+      $("gameTitle").textContent = `${practiceMode === "deficiency" ? "🎯" : "🎮"} ${topic.title} — Level 1`;
       buildAnswerGrid();
       showScreen("gameScreen");
       showQuestion();
@@ -2361,7 +2494,7 @@
     function buildAnswerGrid() {
       const grid = $("answerGrid");
       grid.innerHTML = "";
-      currentTopic().items.forEach(item => {
+      practiceTopic().items.forEach(item => {
         const card = createItemCard(item, "answer-card");
         card.dataset.name = item.name;
         card.addEventListener("dragover", event => { event.preventDefault(); if (!locked) card.classList.add("dragover"); });
@@ -2503,7 +2636,7 @@
 
     function startWriteGame() {
       finishMode = "level2";
-      const topic = currentTopic();
+      const topic = practiceTopic();
       writeOrder = shuffle(topic.items);
       writeIndex = 0;
       writeAttempts = 0;
@@ -2511,6 +2644,9 @@
       writeLocked = false;
       writeWrongStreak = 0;
       $("writeTitle").textContent = `✍️ ${topic.title} — Level 2`;
+      $("writeInstruction").textContent = practiceMode === "deficiency"
+        ? "What are the key deficiency signs when this vitamin is lacking?"
+        : "What are the key function / traits of this item?";
       showScreen("writeGameScreen");
       showWriteQuestion();
     }
@@ -2702,14 +2838,14 @@
           : `You finished all 64 codons with ${codonMistakes} mistake${codonMistakes === 1 ? "" : "s"}.`;
         $("reviewBtn").textContent = "📖 Review codons";
       } else if (mode === "level2") {
-        const topic = currentTopic();
+        const topic = practiceTopic();
         $("finishTitle").textContent = `✍️ ${topic.title} Level 2 complete!`;
         $("finishText").textContent = writeMistakes === 0
           ? `Perfect recall: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
           : `You recalled all ${topic.items.length} items with ${writeMistakes} mistake${writeMistakes === 1 ? "" : "s"}.`;
         $("reviewBtn").textContent = "📚 Review";
       } else {
-        const topic = currentTopic();
+        const topic = practiceTopic();
         $("finishTitle").textContent = `${topic.icon} ${topic.title} Level 1 complete!`;
         $("finishText").textContent = mistakes === 0
           ? `Perfect run: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
@@ -2741,9 +2877,12 @@
     $("learnBackBtn").addEventListener("click", () => showScreen("topicScreen"));
     $("gameBackBtn").addEventListener("click", () => showScreen("topicScreen"));
     $("writeBackBtn").addEventListener("click", () => showScreen("topicScreen"));
-    $("learnBtn").addEventListener("click", startLearn);
-    $("playBtn").addEventListener("click", startGame);
-    $("writeBtn").addEventListener("click", startWriteGame);
+    $("learnBtn").addEventListener("click", () => { practiceMode = "function"; startLearn(); });
+    $("playBtn").addEventListener("click", () => { practiceMode = "function"; startGame(); });
+    $("writeBtn").addEventListener("click", () => { practiceMode = "function"; startWriteGame(); });
+    $("defLearnBtn").addEventListener("click", () => { practiceMode = "deficiency"; startLearn(); });
+    $("defPlayBtn").addEventListener("click", () => { practiceMode = "deficiency"; startGame(); });
+    $("defWriteBtn").addEventListener("click", () => { practiceMode = "deficiency"; startWriteGame(); });
     $("restartBtn").addEventListener("click", startGame);
     $("writeRestartBtn").addEventListener("click", startWriteGame);
     $("writeSubmitBtn").addEventListener("click", submitWriteAnswer);
