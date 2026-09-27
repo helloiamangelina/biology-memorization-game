@@ -3,21 +3,66 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Biology Study Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Biology Memorization Game</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>Biology Study Game 🧬</h1>
+    <div class="container">
 
-    <p>Choose a topic:</p>
+        <h1>🧬 Biology Memorization Game</h1>
 
-    <button>Vitamins</button>
-    <button>Biomes</button>
-    <button>Hormones</button>
-    <button>Amino Acids</button>
+        <p class="subtitle">
+            Choose what you want to study!
+        </p>
+
+        <div class="topics">
+
+            <button onclick="chooseTopic('Vitamins')">
+                💊 Vitamins
+            </button>
+
+            <button onclick="chooseTopic('Biomes')">
+                🌎 Biomes
+            </button>
+
+            <button onclick="chooseTopic('Hormones')">
+                🧪 Hormones
+            </button>
+
+            <button onclick="chooseTopic('Amino Acids')">
+                🧬 Amino Acids
+            </button>
+
+            <button onclick="chooseTopic('Plant Cells')">
+                🌱 Plant Cells
+            </button>
+
+            <button onclick="chooseTopic('Plant Hormones')">
+                🌿 Plant Hormones
+            </button>
+
+            <button onclick="chooseTopic('Animal Phyla')">
+                🐙 Animal Phyla
+            </button>
+
+            <button onclick="chooseTopic('Fungi Phyla')">
+                🍄 Fungi Phyla
+            </button>
+
+            <button onclick="chooseTopic('Plant Phyla')">
+                🌳 Plant Phyla
+            </button>
+
+        </div>
+
+        <p id="message"></p>
+
+    </div>
 
     <script src="script.js"></script>
 

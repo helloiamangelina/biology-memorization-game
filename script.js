@@ -1,1 +1,6 @@
-console.log("Biology game loaded!");
+function chooseTopic(topic) {
+
+    document.getElementById("message").textContent =
+        "You chose " + topic + "!";
+
+}

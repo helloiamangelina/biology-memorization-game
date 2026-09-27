@@ -1,17 +1,60 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f3f6ff;
     text-align: center;
-    background-color: #f5f7ff;
+    margin: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 50px 20px;
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.topics {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+
+    gap: 20px;
 }
 
 button {
-    font-size: 20px;
-    padding: 15px 25px;
-    margin: 10px;
-    border-radius: 12px;
+    font-size: 18px;
+
+    padding: 25px 15px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background-color: white;
+
     cursor: pointer;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.1);
+
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+#message {
+    margin-top: 35px;
+    font-size: 22px;
+    font-weight: bold;
 }
