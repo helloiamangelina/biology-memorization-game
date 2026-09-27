@@ -318,12 +318,46 @@
     .answer-reveal {
       width: min(650px, 100%);
       min-height: 32px;
-      margin: 10px auto 0;
-      text-align: center;
-      color: var(--muted);
-      font-weight: 700;
-      line-height: 1.45;
+      margin: 12px auto 0;
+      text-align: left;
+      color: var(--text);
+      font-weight: 650;
+      line-height: 1.55;
     }
+    .answer-reveal .quick-answer {
+      background: #f4f6ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .answer-reveal .full-explanation {
+      background: white;
+      border: 1px solid #e1e5ef;
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 4px 12px rgba(38,49,82,.06);
+    }
+    .write-actions {
+      width: min(650px, 100%);
+      margin: 12px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .reveal-btn, .next-btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 850;
+      cursor: pointer;
+      box-shadow: 0 5px 14px rgba(38,49,82,.12);
+    }
+    .reveal-btn { background: #fff1c7; color: #6d4a00; }
+    .next-btn { background: linear-gradient(135deg, var(--primary), var(--primary2)); color: white; }
+    [hidden] { display: none !important; }
 
     /* Genetic-code section */
     .codon-note {
@@ -485,6 +519,10 @@
       </div>
       <div id="writeFeedback" class="feedback"></div>
       <div id="writeReveal" class="answer-reveal"></div>
+      <div class="write-actions">
+        <button id="writeRevealBtn" class="reveal-btn" hidden>👀 Reveal answer</button>
+        <button id="writeNextBtn" class="next-btn" hidden>Next →</button>
+      </div>
     </section>
 
     <section id="codonMenuScreen" class="screen" hidden>
@@ -2208,6 +2246,7 @@
     let writeAttempts = 0;
     let writeMistakes = 0;
     let writeLocked = false;
+    let writeWrongStreak = 0;
 
     let codonOrder = [];
     let codonIndex = 0;
@@ -2470,6 +2509,7 @@
       writeAttempts = 0;
       writeMistakes = 0;
       writeLocked = false;
+      writeWrongStreak = 0;
       $("writeTitle").textContent = `✍️ ${topic.title} — Level 2`;
       showScreen("writeGameScreen");
       showWriteQuestion();
@@ -2478,15 +2518,44 @@
     function showWriteQuestion() {
       if (writeIndex >= writeOrder.length) { finishGame("level2"); return; }
       writeLocked = false;
+      writeWrongStreak = 0;
       const item = writeOrder[writeIndex];
       $("writePrompt").innerHTML = `<div><div class="prompt-emoji">${item.icon || "🔹"}</div><div class="prompt-name">${item.name}</div>${item.sub ? `<div class="prompt-sub">${item.sub}</div>` : ""}</div>`;
       $("writeInput").value = "";
       $("writeInput").disabled = false;
+      $("writeSubmitBtn").disabled = false;
       $("writeFeedback").textContent = "";
       $("writeFeedback").className = "feedback";
-      $("writeReveal").textContent = "";
+      $("writeReveal").innerHTML = "";
+      $("writeRevealBtn").hidden = true;
+      $("writeNextBtn").hidden = true;
       updateWriteStats();
       setTimeout(() => $("writeInput").focus(), 50);
+    }
+
+    function fullWriteExplanation(item, heading = "Full explanation") {
+      return `
+        <div class="quick-answer"><strong>Key answer:</strong> ${item.clue}</div>
+        <div class="full-explanation"><strong>${heading}:</strong> ${item.detail}</div>
+      `;
+    }
+
+    function completeWriteQuestion(item, revealed = false) {
+      writeLocked = true;
+      $("writeInput").disabled = true;
+      $("writeSubmitBtn").disabled = true;
+      $("writeRevealBtn").hidden = true;
+      $("writeNextBtn").hidden = false;
+      $("writeReveal").innerHTML = fullWriteExplanation(item, "Full explanation");
+      if (revealed) {
+        $("writeFeedback").textContent = "👀 Answer revealed — read the explanation, then continue.";
+        $("writeFeedback").className = "feedback";
+      } else {
+        $("writeFeedback").textContent = "✅ Correct key idea! Read the full explanation below.";
+        $("writeFeedback").className = "feedback good";
+      }
+      writeIndex++;
+      updateWriteStats();
     }
 
     function submitWriteAnswer() {
@@ -2501,21 +2570,30 @@
       const item = writeOrder[writeIndex];
       const score = keywordScore(text, item);
       if (score.pass) {
-        writeLocked = true;
-        $("writeFeedback").textContent = "✅ Correct key idea!";
-        $("writeFeedback").className = "feedback good";
-        $("writeReveal").innerHTML = `<strong>Answer:</strong> ${item.clue}`;
-        $("writeInput").disabled = true;
-        writeIndex++;
-        updateWriteStats();
-        setTimeout(showWriteQuestion, 1050);
+        writeWrongStreak = 0;
+        completeWriteQuestion(item, false);
       } else {
         writeMistakes++;
+        writeWrongStreak++;
         $("writeFeedback").textContent = `❌ Not enough yet — you matched ${score.matched} key idea${score.matched === 1 ? "" : "s"}. Try again.`;
         $("writeFeedback").className = "feedback bad";
-        $("writeReveal").textContent = "Think of the shortest phrase you would put on a flashcard.";
+        $("writeReveal").textContent = writeWrongStreak >= 3
+          ? "Three misses on this item. You can keep trying or reveal the answer."
+          : "Think of the shortest phrase you would put on a flashcard.";
+        if (writeWrongStreak >= 3) $("writeRevealBtn").hidden = false;
         updateWriteStats();
       }
+    }
+
+    function revealWriteAnswer() {
+      if (writeLocked || writeIndex >= writeOrder.length || writeWrongStreak < 3) return;
+      const item = writeOrder[writeIndex];
+      completeWriteQuestion(item, true);
+    }
+
+    function nextWriteQuestion() {
+      if (!writeLocked) return;
+      showWriteQuestion();
     }
 
     function updateWriteStats() {
@@ -2669,6 +2747,8 @@
     $("restartBtn").addEventListener("click", startGame);
     $("writeRestartBtn").addEventListener("click", startWriteGame);
     $("writeSubmitBtn").addEventListener("click", submitWriteAnswer);
+    $("writeRevealBtn").addEventListener("click", revealWriteAnswer);
+    $("writeNextBtn").addEventListener("click", nextWriteQuestion);
     $("writeInput").addEventListener("keydown", e => { if (e.key === "Enter") submitWriteAnswer(); });
 
     $("codonBtn").addEventListener("click", openCodonMenu);
