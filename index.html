@@ -14,60 +14,135 @@
 
     <div class="container">
 
-        <h1>🧬 Biology Memorization Game</h1>
+        <!-- HOME SCREEN -->
+        <section id="home-screen" class="screen">
 
-        <p class="subtitle">
-            Choose what you want to study!
-        </p>
+            <h1>🧬 Biology Memorization Game</h1>
+            <p class="subtitle">Choose what you want to study!</p>
 
-        <div class="topics">
+            <div class="topics">
 
-            <button onclick="chooseTopic('Vitamins')">
-                💊 Vitamins
+                <button onclick="openTopic('vitamins')">💊 Vitamins</button>
+                <button onclick="comingSoon('Biomes')">🌎 Biomes</button>
+                <button onclick="comingSoon('Hormones')">🧪 Hormones</button>
+                <button onclick="comingSoon('Amino Acids')">🧬 Amino Acids</button>
+                <button onclick="comingSoon('Antibodies')">🛡️ Antibodies</button>
+                <button onclick="comingSoon('Plant Cells')">🌱 Plant Cells</button>
+                <button onclick="comingSoon('Plant Hormones')">🌿 Plant Hormones</button>
+                <button onclick="comingSoon('Animal Phyla')">🐙 Animal Phyla</button>
+                <button onclick="comingSoon('Protist Phyla')">🦠 Protist Phyla</button>
+                <button onclick="comingSoon('Fungi Phyla')">🍄 Fungi Phyla</button>
+                <button onclick="comingSoon('Plant Phyla')">🌳 Plant Phyla</button>
+
+            </div>
+
+            <p id="home-message"></p>
+
+        </section>
+
+
+        <!-- TOPIC MENU -->
+        <section id="topic-screen" class="screen hidden">
+
+            <button class="back-button" onclick="goHome()">← Home</button>
+
+            <h1 id="topic-title">Vitamins</h1>
+
+            <p class="subtitle">How do you want to study?</p>
+
+            <div class="mode-buttons">
+
+                <button onclick="startLearn()">
+                    📚 Learn
+                </button>
+
+                <button onclick="startGame()">
+                    🎮 Play
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- LEARN SCREEN -->
+        <section id="learn-screen" class="screen hidden">
+
+            <button class="back-button" onclick="openTopic('vitamins')">
+                ← Back
             </button>
 
-            <button onclick="chooseTopic('Biomes')">
-                🌎 Biomes
+            <h1>📚 Learn Vitamins</h1>
+
+            <p>
+                Click a vitamin to see what it does.
+            </p>
+
+            <div id="learn-grid" class="card-grid"></div>
+
+            <div id="learn-info" class="info-box">
+                Click a vitamin!
+            </div>
+
+        </section>
+
+
+        <!-- GAME SCREEN -->
+        <section id="game-screen" class="screen hidden">
+
+            <button class="back-button" onclick="openTopic('vitamins')">
+                ← Back
             </button>
 
-            <button onclick="chooseTopic('Hormones')">
-                🧪 Hormones
+            <h1>🎮 Vitamin Game</h1>
+
+            <div class="game-stats">
+                <span id="score">Correct: 0</span>
+                <span id="progress">0 / 13</span>
+            </div>
+
+            <p>
+                Drag the function onto the correct vitamin.
+            </p>
+
+            <div
+                id="function-card"
+                class="function-card"
+                draggable="true"
+            >
+            </div>
+
+            <p id="feedback"></p>
+
+            <div id="game-grid" class="card-grid"></div>
+
+        </section>
+
+
+        <!-- FINISH SCREEN -->
+        <section id="finish-screen" class="screen hidden">
+
+            <h1>🏆 PERFECT RUN!</h1>
+
+            <p class="big-text">
+                You finished all the vitamins!
+            </p>
+
+            <p id="final-score"></p>
+
+            <button onclick="startGame()">
+                🔁 Play Again
             </button>
 
-            <button onclick="chooseTopic('Amino Acids')">
-                🧬 Amino Acids
+            <button onclick="startLearn()">
+                📚 Review
             </button>
 
-            <button onclick="chooseTopic('Plant Cells')">
-                🌱 Plant Cells
+            <button onclick="goHome()">
+                🏠 Home
             </button>
 
-            <button onclick="chooseTopic('Plant Hormones')">
-                🌿 Plant Hormones
-            </button>
-
-            <button onclick="chooseTopic('Animal Phyla')">
-                🐙 Animal Phyla
-            </button>
-
-            <button onclick="chooseTopic('Fungi Phyla')">
-                🍄 Fungi Phyla
-            </button>
-
-            <button onclick="chooseTopic('Plant Phyla')">
-                🌳 Plant Phyla
-            </button>
-            <button onclick="chooseTopic('Antibodies')">
-    🛡️ Antibodies
-</button>
-
-<button onclick="chooseTopic('Protist Phyla')">
-    🦠 Protist Phyla
-</button>
-
-        </div>
-
-        <p id="message"></p>
+        </section>
 
     </div>
 
