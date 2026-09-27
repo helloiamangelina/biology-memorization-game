@@ -1,209 +1,791 @@
+/* ========================================
+   BASIC PAGE
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f6ff;
     margin: 0;
-    text-align: center;
-}
 
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 40px 20px;
-}
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-.hidden {
-    display: none;
-}
+    background:
+        linear-gradient(
+            135deg,
+            #eef2ff,
+            #f7fbff,
+            #f5f1ff
+        );
 
-h1 {
-    font-size: 42px;
-    margin-bottom: 10px;
-}
+    color: #1e2430;
 
-.subtitle {
-    font-size: 20px;
-    margin-bottom: 35px;
-}
-
-.topics,
-.mode-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 18px;
+    min-height: 100vh;
 }
 
 button {
-    font-size: 18px;
-    padding: 20px;
-
-    border: none;
-    border-radius: 15px;
-
-    background-color: white;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.12);
-
-    transition: 0.2s;
+    font-family: inherit;
 }
 
-button:hover {
-    transform: scale(1.05);
+.app {
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 40px 25px 70px;
 }
 
-.back-button {
+
+
+/* ========================================
+   SCREENS
+======================================== */
+
+.screen {
+    display: none;
+}
+
+.screen.active {
     display: block;
-
-    padding: 10px 18px;
-
-    margin-bottom: 20px;
-
-    font-size: 16px;
 }
 
 
-/* VITAMIN CARDS */
 
-.card-grid {
+/* ========================================
+   HOME / TITLES
+======================================== */
+
+.hero {
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+.hero-icon {
+    font-size: 60px;
+
+    margin-bottom: 5px;
+}
+
+.hero h1 {
+    font-size: 46px;
+
+    margin:
+        5px 0
+        12px;
+}
+
+.hero p {
+    font-size: 20px;
+
+    color: #606978;
+}
+
+
+
+/* ========================================
+   TOPIC CARDS
+======================================== */
+
+.topic-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit, minmax(130px, 1fr));
+        repeat(
+            auto-fit,
+            minmax(180px, 1fr)
+        );
 
-    gap: 15px;
-
-    margin-top: 30px;
+    gap: 18px;
 }
 
-.vitamin-card {
-    background-color: white;
+.topic-card {
+    min-height: 135px;
 
-    border: 3px solid transparent;
+    border: none;
 
-    border-radius: 15px;
+    border-radius: 22px;
 
-    padding: 20px 10px;
+    background: white;
 
-    min-height: 100px;
+    box-shadow:
+        0 7px 20px
+        rgba(40, 50, 80, 0.10);
+
+    cursor: pointer;
 
     display: flex;
+
     flex-direction: column;
 
     justify-content: center;
+
     align-items: center;
+
+    gap: 10px;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    transition:
+        transform 0.18s,
+        box-shadow 0.18s;
+}
+
+.topic-card:hover {
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 12px 25px
+        rgba(40, 50, 80, 0.16);
+}
+
+.topic-icon {
+    font-size: 38px;
+}
+
+
+
+/* ========================================
+   MESSAGES
+======================================== */
+
+.message {
+    text-align: center;
+
+    min-height: 30px;
+
+    margin-top: 28px;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    color: #606978;
+}
+
+
+
+/* ========================================
+   MODE MENU
+======================================== */
+
+.mode-grid {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 25px;
+}
+
+.mode-card {
+    min-height: 210px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background: white;
+
+    box-shadow:
+        0 8px 25px
+        rgba(40, 50, 80, 0.13);
+
+    cursor: pointer;
+
+    padding: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    transition:
+        transform 0.18s,
+        box-shadow 0.18s;
+}
+
+.mode-card:hover {
+    transform:
+        translateY(-6px);
+
+    box-shadow:
+        0 13px 30px
+        rgba(40, 50, 80, 0.18);
+}
+
+.mode-icon {
+    font-size: 55px;
+}
+
+.mode-card strong {
+    font-size: 26px;
+}
+
+.mode-card small {
+    max-width: 230px;
+
+    line-height: 1.5;
+
+    font-size: 15px;
+
+    color: #697181;
+}
+
+
+
+/* ========================================
+   BACK BUTTON
+======================================== */
+
+.back-button {
+    border: none;
+
+    background: white;
+
+    border-radius: 13px;
+
+    padding: 11px 18px;
+
+    font-size: 16px;
+
+    font-weight: bold;
 
     cursor: pointer;
 
     box-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.1);
+        0 4px 12px
+        rgba(40, 50, 80, 0.10);
 
-    transition: 0.2s;
+    transition: transform 0.15s;
+}
+
+.back-button:hover {
+    transform:
+        translateX(-3px);
+}
+
+
+
+/* ========================================
+   TOP BAR
+======================================== */
+
+.top-bar {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 25px;
+
+    margin-bottom: 30px;
+}
+
+.top-bar h2 {
+    font-size: 35px;
+
+    margin:
+        0 0
+        5px;
+}
+
+.top-bar p {
+    margin: 0;
+
+    color: #657080;
+
+    font-size: 17px;
+}
+
+
+
+/* ========================================
+   SECTION LABELS
+======================================== */
+
+.section-label {
+    margin-top: 35px;
+
+    margin-bottom: 15px;
+
+    font-size: 21px;
+}
+
+
+
+/* ========================================
+   VITAMIN GRID
+======================================== */
+
+.vitamin-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(115px, 1fr)
+        );
+
+    gap: 15px;
+}
+
+
+
+/* ========================================
+   VITAMIN CARDS
+======================================== */
+
+.vitamin-card {
+    min-height: 125px;
+
+    background: white;
+
+    border:
+        3px solid
+        transparent;
+
+    border-radius: 19px;
+
+    box-shadow:
+        0 5px 15px
+        rgba(40, 50, 80, 0.10);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 15px 10px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s,
+        border-color 0.15s,
+        background 0.15s;
 }
 
 .vitamin-card:hover {
-    transform: scale(1.05);
+    transform:
+        translateY(-4px);
 }
 
 .vitamin-icon {
-    font-size: 35px;
-    margin-bottom: 8px;
+    font-size: 37px;
 }
 
 .vitamin-name {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-
-/* LEARN MODE */
-
-.info-box {
-    margin: 35px auto;
-
-    max-width: 600px;
-
-    padding: 25px;
-
-    background-color: white;
-
-    border-radius: 15px;
-
     font-size: 22px;
 
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+.vitamin-full-name {
+    font-size: 12px;
+
+    color: #78808d;
 }
 
 
-/* GAME */
+
+/* ========================================
+   LEARN INFO BOX
+======================================== */
+
+.learn-info {
+    max-width: 720px;
+
+    margin:
+        40px auto
+        20px;
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 27px;
+
+    box-shadow:
+        0 7px 22px
+        rgba(40, 50, 80, 0.12);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    font-size: 19px;
+}
+
+.learn-info-icon {
+    font-size: 45px;
+}
+
+.learn-info strong {
+    font-size: 23px;
+}
+
+.learn-info p {
+    margin-bottom: 0;
+
+    line-height: 1.5;
+
+    color: #596373;
+}
+
+
+
+/* ========================================
+   GAME STATS
+======================================== */
+
+.stats {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.stat-box {
+    min-width: 140px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 13px 20px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(40, 50, 80, 0.09);
+
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+
+    color: #6e7785;
+
+    font-size: 13px;
+
+    margin-bottom: 4px;
+}
+
+.stat-box strong {
+    font-size: 20px;
+}
+
+
+
+/* ========================================
+   QUESTION
+======================================== */
+
+.question-label {
+    text-align: center;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    color: #657080;
+
+    margin-bottom: 10px;
+}
 
 .function-card {
-    max-width: 500px;
+    max-width: 630px;
 
-    margin: 30px auto;
+    margin:
+        0 auto
+        15px;
+
+    min-height: 115px;
 
     padding: 25px;
 
-    background-color: #fff7c7;
+    display: flex;
 
-    border: 3px solid #e8d248;
+    justify-content: center;
 
-    border-radius: 15px;
+    align-items: center;
 
-    font-size: 24px;
+    text-align: center;
+
+    border-radius: 22px;
+
+    border:
+        3px solid
+        #edcf4e;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff8ca,
+            #fff1a5
+        );
+
+    box-shadow:
+        0 8px 20px
+        rgba(100, 85, 20, 0.15);
+
+    font-size: 23px;
 
     font-weight: bold;
+
+    line-height: 1.4;
 
     cursor: grab;
 
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.15);
+    user-select: none;
 }
 
 .function-card:active {
     cursor: grabbing;
 }
 
-.game-stats {
+
+
+/* ========================================
+   GAME FEEDBACK
+======================================== */
+
+.feedback {
+    height: 40px;
+
+    margin-bottom: 10px;
+
     display: flex;
 
     justify-content: center;
 
-    gap: 40px;
+    align-items: center;
 
-    font-size: 18px;
-
-    font-weight: bold;
-
-    margin: 20px;
-}
-
-.correct {
-    border-color: #32a852;
-    background-color: #dbffe4;
-}
-
-.wrong {
-    border-color: #e34040;
-    background-color: #ffe0e0;
-}
-
-#feedback {
-    min-height: 30px;
-
-    font-size: 22px;
-
-    font-weight: bold;
-}
-
-.big-text {
-    font-size: 25px;
-}
-
-#home-message {
     font-size: 20px;
+
     font-weight: bold;
+}
+
+.correct-message {
+    color: #13883c;
+}
+
+.wrong-message {
+    color: #c53434;
+}
+
+
+
+/* ========================================
+   GAME TARGET STATES
+======================================== */
+
+.game-grid
+.vitamin-card {
+    cursor: default;
+}
+
+.drop-hover {
+    border-color: #627bf5;
+
+    background: #eef1ff;
+
+    transform: scale(1.04);
+}
+
+.correct-card {
+    border-color: #2cac59;
+
+    background: #dcffe7;
+}
+
+.wrong-card {
+    border-color: #e44b4b;
+
+    background: #ffe4e4;
+
+    animation: shake 0.25s;
+}
+
+@keyframes shake {
+
+    0% {
+        transform:
+            translateX(0);
+    }
+
+    25% {
+        transform:
+            translateX(-6px);
+    }
+
+    50% {
+        transform:
+            translateX(6px);
+    }
+
+    75% {
+        transform:
+            translateX(-4px);
+    }
+
+    100% {
+        transform:
+            translateX(0);
+    }
+
+}
+
+
+
+/* ========================================
+   FINISH SCREEN
+======================================== */
+
+.finish-box {
+    max-width: 650px;
+
+    margin: 70px auto;
+
+    background: white;
+
+    border-radius: 30px;
+
+    padding: 50px 35px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 35px
+        rgba(40, 50, 80, 0.14);
+}
+
+.trophy {
+    font-size: 75px;
+}
+
+.finish-box h1 {
+    font-size: 38px;
+
+    margin:
+        10px 0
+        15px;
+}
+
+.finish-box p {
+    font-size: 21px;
+
+    line-height: 1.5;
+
+    color: #596373;
+}
+
+.finish-buttons {
     margin-top: 30px;
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+.primary-button,
+.secondary-button {
+    border: none;
+
+    border-radius: 14px;
+
+    padding: 14px 22px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.primary-button {
+    background: #536df0;
+
+    color: white;
+}
+
+.secondary-button {
+    background: #edf0f5;
+
+    color: #262d38;
+}
+
+
+
+/* ========================================
+   SMALL SCREENS
+======================================== */
+
+@media
+(max-width: 650px) {
+
+    .app {
+        padding:
+            25px 15px
+            50px;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .mode-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .top-bar {
+        flex-direction:
+            column;
+    }
+
+    .vitamin-grid {
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+    }
+
+    .function-card {
+        font-size: 19px;
+    }
+
 }

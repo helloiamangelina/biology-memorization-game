@@ -1,318 +1,590 @@
-// ==========================
+// ==========================================
 // VITAMIN DATA
-// ==========================
+// ==========================================
 
 const vitamins = [
 
     {
         name: "B1",
         fullName: "Thiamine",
-        function: "Carbohydrate metabolism and nerve function",
-        icon: "🍞"
+        function:
+            "Helps convert carbohydrates into energy and supports nerve function.",
+        shortFunction:
+            "Carbohydrate metabolism + nerves",
+        icon: "🍞",
+        type: "water"
     },
 
     {
         name: "B2",
         fullName: "Riboflavin",
-        function: "Helps form FAD and FMN for energy metabolism",
-        icon: "⚡"
+        function:
+            "Helps form FAD and FMN, which are used in energy metabolism.",
+        shortFunction:
+            "FAD + FMN",
+        icon: "⚡",
+        type: "water"
     },
 
     {
         name: "B3",
         fullName: "Niacin",
-        function: "Helps form NAD and NADP for energy metabolism",
-        icon: "🔋"
+        function:
+            "Helps form NAD and NADP, important molecules in energy metabolism.",
+        shortFunction:
+            "NAD + NADP",
+        icon: "🔋",
+        type: "water"
     },
 
     {
         name: "B5",
         fullName: "Pantothenic Acid",
-        function: "Part of coenzyme A (CoA)",
-        icon: "⚙️"
+        function:
+            "Forms part of coenzyme A, which is important in metabolism.",
+        shortFunction:
+            "Coenzyme A (CoA)",
+        icon: "⚙️",
+        type: "water"
     },
 
     {
         name: "B6",
         fullName: "Pyridoxine",
-        function: "Amino acid metabolism",
-        icon: "🧬"
+        function:
+            "Important for amino acid metabolism.",
+        shortFunction:
+            "Amino acid metabolism",
+        icon: "🧬",
+        type: "water"
     },
 
     {
         name: "B7",
         fullName: "Biotin",
-        function: "Helps enzymes perform carboxylation reactions",
-        icon: "➕"
+        function:
+            "Helps enzymes carry out carboxylation reactions.",
+        shortFunction:
+            "Carboxylation",
+        icon: "➕",
+        type: "water"
     },
 
     {
         name: "B9",
         fullName: "Folate",
-        function: "DNA synthesis and red blood cell production",
-        icon: "🩸"
+        function:
+            "Important for DNA synthesis and red blood cell production.",
+        shortFunction:
+            "DNA synthesis + red blood cells",
+        icon: "🩸",
+        type: "water"
     },
 
     {
         name: "B12",
         fullName: "Cobalamin",
-        function: "DNA synthesis, red blood cells, and nerve function",
-        icon: "🧠"
+        function:
+            "Important for DNA synthesis, red blood cells, and nerve function.",
+        shortFunction:
+            "DNA + red blood cells + nerves",
+        icon: "🧠",
+        type: "water"
     },
 
     {
         name: "C",
         fullName: "Ascorbic Acid",
-        function: "Collagen production and antioxidant activity",
-        icon: "🍊"
+        function:
+            "Needed for collagen production and also acts as an antioxidant.",
+        shortFunction:
+            "Collagen + antioxidant",
+        icon: "🍊",
+        type: "water"
     },
 
     {
         name: "A",
         fullName: "Vitamin A",
-        function: "Vision and healthy epithelial tissues",
-        icon: "👁️"
+        function:
+            "Important for vision and healthy epithelial tissues.",
+        shortFunction:
+            "Vision",
+        icon: "👁️",
+        type: "fat"
     },
 
     {
         name: "D",
         fullName: "Vitamin D",
-        function: "Calcium absorption and bone health",
-        icon: "🦴"
+        function:
+            "Helps the body absorb calcium and supports healthy bones.",
+        shortFunction:
+            "Calcium absorption + bones",
+        icon: "🦴",
+        type: "fat"
     },
 
     {
         name: "E",
         fullName: "Vitamin E",
-        function: "Antioxidant that protects cell membranes",
-        icon: "🛡️"
+        function:
+            "Acts as an antioxidant and helps protect cell membranes.",
+        shortFunction:
+            "Antioxidant",
+        icon: "🛡️",
+        type: "fat"
     },
 
     {
         name: "K",
         fullName: "Vitamin K",
-        function: "Blood clotting",
-        icon: "🩹"
+        function:
+            "Needed for normal blood clotting.",
+        shortFunction:
+            "Blood clotting",
+        icon: "🩹",
+        type: "fat"
     }
 
 ];
 
 
-// ==========================
+
+// ==========================================
 // GAME VARIABLES
-// ==========================
+// ==========================================
 
 let questions = [];
 
-let currentQuestion = 0;
+let currentQuestionIndex = 0;
 
-let correctCount = 0;
+let attempts = 0;
 
-let totalAttempts = 0;
+let gameLocked = false;
 
 
-// ==========================
+
+// ==========================================
 // SCREEN CONTROL
-// ==========================
+// ==========================================
 
-function showScreen(screenId) {
+function showScreen(id) {
 
     const screens =
-        document.querySelectorAll(".screen");
+        document.querySelectorAll(
+            ".screen"
+        );
 
-    screens.forEach(screen => {
-        screen.classList.add("hidden");
-    });
+    screens.forEach(
+        function(screen) {
+
+            screen.classList.remove(
+                "active"
+            );
+
+        }
+    );
 
     document
-        .getElementById(screenId)
-        .classList.remove("hidden");
+        .getElementById(id)
+        .classList.add(
+            "active"
+        );
+
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
+
 
 
 function goHome() {
 
-    showScreen("home-screen");
+    document
+        .getElementById(
+            "home-message"
+        )
+        .textContent = "";
+
+    showScreen(
+        "home-screen"
+    );
 
 }
 
 
-function openTopic(topic) {
 
-    if (topic === "vitamins") {
+function openVitamins() {
 
-        document.getElementById(
-            "topic-title"
-        ).textContent = "💊 Vitamins";
-
-        showScreen("topic-screen");
-
-    }
+    showScreen(
+        "vitamin-menu-screen"
+    );
 
 }
+
 
 
 function comingSoon(topic) {
 
-    document.getElementById(
-        "home-message"
-    ).textContent =
-        topic + " game coming next!";
+    document
+        .getElementById(
+            "home-message"
+        )
+        .textContent =
+        topic +
+        " will be added after we finish Vitamins!";
 
 }
 
 
-// ==========================
-// LEARN MODE
-// ==========================
 
-function startLearn() {
+// ==========================================
+// CREATE A VITAMIN CARD
+// ==========================================
 
-    showScreen("learn-screen");
-
-    const grid =
-        document.getElementById("learn-grid");
-
-    grid.innerHTML = "";
-
-    vitamins.forEach(vitamin => {
-
-        const card =
-            createVitaminCard(vitamin);
-
-        card.onclick = function () {
-
-            document.getElementById(
-                "learn-info"
-            ).innerHTML =
-
-                "<strong>" +
-                vitamin.name +
-                " — " +
-                vitamin.fullName +
-                "</strong><br><br>" +
-                vitamin.function;
-
-        };
-
-        grid.appendChild(card);
-
-    });
-
-}
-
-
-// ==========================
-// CREATE VITAMIN CARD
-// ==========================
-
-function createVitaminCard(vitamin) {
+function createVitaminCard(
+    vitamin,
+    gameMode = false
+) {
 
     const card =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     card.className =
         "vitamin-card";
 
+
     card.innerHTML = `
 
         <div class="vitamin-icon">
+
             ${vitamin.icon}
+
         </div>
 
         <div class="vitamin-name">
+
             ${vitamin.name}
+
+        </div>
+
+        <div class="vitamin-full-name">
+
+            ${vitamin.fullName}
+
         </div>
 
     `;
 
-    return card;
-
-}
 
 
-// ==========================
-// START GAME
-// ==========================
+    if (gameMode) {
 
-function startGame() {
-
-    showScreen("game-screen");
-
-    questions =
-        shuffleArray([...vitamins]);
-
-    currentQuestion = 0;
-
-    correctCount = 0;
-
-    totalAttempts = 0;
-
-    createGameBoard();
-
-    showQuestion();
-
-}
-
-
-// ==========================
-// CREATE GAME BOARD
-// ==========================
-
-function createGameBoard() {
-
-    const grid =
-        document.getElementById("game-grid");
-
-    grid.innerHTML = "";
-
-    vitamins.forEach(vitamin => {
-
-        const card =
-            createVitaminCard(vitamin);
-
-        card.dataset.vitamin =
+        card.dataset.answer =
             vitamin.name;
 
         card.addEventListener(
             "dragover",
-            function (event) {
+            function(event) {
 
                 event.preventDefault();
+
+                if (
+                    !gameLocked
+                ) {
+
+                    card.classList.add(
+                        "drop-hover"
+                    );
+
+                }
 
             }
         );
 
+
+        card.addEventListener(
+            "dragleave",
+            function() {
+
+                card.classList.remove(
+                    "drop-hover"
+                );
+
+            }
+        );
+
+
         card.addEventListener(
             "drop",
-            function (event) {
+            function(event) {
 
                 event.preventDefault();
 
+                card.classList.remove(
+                    "drop-hover"
+                );
+
                 checkAnswer(
-                    vitamin.name,
+                    vitamin,
                     card
                 );
 
             }
         );
 
-        grid.appendChild(card);
+    }
 
-    });
+
+    return card;
 
 }
 
 
-// ==========================
+
+// ==========================================
+// LEARN MODE
+// ==========================================
+
+function startLearn() {
+
+    showScreen(
+        "learn-screen"
+    );
+
+
+    const waterGrid =
+        document.getElementById(
+            "water-vitamin-grid"
+        );
+
+
+    const fatGrid =
+        document.getElementById(
+            "fat-vitamin-grid"
+        );
+
+
+    waterGrid.innerHTML = "";
+
+    fatGrid.innerHTML = "";
+
+
+
+    vitamins.forEach(
+        function(vitamin) {
+
+            const card =
+                createVitaminCard(
+                    vitamin
+                );
+
+
+            card.addEventListener(
+                "click",
+                function() {
+
+                    showVitaminInfo(
+                        vitamin
+                    );
+
+                }
+            );
+
+
+            if (
+                vitamin.type
+                ===
+                "water"
+            ) {
+
+                waterGrid.appendChild(
+                    card
+                );
+
+            }
+
+            else {
+
+                fatGrid.appendChild(
+                    card
+                );
+
+            }
+
+        }
+    );
+
+
+    document
+        .getElementById(
+            "learn-info"
+        )
+        .innerHTML = `
+
+        <div class="learn-info-icon">
+            👆
+        </div>
+
+        <div>
+
+            <strong>
+                Click any vitamin above.
+            </strong>
+
+            <p>
+                Its name and function
+                will appear here.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+
+function showVitaminInfo(
+    vitamin
+) {
+
+    const info =
+        document.getElementById(
+            "learn-info"
+        );
+
+
+    info.innerHTML = `
+
+        <div class="learn-info-icon">
+
+            ${vitamin.icon}
+
+        </div>
+
+        <div>
+
+            <strong>
+
+                Vitamin
+                ${vitamin.name}
+                —
+                ${vitamin.fullName}
+
+            </strong>
+
+            <p>
+
+                ${vitamin.function}
+
+            </p>
+
+            <p>
+
+                <strong>
+                    Quick memory:
+                </strong>
+
+                ${vitamin.shortFunction}
+
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+
+// ==========================================
+// START GAME
+// ==========================================
+
+function startGame() {
+
+    questions =
+        shuffle(
+            [...vitamins]
+        );
+
+
+    currentQuestionIndex = 0;
+
+    attempts = 0;
+
+    gameLocked = false;
+
+
+    showScreen(
+        "game-screen"
+    );
+
+
+    buildGameBoard();
+
+
+    showQuestion();
+
+}
+
+
+
+// ==========================================
+// GAME BOARD
+// ==========================================
+
+function buildGameBoard() {
+
+    const grid =
+        document.getElementById(
+            "game-grid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    vitamins.forEach(
+        function(vitamin) {
+
+            const card =
+                createVitaminCard(
+                    vitamin,
+                    true
+                );
+
+
+            grid.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+
+// ==========================================
 // SHOW QUESTION
-// ==========================
+// ==========================================
 
 function showQuestion() {
 
     if (
-        currentQuestion
-        >= questions.length
+        currentQuestionIndex
+        >=
+        questions.length
     ) {
 
         finishGame();
@@ -321,114 +593,197 @@ function showQuestion() {
 
     }
 
+
+    gameLocked = false;
+
+
+    clearCardStates();
+
+
     const question =
-        questions[currentQuestion];
+        questions[
+            currentQuestionIndex
+        ];
 
-    document.getElementById(
-        "function-card"
-    ).textContent =
-        question.function;
 
-    document.getElementById(
-        "feedback"
-    ).textContent = "";
+    const functionCard =
+        document.getElementById(
+            "function-card"
+        );
+
+
+    functionCard.textContent =
+        question.shortFunction;
+
+
+    document
+        .getElementById(
+            "feedback"
+        )
+        .textContent = "";
+
+
+    document
+        .getElementById(
+            "feedback"
+        )
+        .className =
+        "feedback";
+
 
     updateStats();
 
 }
 
 
-// ==========================
-// DRAG FUNCTION
-// ==========================
+
+// ==========================================
+// DRAGGING
+// ==========================================
 
 const functionCard =
     document.getElementById(
         "function-card"
     );
 
+
 functionCard.addEventListener(
     "dragstart",
-    function (event) {
+    function(event) {
 
-        event.dataTransfer.setData(
-            "text/plain",
-            "function"
-        );
+        if (
+            gameLocked
+        ) {
+
+            event.preventDefault();
+
+            return;
+
+        }
+
+
+        event.dataTransfer
+            .setData(
+                "text/plain",
+                "vitamin-function"
+            );
+
+
+        event.dataTransfer
+            .effectAllowed =
+            "move";
 
     }
 );
 
 
-// ==========================
+
+// ==========================================
 // CHECK ANSWER
-// ==========================
+// ==========================================
 
 function checkAnswer(
     selectedVitamin,
-    card
+    selectedCard
 ) {
 
-    totalAttempts++;
-
-    const correctVitamin =
-        questions[currentQuestion].name;
-
     if (
-        selectedVitamin
-        === correctVitamin
+        gameLocked
     ) {
 
-        card.classList.add(
-            "correct"
-        );
+        return;
 
-        document.getElementById(
-            "feedback"
-        ).textContent =
+    }
+
+
+    attempts++;
+
+
+    const correctVitamin =
+        questions[
+            currentQuestionIndex
+        ];
+
+
+
+    if (
+        selectedVitamin.name
+        ===
+        correctVitamin.name
+    ) {
+
+        gameLocked = true;
+
+
+        selectedCard
+            .classList.add(
+                "correct-card"
+            );
+
+
+        const feedback =
+            document.getElementById(
+                "feedback"
+            );
+
+
+        feedback.textContent =
             "✅ Correct!";
 
-        correctCount++;
 
-        currentQuestion++;
+        feedback.className =
+            "feedback correct-message";
+
+
+        currentQuestionIndex++;
+
 
         updateStats();
 
-        setTimeout(
-            function () {
 
-                card.classList.remove(
-                    "correct"
-                );
+        setTimeout(
+            function() {
 
                 showQuestion();
 
             },
-            700
+            800
         );
 
     }
 
     else {
 
-        card.classList.add(
-            "wrong"
-        );
+        selectedCard
+            .classList.add(
+                "wrong-card"
+            );
 
-        document.getElementById(
-            "feedback"
-        ).textContent =
+
+        const feedback =
+            document.getElementById(
+                "feedback"
+            );
+
+
+        feedback.textContent =
             "❌ Wrong — keep trying!";
 
-        setTimeout(
-            function () {
 
-                card.classList.remove(
-                    "wrong"
-                );
+        feedback.className =
+            "feedback wrong-message";
+
+
+        setTimeout(
+            function() {
+
+                selectedCard
+                    .classList.remove(
+                        "wrong-card"
+                    );
 
             },
-            500
+            450
         );
 
     }
@@ -436,31 +791,68 @@ function checkAnswer(
 }
 
 
-// ==========================
-// UPDATE SCORE
-// ==========================
 
-function updateStats() {
+// ==========================================
+// CLEAR CARD COLORS
+// ==========================================
 
-    document.getElementById(
-        "score"
-    ).textContent =
-        "Correct: " +
-        correctCount;
+function clearCardStates() {
 
-    document.getElementById(
-        "progress"
-    ).textContent =
-        currentQuestion +
-        " / " +
-        questions.length;
+    const cards =
+        document.querySelectorAll(
+            "#game-grid .vitamin-card"
+        );
+
+
+    cards.forEach(
+        function(card) {
+
+            card.classList.remove(
+                "correct-card",
+                "wrong-card",
+                "drop-hover"
+            );
+
+        }
+    );
 
 }
 
 
-// ==========================
+
+// ==========================================
+// UPDATE STATS
+// ==========================================
+
+function updateStats() {
+
+    document
+        .getElementById(
+            "progress"
+        )
+        .textContent =
+
+        currentQuestionIndex
+        +
+        " / "
+        +
+        questions.length;
+
+
+    document
+        .getElementById(
+            "attempts"
+        )
+        .textContent =
+        attempts;
+
+}
+
+
+
+// ==========================================
 // FINISH GAME
-// ==========================
+// ==========================================
 
 function finishGame() {
 
@@ -468,33 +860,76 @@ function finishGame() {
         "finish-screen"
     );
 
-    const accuracy =
-        Math.round(
+
+    const perfectAttempts =
+        vitamins.length;
+
+
+    let message = "";
+
+
+    if (
+        attempts
+        ===
+        perfectAttempts
+    ) {
+
+        message =
+
+            "PERFECT! 🎉 You got every vitamin correct on the first try.";
+
+    }
+
+    else {
+
+        const extraAttempts =
+            attempts
+            -
+            perfectAttempts;
+
+
+        message =
+
+            "You matched all "
+            +
+            vitamins.length
+            +
+            " vitamins! You made "
+            +
+            extraAttempts
+            +
+            " extra attempt"
+            +
             (
-                correctCount /
-                totalAttempts
+                extraAttempts
+                === 1
+                ?
+                ""
+                :
+                "s"
             )
-            * 100
-        );
+            +
+            ".";
 
-    document.getElementById(
-        "final-score"
-    ).textContent =
+    }
 
-        "Accuracy: " +
-        accuracy +
-        "% — " +
-        totalAttempts +
-        " total attempts.";
+
+    document
+        .getElementById(
+            "final-results"
+        )
+        .textContent =
+        message;
 
 }
 
 
-// ==========================
-// SHUFFLE QUESTIONS
-// ==========================
 
-function shuffleArray(array) {
+// ==========================================
+// SHUFFLE
+// ==========================================
+
+function shuffle(array) {
 
     for (
         let i =
@@ -508,19 +943,24 @@ function shuffleArray(array) {
         const j =
             Math.floor(
                 Math.random()
-                * (i + 1)
+                *
+                (i + 1)
             );
 
-        [
-            array[i],
-            array[j]
-        ] =
-        [
-            array[j],
-            array[i]
-        ];
+
+        const temp =
+            array[i];
+
+
+        array[i] =
+            array[j];
+
+
+        array[j] =
+            temp;
 
     }
+
 
     return array;
 
