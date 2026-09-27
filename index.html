@@ -107,7 +107,7 @@
       width: min(720px, 100%);
       margin: 46px auto 0;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 22px;
     }
 
@@ -268,7 +268,127 @@
       .item-sub { display: none; }
       .info-panel { grid-template-columns: 1fr; text-align: center; }
     }
-  </style>
+  
+
+    /* Level 2 writing game */
+    .write-prompt {
+      width: min(650px, 100%);
+      margin: 14px auto 16px;
+      min-height: 118px;
+      background: white;
+      border: 3px solid #9aa7f7;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+    .write-prompt .prompt-emoji { font-size: 42px; }
+    .write-prompt .prompt-name { font-size: 27px; font-weight: 900; margin-top: 6px; }
+    .write-prompt .prompt-sub { color: var(--muted); margin-top: 3px; }
+    .write-box {
+      width: min(650px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+    .write-box input {
+      width: 100%;
+      border: 2px solid #cfd5e5;
+      border-radius: 14px;
+      padding: 15px 16px;
+      font: inherit;
+      font-size: 18px;
+      outline: none;
+      background: white;
+    }
+    .write-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(90,103,216,.12); }
+    .submit-btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: white;
+      font-weight: 850;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(90,103,216,.22);
+    }
+    .answer-reveal {
+      width: min(650px, 100%);
+      min-height: 32px;
+      margin: 10px auto 0;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    /* Genetic-code section */
+    .codon-note {
+      width: min(850px, 100%);
+      margin: 0 auto 24px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(38,49,82,.09);
+      padding: 18px 20px;
+      line-height: 1.55;
+      color: #4f5a6a;
+    }
+    .codon-table {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 13px;
+    }
+    .codon-row {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 16px rgba(38,49,82,.09);
+      padding: 14px;
+    }
+    .codon-aa { font-weight: 900; font-size: 17px; margin-bottom: 7px; }
+    .codon-list { color: #536070; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-weight: 800; line-height: 1.45; }
+    .codon-question {
+      width: min(500px, 100%);
+      margin: 16px auto;
+      text-align: center;
+      background: linear-gradient(135deg, #e9f9ff, #e9ecff);
+      border: 3px solid #7e91f4;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .codon-question small { display:block; color:var(--muted); margin-bottom:7px; font-weight:750; }
+    .codon-sequence { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 34px; font-weight: 950; letter-spacing: 3px; }
+    .codon-answer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 12px;
+    }
+    .codon-answer {
+      border: 3px solid transparent;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 5px 16px rgba(38,49,82,.09);
+      padding: 13px 8px;
+      min-height: 76px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 850;
+      transition: .14s ease;
+    }
+    .codon-answer:hover { transform: translateY(-2px); }
+    .codon-answer.correct { border-color: var(--good); background: #e2f9ea; }
+    .codon-answer.wrong { border-color: var(--bad); background: #ffe8e8; }
+    .mode-card[hidden] { display:none !important; }
+
+    @media (max-width: 700px) {
+      .write-box { grid-template-columns: 1fr; }
+      .codon-answer-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .codon-answer { font-size: 13px; }
+    }
+</style>
 </head>
 <body>
   <main class="app">
@@ -276,7 +396,7 @@
       <div class="hero">
         <div class="hero-emoji">🧬</div>
         <h1>Biology Memorization Game</h1>
-        <p>Pick a topic, learn the cards, then spam the game until you know everything.</p>
+        <p>Learn it once, then spam Level 1 and Level 2 until it is automatic.</p>
       </div>
       <div id="topicGrid" class="topic-grid"></div>
     </section>
@@ -286,20 +406,26 @@
         <button class="nav-btn" id="topicHomeBtn">← Home</button>
         <div class="topic-heading">
           <h2 id="topicTitle"></h2>
-          <p>Choose a mode.</p>
+          <p>Choose how you want to practice.</p>
         </div>
         <div style="width:86px"></div>
       </div>
       <div class="mode-grid">
         <button class="mode-card" id="learnBtn">
-          <span class="emoji">📚</span>
-          <strong>Learn</strong>
-          <span>Click every item to see its function or defining trait.</span>
+          <span class="emoji">📚</span><strong>Learn</strong>
+          <span>Click the cards and see the key function or defining trait.</span>
         </button>
         <button class="mode-card" id="playBtn">
-          <span class="emoji">🎮</span>
-          <strong>Play</strong>
-          <span>Drag each clue to the correct answer until you get it right.</span>
+          <span class="emoji">🎮</span><strong>Level 1 — Match</strong>
+          <span>See the clue and match it to the correct item.</span>
+        </button>
+        <button class="mode-card" id="writeBtn">
+          <span class="emoji">✍️</span><strong>Level 2 — Write</strong>
+          <span>See the item and type the key words for what it does.</span>
+        </button>
+        <button class="mode-card" id="codonBtn" hidden>
+          <span class="emoji">🧬</span><strong>Genetic Code</strong>
+          <span>Learn and drill mRNA codons → amino acids.</span>
         </button>
       </div>
     </section>
@@ -309,7 +435,7 @@
         <button class="nav-btn" id="learnBackBtn">← Back</button>
         <div class="topic-heading">
           <h2 id="learnTitle"></h2>
-          <p>Click a card. Learn it once. Then go straight to the game.</p>
+          <p>Click a card. Learn it once. Then go straight to the games.</p>
         </div>
         <div style="width:86px"></div>
       </div>
@@ -322,21 +448,85 @@
         <button class="nav-btn" id="gameBackBtn">← Back</button>
         <div class="topic-heading">
           <h2 id="gameTitle"></h2>
-          <p>Drag the clue to an answer. Wrong guesses stay in play.</p>
+          <p>Level 1: match the clue to the correct answer.</p>
         </div>
         <button class="nav-btn" id="restartBtn">↻ Restart</button>
       </div>
-
       <div class="stats">
         <div class="stat"><small>Progress</small><strong id="progressStat">0 / 0</strong></div>
         <div class="stat"><small>Attempts</small><strong id="attemptStat">0</strong></div>
         <div class="stat"><small>Mistakes</small><strong id="mistakeStat">0</strong></div>
       </div>
-
-      <div class="instruction">Drag this clue onto the correct card. You can also click an answer if dragging is annoying.</div>
+      <div class="instruction">Drag the clue onto the correct card, or just click an answer.</div>
       <div id="clueCard" class="clue-card" draggable="true"></div>
       <div id="feedback" class="feedback"></div>
       <div id="answerGrid" class="answer-grid"></div>
+    </section>
+
+    <section id="writeGameScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="writeBackBtn">← Back</button>
+        <div class="topic-heading">
+          <h2 id="writeTitle"></h2>
+          <p>Level 2: type the key words from memory. You do not need a full sentence.</p>
+        </div>
+        <button class="nav-btn" id="writeRestartBtn">↻ Restart</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Progress</small><strong id="writeProgressStat">0 / 0</strong></div>
+        <div class="stat"><small>Attempts</small><strong id="writeAttemptStat">0</strong></div>
+        <div class="stat"><small>Mistakes</small><strong id="writeMistakeStat">0</strong></div>
+      </div>
+      <div class="instruction">What are the key function / traits of this item?</div>
+      <div id="writePrompt" class="write-prompt"></div>
+      <div class="write-box">
+        <input id="writeInput" type="text" autocomplete="off" placeholder="Type key words here…" />
+        <button id="writeSubmitBtn" class="submit-btn">Check</button>
+      </div>
+      <div id="writeFeedback" class="feedback"></div>
+      <div id="writeReveal" class="answer-reveal"></div>
+    </section>
+
+    <section id="codonMenuScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="codonMenuBackBtn">← Amino Acids</button>
+        <div class="topic-heading">
+          <h2>🧬 Genetic Code</h2>
+          <p>mRNA codons are read 5′ → 3′ in groups of three nucleotides.</p>
+        </div>
+        <div style="width:120px"></div>
+      </div>
+      <div class="codon-note"><strong>Important:</strong> the codon table is written for <strong>mRNA</strong>. A coding DNA triplet has the same letters except T replaces U. A template DNA strand is complementary and antiparallel. <strong>AUG</strong> codes methionine and usually serves as the start codon; <strong>UAA, UAG, UGA</strong> are stop codons.</div>
+      <div class="mode-grid">
+        <button class="mode-card" id="codonLearnBtn"><span class="emoji">📖</span><strong>Learn Codons</strong><span>See every amino acid with all of its mRNA codons.</span></button>
+        <button class="mode-card" id="codonPlayBtn"><span class="emoji">🎯</span><strong>Play Codons</strong><span>See an mRNA codon and choose the amino acid it encodes.</span></button>
+      </div>
+    </section>
+
+    <section id="codonLearnScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="codonLearnBackBtn">← Genetic Code</button>
+        <div class="topic-heading"><h2>📖 Learn the Genetic Code</h2><p>All 64 mRNA codons, grouped by amino acid.</p></div>
+        <div style="width:120px"></div>
+      </div>
+      <div class="codon-note">Read each codon <strong>5′ → 3′</strong>. The code is redundant: most amino acids have more than one codon. It is not ambiguous: each individual codon specifies only one amino acid or stop signal.</div>
+      <div id="codonTable" class="codon-table"></div>
+    </section>
+
+    <section id="codonGameScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="codonGameBackBtn">← Genetic Code</button>
+        <div class="topic-heading"><h2>🎯 Codon Game</h2><p>Which amino acid does this mRNA codon encode?</p></div>
+        <button class="nav-btn" id="codonRestartBtn">↻ Restart</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Progress</small><strong id="codonProgressStat">0 / 64</strong></div>
+        <div class="stat"><small>Attempts</small><strong id="codonAttemptStat">0</strong></div>
+        <div class="stat"><small>Mistakes</small><strong id="codonMistakeStat">0</strong></div>
+      </div>
+      <div id="codonQuestion" class="codon-question"><small>mRNA codon, 5′ → 3′</small><div id="codonSequence" class="codon-sequence"></div></div>
+      <div id="codonFeedback" class="feedback"></div>
+      <div id="codonAnswerGrid" class="codon-answer-grid"></div>
     </section>
 
     <section id="finishScreen" class="screen" hidden>
@@ -1973,13 +2163,59 @@
   }
 };
 
-    const screenIds = ["homeScreen","topicScreen","learnScreen","gameScreen","finishScreen"];
+
+    // Standard genetic code: mRNA codon (5′→3′) -> amino acid.
+    const geneticCode = {
+      UUU:"Phenylalanine", UUC:"Phenylalanine", UUA:"Leucine", UUG:"Leucine",
+      UCU:"Serine", UCC:"Serine", UCA:"Serine", UCG:"Serine",
+      UAU:"Tyrosine", UAC:"Tyrosine", UAA:"Stop", UAG:"Stop",
+      UGU:"Cysteine", UGC:"Cysteine", UGA:"Stop", UGG:"Tryptophan",
+      CUU:"Leucine", CUC:"Leucine", CUA:"Leucine", CUG:"Leucine",
+      CCU:"Proline", CCC:"Proline", CCA:"Proline", CCG:"Proline",
+      CAU:"Histidine", CAC:"Histidine", CAA:"Glutamine", CAG:"Glutamine",
+      CGU:"Arginine", CGC:"Arginine", CGA:"Arginine", CGG:"Arginine",
+      AUU:"Isoleucine", AUC:"Isoleucine", AUA:"Isoleucine", AUG:"Methionine",
+      ACU:"Threonine", ACC:"Threonine", ACA:"Threonine", ACG:"Threonine",
+      AAU:"Asparagine", AAC:"Asparagine", AAA:"Lysine", AAG:"Lysine",
+      AGU:"Serine", AGC:"Serine", AGA:"Arginine", AGG:"Arginine",
+      GUU:"Valine", GUC:"Valine", GUA:"Valine", GUG:"Valine",
+      GCU:"Alanine", GCC:"Alanine", GCA:"Alanine", GCG:"Alanine",
+      GAU:"Aspartate", GAC:"Aspartate", GAA:"Glutamate", GAG:"Glutamate",
+      GGU:"Glycine", GGC:"Glycine", GGA:"Glycine", GGG:"Glycine"
+    };
+
+    const aaAbbr = {
+      Alanine:"Ala", Arginine:"Arg", Asparagine:"Asn", Aspartate:"Asp",
+      Cysteine:"Cys", Glutamine:"Gln", Glutamate:"Glu", Glycine:"Gly",
+      Histidine:"His", Isoleucine:"Ile", Leucine:"Leu", Lysine:"Lys",
+      Methionine:"Met", Phenylalanine:"Phe", Proline:"Pro", Serine:"Ser",
+      Threonine:"Thr", Tryptophan:"Trp", Tyrosine:"Tyr", Valine:"Val", Stop:"STOP"
+    };
+
+    const screenIds = [
+      "homeScreen","topicScreen","learnScreen","gameScreen","writeGameScreen",
+      "codonMenuScreen","codonLearnScreen","codonGameScreen","finishScreen"
+    ];
     let currentTopicKey = null;
     let quizOrder = [];
     let quizIndex = 0;
     let attempts = 0;
     let mistakes = 0;
     let locked = false;
+
+    let writeOrder = [];
+    let writeIndex = 0;
+    let writeAttempts = 0;
+    let writeMistakes = 0;
+    let writeLocked = false;
+
+    let codonOrder = [];
+    let codonIndex = 0;
+    let codonAttempts = 0;
+    let codonMistakes = 0;
+    let codonLocked = false;
+
+    let finishMode = "level1";
 
     const $ = id => document.getElementById(id);
 
@@ -2013,6 +2249,7 @@
       currentTopicKey = key;
       const topic = topics[key];
       $("topicTitle").textContent = `${topic.icon} ${topic.title}`;
+      $("codonBtn").hidden = key !== "aminoAcids";
       showScreen("topicScreen");
     }
 
@@ -2029,6 +2266,7 @@
       return card;
     }
 
+    // ---------- LEARN ----------
     function startLearn() {
       const topic = currentTopic();
       $("learnTitle").textContent = `📚 Learn ${topic.title}`;
@@ -2053,10 +2291,7 @@
         wrap.appendChild(grid);
       });
 
-      $("infoPanel").innerHTML = `
-        <div class="big-emoji">👆</div>
-        <div><h3>Click any card</h3><p>Its quick clue and explanation will appear here.</p></div>
-      `;
+      $("infoPanel").innerHTML = `<div class="big-emoji">👆</div><div><h3>Click any card</h3><p>Its quick clue and explanation will appear here.</p></div>`;
       showScreen("learnScreen");
     }
 
@@ -2066,18 +2301,19 @@
         <div>
           <h3>${item.name}${item.sub ? ` — ${item.sub}` : ""}</h3>
           <p><strong>Quick clue:</strong> ${item.clue}<br><br>${item.detail}</p>
-        </div>
-      `;
+        </div>`;
     }
 
+    // ---------- LEVEL 1: MATCH ----------
     function startGame() {
+      finishMode = "level1";
       const topic = currentTopic();
       quizOrder = shuffle(topic.items);
       quizIndex = 0;
       attempts = 0;
       mistakes = 0;
       locked = false;
-      $("gameTitle").textContent = `🎮 ${topic.title} Game`;
+      $("gameTitle").textContent = `🎮 ${topic.title} — Level 1`;
       buildAnswerGrid();
       showScreen("gameScreen");
       showQuestion();
@@ -2089,27 +2325,16 @@
       currentTopic().items.forEach(item => {
         const card = createItemCard(item, "answer-card");
         card.dataset.name = item.name;
-
-        card.addEventListener("dragover", event => {
-          event.preventDefault();
-          if (!locked) card.classList.add("dragover");
-        });
+        card.addEventListener("dragover", event => { event.preventDefault(); if (!locked) card.classList.add("dragover"); });
         card.addEventListener("dragleave", () => card.classList.remove("dragover"));
-        card.addEventListener("drop", event => {
-          event.preventDefault();
-          card.classList.remove("dragover");
-          checkAnswer(item, card);
-        });
+        card.addEventListener("drop", event => { event.preventDefault(); card.classList.remove("dragover"); checkAnswer(item, card); });
         card.addEventListener("click", () => checkAnswer(item, card));
         grid.appendChild(card);
       });
     }
 
     function showQuestion() {
-      if (quizIndex >= quizOrder.length) {
-        finishGame();
-        return;
-      }
+      if (quizIndex >= quizOrder.length) { finishGame("level1"); return; }
       locked = false;
       clearAnswerStates();
       $("feedback").textContent = "";
@@ -2122,7 +2347,6 @@
       if (locked) return;
       attempts++;
       const correct = quizOrder[quizIndex];
-
       if (selectedItem.name === correct.name) {
         locked = true;
         selectedCard.classList.add("correct");
@@ -2142,9 +2366,7 @@
     }
 
     function clearAnswerStates() {
-      document.querySelectorAll("#answerGrid .answer-card").forEach(card => {
-        card.classList.remove("correct", "wrong", "dragover");
-      });
+      document.querySelectorAll("#answerGrid .answer-card").forEach(card => card.classList.remove("correct", "wrong", "dragover"));
     }
 
     function updateStats() {
@@ -2153,15 +2375,284 @@
       $("mistakeStat").textContent = mistakes;
     }
 
-    function finishGame() {
+    // ---------- LEVEL 2: WRITE KEY WORDS ----------
+    const STOP_WORDS = new Set([
+      "a","an","the","and","or","of","to","in","on","for","with","from","by","as","at","is","are","be","being","that","this","these","those","it","its","their","into","through","during","used","use","uses","helps","help","important","major","often","usually","can","may","many","some","one","two","three","most","more","less","normal"
+    ]);
+
+    const CANON = {
+      carbs:"carbohydrate", carb:"carbohydrate", carbohydrates:"carbohydrate",
+      nerves:"nerve", nervous:"nerve", neural:"nerve",
+      rbcs:"rbc", rbc:"rbc", erythrocytes:"rbc", erythrocyte:"rbc",
+      coagulation:"clot", clotting:"clot", clots:"clot",
+      sight:"vision", visual:"vision",
+      bones:"bone", skeletal:"bone",
+      membranes:"membrane",
+      antioxidants:"antioxidant",
+      aminoacids:"aminoacid", aminoacid:"aminoacid",
+      proteins:"protein", peptides:"peptide",
+      sugars:"sugar", glucose:"glucose",
+      fats:"fat", lipids:"lipid",
+      photosynthetic:"photosynthesis",
+      respiration:"respiration", respiratory:"respiration",
+      kidneys:"kidney", renal:"kidney",
+      water:"water", h2o:"water",
+      sodium:"sodium", na:"sodium",
+      calcium:"calcium", ca:"calcium",
+      potassium:"potassium", k:"potassium",
+      flowering:"flower", flowers:"flower",
+      seeds:"seed", spores:"spore", roots:"root", leaves:"leaf",
+      fungi:"fungus", fungal:"fungus",
+      bacteria:"bacterium", bacterial:"bacterium",
+      animals:"animal", plants:"plant",
+      antibodies:"antibody", immunoglobulin:"antibody", immunoglobulins:"antibody"
+    };
+
+    function singularize(token) {
+      if (token.length > 5 && token.endsWith("ies")) return token.slice(0,-3) + "y";
+      if (token.length > 4 && token.endsWith("es")) return token.slice(0,-2);
+      if (token.length > 3 && token.endsWith("s") && !token.endsWith("ss")) return token.slice(0,-1);
+      return token;
+    }
+
+    function normalizeToken(token) {
+      let t = token.toLowerCase();
+      if (CANON[t]) return CANON[t];
+      t = singularize(t);
+      return CANON[t] || t;
+    }
+
+    function tokenize(text) {
+      let s = (text || "").toLowerCase()
+        .replace(/red blood cells?/g, " rbc ")
+        .replace(/amino acids?/g, " aminoacid ")
+        .replace(/double fertilization/g, " doublefertilization ")
+        .replace(/water vascular system/g, " watervascular ")
+        .replace(/cell walls?/g, " cellwall ")
+        .replace(/cell membranes?/g, " membrane ")
+        .replace(/blood clotting/g, " clot ")
+        .replace(/coenzyme a/g, " coa ")
+        .replace(/nadp\+?/g, " nadp ")
+        .replace(/nad\+?/g, " nad ")
+        .replace(/fad/g, " fad ")
+        .replace(/fmn/g, " fmn ")
+        .replace(/ca2\+?/g, " calcium ")
+        .replace(/co2/g, " carbon dioxide ");
+      const raw = s.match(/[a-z0-9]+/g) || [];
+      return [...new Set(raw.map(normalizeToken).filter(t => t.length > 1 && !STOP_WORDS.has(t)))];
+    }
+
+    function keywordScore(userText, item) {
+      const user = new Set(tokenize(userText));
+      const clue = tokenize(item.clue);
+      const detail = new Set(tokenize(item.detail));
+      const acceptedUniverse = new Set([...clue, ...detail]);
+      const matched = [...user].filter(t => acceptedUniverse.has(t));
+      const clueMatched = clue.filter(t => user.has(t) || matched.includes(t));
+      const uniqueMatches = new Set([...matched, ...clueMatched]).size;
+      const keyCount = clue.length;
+      let needed = 1;
+      if (keyCount === 2) needed = 2;
+      else if (keyCount >= 3 && keyCount <= 5) needed = 2;
+      else if (keyCount >= 6) needed = 3;
+      // Very short answers that directly contain the full clue should pass.
+      const fullPhrase = (userText || "").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+      const cluePhrase = item.clue.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+      const pass = uniqueMatches >= needed || (cluePhrase && fullPhrase.includes(cluePhrase));
+      return { pass, matched: uniqueMatches, needed, clueTokens: clue };
+    }
+
+    function startWriteGame() {
+      finishMode = "level2";
       const topic = currentTopic();
-      $("finishTitle").textContent = `${topic.icon} ${topic.title} complete!`;
-      $("finishText").textContent = mistakes === 0
-        ? `Perfect run: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
-        : `You finished all ${topic.items.length} items with ${mistakes} mistake${mistakes === 1 ? "" : "s"}. Play again and beat that.`;
+      writeOrder = shuffle(topic.items);
+      writeIndex = 0;
+      writeAttempts = 0;
+      writeMistakes = 0;
+      writeLocked = false;
+      $("writeTitle").textContent = `✍️ ${topic.title} — Level 2`;
+      showScreen("writeGameScreen");
+      showWriteQuestion();
+    }
+
+    function showWriteQuestion() {
+      if (writeIndex >= writeOrder.length) { finishGame("level2"); return; }
+      writeLocked = false;
+      const item = writeOrder[writeIndex];
+      $("writePrompt").innerHTML = `<div><div class="prompt-emoji">${item.icon || "🔹"}</div><div class="prompt-name">${item.name}</div>${item.sub ? `<div class="prompt-sub">${item.sub}</div>` : ""}</div>`;
+      $("writeInput").value = "";
+      $("writeInput").disabled = false;
+      $("writeFeedback").textContent = "";
+      $("writeFeedback").className = "feedback";
+      $("writeReveal").textContent = "";
+      updateWriteStats();
+      setTimeout(() => $("writeInput").focus(), 50);
+    }
+
+    function submitWriteAnswer() {
+      if (writeLocked) return;
+      const text = $("writeInput").value.trim();
+      if (!text) {
+        $("writeFeedback").textContent = "Type at least one key word first.";
+        $("writeFeedback").className = "feedback bad";
+        return;
+      }
+      writeAttempts++;
+      const item = writeOrder[writeIndex];
+      const score = keywordScore(text, item);
+      if (score.pass) {
+        writeLocked = true;
+        $("writeFeedback").textContent = "✅ Correct key idea!";
+        $("writeFeedback").className = "feedback good";
+        $("writeReveal").innerHTML = `<strong>Answer:</strong> ${item.clue}`;
+        $("writeInput").disabled = true;
+        writeIndex++;
+        updateWriteStats();
+        setTimeout(showWriteQuestion, 1050);
+      } else {
+        writeMistakes++;
+        $("writeFeedback").textContent = `❌ Not enough yet — you matched ${score.matched} key idea${score.matched === 1 ? "" : "s"}. Try again.`;
+        $("writeFeedback").className = "feedback bad";
+        $("writeReveal").textContent = "Think of the shortest phrase you would put on a flashcard.";
+        updateWriteStats();
+      }
+    }
+
+    function updateWriteStats() {
+      $("writeProgressStat").textContent = `${writeIndex} / ${writeOrder.length}`;
+      $("writeAttemptStat").textContent = writeAttempts;
+      $("writeMistakeStat").textContent = writeMistakes;
+    }
+
+    // ---------- GENETIC CODE ----------
+    function openCodonMenu() { showScreen("codonMenuScreen"); }
+
+    function codonsGroupedByAA() {
+      const groups = {};
+      Object.entries(geneticCode).forEach(([codon, aa]) => {
+        if (!groups[aa]) groups[aa] = [];
+        groups[aa].push(codon);
+      });
+      return groups;
+    }
+
+    function startCodonLearn() {
+      const table = $("codonTable");
+      table.innerHTML = "";
+      const groups = codonsGroupedByAA();
+      const names = Object.keys(groups).sort((a,b) => a === "Stop" ? 1 : b === "Stop" ? -1 : a.localeCompare(b));
+      names.forEach(aa => {
+        const card = document.createElement("div");
+        card.className = "codon-row";
+        card.innerHTML = `<div class="codon-aa">${aa} (${aaAbbr[aa]})${aa === "Methionine" ? " — START" : aa === "Stop" ? " — termination" : ""}</div><div class="codon-list">${groups[aa].join(" · ")}</div>`;
+        table.appendChild(card);
+      });
+      showScreen("codonLearnScreen");
+    }
+
+    function startCodonGame() {
+      finishMode = "codon";
+      codonOrder = shuffle(Object.entries(geneticCode).map(([codon, aa]) => ({codon, aa})));
+      codonIndex = 0;
+      codonAttempts = 0;
+      codonMistakes = 0;
+      codonLocked = false;
+      buildCodonAnswers();
+      showScreen("codonGameScreen");
+      showCodonQuestion();
+    }
+
+    function buildCodonAnswers() {
+      const grid = $("codonAnswerGrid");
+      grid.innerHTML = "";
+      const aaNames = [...new Set(Object.values(geneticCode))].sort((a,b) => a === "Stop" ? 1 : b === "Stop" ? -1 : a.localeCompare(b));
+      aaNames.forEach(aa => {
+        const btn = document.createElement("button");
+        btn.className = "codon-answer";
+        btn.dataset.aa = aa;
+        btn.innerHTML = `${aa}<br><small>${aaAbbr[aa]}</small>`;
+        btn.addEventListener("click", () => checkCodonAnswer(aa, btn));
+        grid.appendChild(btn);
+      });
+    }
+
+    function showCodonQuestion() {
+      if (codonIndex >= codonOrder.length) { finishGame("codon"); return; }
+      codonLocked = false;
+      document.querySelectorAll(".codon-answer").forEach(b => b.classList.remove("correct","wrong"));
+      $("codonSequence").textContent = `5′-${codonOrder[codonIndex].codon}-3′`;
+      $("codonFeedback").textContent = "";
+      $("codonFeedback").className = "feedback";
+      updateCodonStats();
+    }
+
+    function checkCodonAnswer(aa, button) {
+      if (codonLocked) return;
+      codonAttempts++;
+      const correct = codonOrder[codonIndex];
+      if (aa === correct.aa) {
+        codonLocked = true;
+        button.classList.add("correct");
+        $("codonFeedback").textContent = `✅ ${correct.codon} → ${correct.aa}${correct.codon === "AUG" ? " (start)" : correct.aa === "Stop" ? " (stop signal)" : ""}`;
+        $("codonFeedback").className = "feedback good";
+        codonIndex++;
+        updateCodonStats();
+        setTimeout(showCodonQuestion, 700);
+      } else {
+        codonMistakes++;
+        button.classList.add("wrong");
+        $("codonFeedback").textContent = "❌ Wrong — keep trying.";
+        $("codonFeedback").className = "feedback bad";
+        updateCodonStats();
+        setTimeout(() => button.classList.remove("wrong"), 420);
+      }
+    }
+
+    function updateCodonStats() {
+      $("codonProgressStat").textContent = `${codonIndex} / ${codonOrder.length || 64}`;
+      $("codonAttemptStat").textContent = codonAttempts;
+      $("codonMistakeStat").textContent = codonMistakes;
+    }
+
+    // ---------- FINISH ----------
+    function finishGame(mode) {
+      finishMode = mode;
+      if (mode === "codon") {
+        $("finishTitle").textContent = "🧬 Genetic Code complete!";
+        $("finishText").textContent = codonMistakes === 0
+          ? "Perfect: all 64 codons with no mistakes."
+          : `You finished all 64 codons with ${codonMistakes} mistake${codonMistakes === 1 ? "" : "s"}.`;
+        $("reviewBtn").textContent = "📖 Review codons";
+      } else if (mode === "level2") {
+        const topic = currentTopic();
+        $("finishTitle").textContent = `✍️ ${topic.title} Level 2 complete!`;
+        $("finishText").textContent = writeMistakes === 0
+          ? `Perfect recall: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
+          : `You recalled all ${topic.items.length} items with ${writeMistakes} mistake${writeMistakes === 1 ? "" : "s"}.`;
+        $("reviewBtn").textContent = "📚 Review";
+      } else {
+        const topic = currentTopic();
+        $("finishTitle").textContent = `${topic.icon} ${topic.title} Level 1 complete!`;
+        $("finishText").textContent = mistakes === 0
+          ? `Perfect run: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
+          : `You finished all ${topic.items.length} items with ${mistakes} mistake${mistakes === 1 ? "" : "s"}.`;
+        $("reviewBtn").textContent = "📚 Review";
+      }
       showScreen("finishScreen");
     }
 
+    function playAgainFromFinish() {
+      if (finishMode === "codon") startCodonGame();
+      else if (finishMode === "level2") startWriteGame();
+      else startGame();
+    }
+
+    function reviewFromFinish() {
+      if (finishMode === "codon") startCodonLearn();
+      else startLearn();
+    }
+
+    // ---------- EVENTS ----------
     $("clueCard").addEventListener("dragstart", event => {
       if (locked) { event.preventDefault(); return; }
       event.dataTransfer.setData("text/plain", "clue");
@@ -2171,11 +2662,25 @@
     $("topicHomeBtn").addEventListener("click", () => showScreen("homeScreen"));
     $("learnBackBtn").addEventListener("click", () => showScreen("topicScreen"));
     $("gameBackBtn").addEventListener("click", () => showScreen("topicScreen"));
+    $("writeBackBtn").addEventListener("click", () => showScreen("topicScreen"));
     $("learnBtn").addEventListener("click", startLearn);
     $("playBtn").addEventListener("click", startGame);
+    $("writeBtn").addEventListener("click", startWriteGame);
     $("restartBtn").addEventListener("click", startGame);
-    $("playAgainBtn").addEventListener("click", startGame);
-    $("reviewBtn").addEventListener("click", startLearn);
+    $("writeRestartBtn").addEventListener("click", startWriteGame);
+    $("writeSubmitBtn").addEventListener("click", submitWriteAnswer);
+    $("writeInput").addEventListener("keydown", e => { if (e.key === "Enter") submitWriteAnswer(); });
+
+    $("codonBtn").addEventListener("click", openCodonMenu);
+    $("codonMenuBackBtn").addEventListener("click", () => showScreen("topicScreen"));
+    $("codonLearnBtn").addEventListener("click", startCodonLearn);
+    $("codonPlayBtn").addEventListener("click", startCodonGame);
+    $("codonLearnBackBtn").addEventListener("click", openCodonMenu);
+    $("codonGameBackBtn").addEventListener("click", openCodonMenu);
+    $("codonRestartBtn").addEventListener("click", startCodonGame);
+
+    $("playAgainBtn").addEventListener("click", playAgainFromFinish);
+    $("reviewBtn").addEventListener("click", reviewFromFinish);
     $("finishHomeBtn").addEventListener("click", () => showScreen("homeScreen"));
 
     renderHome();
@@ -2183,4 +2688,3 @@
   </script>
 </body>
 </html>
-
