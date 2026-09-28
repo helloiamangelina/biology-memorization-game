@@ -562,7 +562,7 @@
       <div id="writeFeedback" class="feedback"></div>
       <div id="writeReveal" class="answer-reveal"></div>
       <div class="write-actions">
-        <button id="writeRevealBtn" class="reveal-btn" hidden>👀 Reveal answer</button>
+        <button id="writeRevealBtn" class="reveal-btn" hidden>Reveal answer</button>
         <button id="writeNextBtn" class="next-btn" hidden>Next →</button>
       </div>
     </section>
@@ -2643,7 +2643,7 @@
       writeMistakes = 0;
       writeLocked = false;
       writeWrongStreak = 0;
-      $("writeTitle").textContent = `✍️ ${topic.title} — Level 2`;
+      $("writeTitle").textContent = `${topic.title} — Level 2`;
       $("writeInstruction").textContent = practiceMode === "deficiency"
         ? "What are the key deficiency signs when this vitamin is lacking?"
         : "What are the key function / traits of this item?";
@@ -2656,7 +2656,7 @@
       writeLocked = false;
       writeWrongStreak = 0;
       const item = writeOrder[writeIndex];
-      $("writePrompt").innerHTML = `<div><div class="prompt-emoji">${item.icon || "🔹"}</div><div class="prompt-name">${item.name}</div>${item.sub ? `<div class="prompt-sub">${item.sub}</div>` : ""}</div>`;
+      $("writePrompt").innerHTML = `<div><div class="prompt-name">${item.name}</div>${item.sub ? `<div class="prompt-sub">${item.sub}</div>` : ""}</div>`;
       $("writeInput").value = "";
       $("writeInput").disabled = false;
       $("writeSubmitBtn").disabled = false;
@@ -2684,10 +2684,10 @@
       $("writeNextBtn").hidden = false;
       $("writeReveal").innerHTML = fullWriteExplanation(item, "Full explanation");
       if (revealed) {
-        $("writeFeedback").textContent = "👀 Answer revealed — read the explanation, then continue.";
+        $("writeFeedback").textContent = "Answer revealed — read the explanation, then continue.";
         $("writeFeedback").className = "feedback";
       } else {
-        $("writeFeedback").textContent = "✅ Correct key idea! Read the full explanation below.";
+        $("writeFeedback").textContent = "Correct key idea! Read the full explanation below.";
         $("writeFeedback").className = "feedback good";
       }
       writeIndex++;
@@ -2711,7 +2711,7 @@
       } else {
         writeMistakes++;
         writeWrongStreak++;
-        $("writeFeedback").textContent = `❌ Not enough yet — you matched ${score.matched} key idea${score.matched === 1 ? "" : "s"}. Try again.`;
+        $("writeFeedback").textContent = `Not enough yet — you matched ${score.matched} key idea${score.matched === 1 ? "" : "s"}. Try again.`;
         $("writeFeedback").className = "feedback bad";
         $("writeReveal").textContent = writeWrongStreak >= 3
           ? "Three misses on this item. You can keep trying or reveal the answer."
