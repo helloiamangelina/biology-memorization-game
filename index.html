@@ -611,13 +611,12 @@
 
     <section id="finishScreen" class="screen" hidden>
       <div class="finish">
-        <div class="emoji">🏆</div>
         <h2 id="finishTitle">Finished!</h2>
         <p id="finishText"></p>
         <div class="finish-actions">
-          <button class="action-btn primary" id="playAgainBtn">🎮 Play again</button>
-          <button class="action-btn" id="reviewBtn">📚 Review</button>
-          <button class="action-btn" id="finishHomeBtn">🏠 Home</button>
+          <button class="action-btn primary" id="playAgainBtn">Play again</button>
+          <button class="action-btn" id="reviewBtn">Review</button>
+          <button class="action-btn" id="finishHomeBtn">Home</button>
         </div>
       </div>
     </section>
@@ -2427,11 +2426,11 @@
         : currentTopic();
     }
 
-    function createItemCard(item, className) {
+    function createItemCard(item, className, showIcon = true) {
       const card = document.createElement("div");
       card.className = className;
       card.innerHTML = `
-        <div class="item-emoji">${item.icon || "🔹"}</div>
+        ${showIcon ? `<div class="item-emoji">${item.icon || ""}</div>` : ""}
         <div class="item-name">${item.name}</div>
         ${item.sub ? `<div class="item-sub">${item.sub}</div>` : ""}
       `;
@@ -2485,7 +2484,7 @@
       attempts = 0;
       mistakes = 0;
       locked = false;
-      $("gameTitle").textContent = `${practiceMode === "deficiency" ? "🎯" : "🎮"} ${topic.title} — Level 1`;
+      $("gameTitle").textContent = `${topic.title} — Level 1`;
       buildAnswerGrid();
       showScreen("gameScreen");
       showQuestion();
@@ -2495,7 +2494,7 @@
       const grid = $("answerGrid");
       grid.innerHTML = "";
       practiceTopic().items.forEach(item => {
-        const card = createItemCard(item, "answer-card");
+        const card = createItemCard(item, "answer-card", false);
         card.dataset.name = item.name;
         card.addEventListener("dragover", event => { event.preventDefault(); if (!locked) card.classList.add("dragover"); });
         card.addEventListener("dragleave", () => card.classList.remove("dragover"));
@@ -2522,7 +2521,7 @@
       if (selectedItem.name === correct.name) {
         locked = true;
         selectedCard.classList.add("correct");
-        $("feedback").textContent = `✅ Correct — ${correct.name}!`;
+        $("feedback").textContent = `Correct — ${correct.name}!`;
         $("feedback").className = "feedback good";
         quizIndex++;
         updateStats();
@@ -2530,7 +2529,7 @@
       } else {
         mistakes++;
         selectedCard.classList.add("wrong");
-        $("feedback").textContent = "❌ Wrong — keep trying.";
+        $("feedback").textContent = "Wrong — keep trying.";
         $("feedback").className = "feedback bad";
         updateStats();
         setTimeout(() => selectedCard.classList.remove("wrong"), 420);
