@@ -488,7 +488,7 @@
 
       <div id="vitaminDeficiencySection" class="practice-section" hidden>
         <h3>⚠️ Vitamin deficiencies</h3>
-        <p class="section-note">A second vitamin track: learn what happens when each vitamin is missing, then drill the deficiency signs without relying on unique emoji clues.</p>
+        <p class="section-note">A second vitamin track: learn the real deficiency terms you may see on a test, with plain-English explanations of what those terms mean.</p>
         <div class="mode-grid">
           <button class="mode-card" id="defLearnBtn">
             <span class="emoji">📖</span><strong>Deficiencies — Learn</strong>
@@ -496,7 +496,7 @@
           </button>
           <button class="mode-card" id="defPlayBtn">
             <span class="emoji">🎯</span><strong>Deficiencies — Level 1</strong>
-            <span>See a plain-language deficiency clue and match it to the vitamin.</span>
+            <span>See the key deficiency terms and match them to the vitamin.</span>
           </button>
           <button class="mode-card" id="defWriteBtn">
             <span class="emoji">✍️</span><strong>Deficiencies — Level 2</strong>
@@ -2256,68 +2256,68 @@
       items: [
         {
           name: "B1", sub: "Thiamine", icon: "⚠️", group: "water",
-          clue: "Beriberi: muscle weakness + numbness/tingling; severe cases can affect the heart or brain",
-          detail: "B1 deficiency can cause beriberi. Nerve damage can make a person weak, numb, tingly, or unsteady when walking. In another form, the heart can struggle to pump well and fluid can build up, causing swelling. Very severe B1 deficiency can also injure the brain, causing confusion, eye-movement problems, poor balance, and serious memory problems; this brain disorder is called Wernicke-Korsakoff syndrome."
+          clue: "Beriberi + Wernicke-Korsakoff syndrome: neuropathy/weakness, heart problems, or brain symptoms",
+          detail: "B1 deficiency can cause beriberi. Neuropathy means nerve damage, which can cause weakness, numbness, tingling, or trouble walking. One form of beriberi affects the heart and can cause swelling because the heart cannot pump effectively. Severe B1 deficiency can also cause Wernicke-Korsakoff syndrome, a brain disorder that can involve confusion, abnormal eye movements, poor balance, and serious memory problems."
         },
         {
           name: "B2", sub: "Riboflavin", icon: "⚠️", group: "water",
-          clue: "Cracked mouth corners + sore/red tongue + scaly skin rash",
-          detail: "B2 deficiency mainly affects the skin and mouth. It can cause painful cracks at the corners of the lips, a sore or swollen red tongue, and a dry or scaly skin rash."
+          clue: "Ariboflavinosis: angular cheilitis/cheilosis + glossitis + dermatitis",
+          detail: "B2 deficiency is sometimes called ariboflavinosis. Angular cheilitis or cheilosis means painful cracks at the corners of the mouth. Glossitis means an inflamed, sore, often red tongue. Dermatitis means an irritated or scaly skin rash."
         },
         {
           name: "B3", sub: "Niacin", icon: "⚠️", group: "water",
-          clue: "Pellagra: skin rash + diarrhea + confusion or memory problems",
-          detail: "B3 deficiency can cause a disease called pellagra. Pellagra causes a rough or dark skin rash, often worse on skin exposed to sunlight, along with diarrhea and changes in thinking such as confusion or memory problems. The old memory trick is the '3 Ds': dermatitis, diarrhea, and dementia."
+          clue: "Pellagra: dermatitis + diarrhea + dementia",
+          detail: "B3 deficiency causes pellagra. Dermatitis means an inflamed or rough skin rash, often worse on sun-exposed skin. Diarrhea is frequent loose stool. Dementia here means serious changes in thinking, memory, or mental function. The classic memory trick is the three Ds: dermatitis, diarrhea, and dementia."
         },
         {
           name: "B5", sub: "Pantothenic acid", icon: "⚠️", group: "water",
-          clue: "Very rare: tiredness + irritability + stomach problems + numb or burning feet",
-          detail: "B5 deficiency is very rare because pantothenic acid is found in many foods. If it becomes severe, a person may feel unusually tired or irritable, have stomach problems, and experience numbness, tingling, or a burning feeling in the feet."
+          clue: "Rare: fatigue + GI symptoms + paresthesias / burning feet",
+          detail: "B5 deficiency is very rare. Fatigue means unusual tiredness. GI symptoms means gastrointestinal or digestive problems such as stomach discomfort. Paresthesias are abnormal nerve sensations such as tingling, prickling, numbness, or a burning feeling, especially in the feet."
         },
         {
           name: "B6", sub: "Pyridoxine", icon: "⚠️", group: "water",
-          clue: "Skin or mouth problems + anemia + nerve/brain symptoms",
-          detail: "B6 deficiency can cause a skin rash, cracks around the mouth, and a sore tongue. It can also cause anemia, meaning there are not enough healthy red blood cells to carry oxygen well, which can make a person tired or weak. Nerve or brain problems can include irritability, confusion, numbness or tingling, and in severe cases seizures."
+          clue: "Dermatitis + cheilosis/glossitis + microcytic sideroblastic anemia + neuropathy/seizures",
+          detail: "B6 deficiency can cause dermatitis, meaning a skin rash; cheilosis, meaning cracks around the mouth; and glossitis, meaning a sore inflamed tongue. It can also cause microcytic sideroblastic anemia. Microcytic means the red blood cells are smaller than normal, and sideroblastic means developing red blood cells have trouble using iron properly to make hemoglobin. Neuropathy means nerve damage, which can cause numbness or tingling; severe deficiency can also cause seizures."
         },
         {
           name: "B7", sub: "Biotin", icon: "⚠️", group: "water",
-          clue: "Rare: skin rash + hair loss + tiredness or tingling",
-          detail: "B7 deficiency is uncommon. When it happens, it can cause a skin rash, hair loss, unusual tiredness, mood changes, tingling or numbness, and sometimes more serious changes in thinking."
+          clue: "Dermatitis + alopecia + neurologic symptoms",
+          detail: "B7 deficiency is uncommon. Dermatitis means an irritated skin rash. Alopecia means hair loss. Neurologic symptoms are problems involving the nervous system, such as tingling, numbness, unusual tiredness, mood changes, or changes in thinking."
         },
         {
           name: "B9", sub: "Folate", icon: "⚠️", group: "water",
-          clue: "Large abnormal red blood cells + tiredness; pregnancy: brain/spinal cord birth defects",
-          detail: "B9 deficiency makes it harder for rapidly dividing cells to copy DNA. The body may produce unusually large, immature red blood cells that do not work normally, causing tiredness and weakness; this is called megaloblastic anemia. During early pregnancy, too little folate also increases the risk that the baby's developing brain or spinal cord will not close normally, called a neural tube defect. Unlike B12 deficiency, B9 deficiency usually does not cause the same nerve damage."
+          clue: "Megaloblastic (macrocytic) anemia + neural tube defects",
+          detail: "B9 deficiency can cause megaloblastic anemia because cells cannot copy DNA normally. Megaloblastic means the developing red blood cells are abnormally large and immature; macrocytic means the mature red blood cells are larger than normal. These abnormal cells do not carry oxygen as effectively, so a person may feel tired or weak. In early pregnancy, folate deficiency can also cause neural tube defects, meaning the baby's developing brain or spinal cord does not close normally. Unlike B12 deficiency, B9 deficiency usually does not cause the same nerve damage."
         },
         {
           name: "B12", sub: "Cobalamin", icon: "⚠️", group: "water",
-          clue: "Large abnormal red blood cells + nerve damage",
-          detail: "B12 deficiency can cause the same large, immature red blood cell problem seen with B9 deficiency, leading to tiredness and weakness. The important difference is that B12 deficiency can also damage nerves, causing numbness, tingling, trouble balancing or walking, and memory or thinking problems."
+          clue: "Megaloblastic (macrocytic) anemia + neuropathy",
+          detail: "B12 deficiency can cause megaloblastic, macrocytic anemia, meaning the red blood cells become abnormally large because DNA production is impaired. This can cause tiredness and weakness. B12 deficiency can also cause neuropathy, meaning nerve damage, leading to numbness, tingling, balance or walking problems, and memory or thinking changes. Pernicious anemia is one important cause of B12 deficiency: the stomach fails to make enough intrinsic factor, a protein needed to absorb B12."
         },
         {
           name: "C", sub: "Ascorbic acid", icon: "⚠️", group: "water",
-          clue: "Scurvy: bleeding gums + easy bruising + wounds heal poorly",
-          detail: "Vitamin C deficiency causes scurvy. Without enough vitamin C, the body cannot make strong collagen, a protein that helps hold skin, gums, blood vessels, and other tissues together. As a result, gums may swell or bleed, bruises appear easily, and cuts or wounds heal slowly."
+          clue: "Scurvy: bleeding gums + petechiae/easy bruising + poor wound healing",
+          detail: "Vitamin C deficiency causes scurvy. Without enough vitamin C, the body cannot make strong collagen, a protein that helps support skin, gums, blood vessels, and other tissues. Petechiae are tiny red or purple spots caused by small amounts of bleeding under the skin. Scurvy can also cause swollen or bleeding gums, easy bruising, and wounds that heal slowly."
         },
         {
           name: "A", sub: "Vitamin A", icon: "⚠️", group: "fat",
-          clue: "Night blindness (hard to see in dim light) + dry or damaged eyes",
-          detail: "Vitamin A deficiency can first cause night blindness, meaning it becomes hard to see when the light is dim. If the deficiency becomes severe, the surface of the eye can become extremely dry and damaged. Without treatment, that damage can eventually threaten vision."
+          clue: "Night blindness + xerophthalmia",
+          detail: "Vitamin A deficiency can cause night blindness, meaning difficulty seeing in dim light. It can also cause xerophthalmia, which means the surface of the eye becomes abnormally dry and damaged. Severe xerophthalmia can injure the cornea and eventually threaten vision."
         },
         {
           name: "D", sub: "Vitamin D", icon: "⚠️", group: "fat",
-          clue: "Children: soft weak bones/bowed legs (rickets); adults: soft painful bones (osteomalacia)",
-          detail: "Vitamin D helps the body absorb calcium needed to harden bones. In children, deficiency can cause rickets: growing bones stay too soft and may bend, causing bowed legs or other bone deformities. In adults, it can cause osteomalacia: bones become too soft and weak, which can cause bone pain and make fractures more likely."
+          clue: "Rickets (children) + osteomalacia (adults)",
+          detail: "Vitamin D deficiency reduces calcium absorption, so bones do not mineralize or harden normally. Rickets is the childhood form: growing bones remain too soft and can bend or become deformed, such as bowed legs. Osteomalacia is the adult form: already-grown bones become too soft and weak, causing bone pain and a greater risk of fractures."
         },
         {
           name: "E", sub: "Vitamin E", icon: "⚠️", group: "fat",
-          clue: "Red blood cells break too easily + nerve/muscle problems",
-          detail: "Vitamin E protects cell membranes from damage. With severe deficiency, red blood cells can become fragile and break apart faster than the body can replace them. This is called hemolytic anemia and can reduce oxygen delivery, causing tiredness or weakness. Nerves can also be damaged, leading to numbness, muscle weakness, or poor coordination."
+          clue: "Hemolytic anemia + neuropathy/ataxia",
+          detail: "Vitamin E deficiency can cause hemolytic anemia. Hemolytic means red blood cells are breaking apart faster than the body can replace them, which reduces oxygen delivery and can cause tiredness or weakness. It can also cause neuropathy, meaning nerve damage, and ataxia, meaning poor balance or coordination."
         },
         {
           name: "K", sub: "Vitamin K", icon: "⚠️", group: "fat",
-          clue: "Blood does not clot normally: easy bruising + bleeding that lasts too long",
-          detail: "Vitamin K is needed to make several proteins that help blood form a clot after an injury. Without enough vitamin K, bleeding may take much longer to stop. A person may bruise easily, have frequent bleeding, or in severe cases lose a dangerous amount of blood."
+          clue: "Coagulopathy / hemorrhage: easy bruising + prolonged bleeding",
+          detail: "Vitamin K deficiency can cause a coagulopathy, meaning the blood does not clot normally. Hemorrhage means excessive or uncontrolled bleeding. Because vitamin K is needed to make several clotting proteins, deficiency can cause easy bruising, bleeding that takes too long to stop, or dangerous internal bleeding in severe cases."
         }
       ]
     };
@@ -2839,7 +2839,7 @@
         $("reviewBtn").textContent = "📖 Review codons";
       } else if (mode === "level2") {
         const topic = practiceTopic();
-        $("finishTitle").textContent = `✍️ ${topic.title} Level 2 complete!`;
+        $("finishTitle").textContent = `${topic.title} Level 2 complete!`;
         $("finishText").textContent = writeMistakes === 0
           ? `Perfect recall: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
           : `You recalled all ${topic.items.length} items with ${writeMistakes} mistake${writeMistakes === 1 ? "" : "s"}.`;
