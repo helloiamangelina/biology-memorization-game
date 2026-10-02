@@ -1425,169 +1425,134 @@
     ]
   },
   "plantCells": {
-    "title": "Plant Cells",
+    "title": "Plant Cell Types",
     "icon": "🌱",
     "groups": {
-      "plantSpecific": "🌿 Plant-specific / especially important",
-      "chloroplast": "☀️ Chloroplast details",
-      "shared": "🔬 Shared eukaryotic organelles",
-      "extras": "🏆 Science Bowl extras"
+      "ground": "Ground tissue cell types",
+      "xylem": "Xylem water-conducting cells",
+      "phloem": "Phloem sugar-conducting cells",
+      "dermal": "Dermal tissue cell types",
+      "growth": "Growth and leaf cell types"
     },
     "items": [
       {
-        "name": "Cell wall",
-        "icon": "🧱",
-        "group": "plantSpecific",
-        "clue": "Cellulose-rich support layer outside plasma membrane",
-        "detail": "Plant cell walls resist expansion, provide support, protect the cell, and help prevent excessive water uptake."
+        "name": "Parenchyma",
+        "icon": "◻️",
+        "group": "ground",
+        "clue": "Living, thin-walled cells for photosynthesis, storage, metabolism, and repair",
+        "detail": "Parenchyma cells are the most common plant cell type. They are usually alive at maturity, have thin primary walls, and perform jobs such as photosynthesis, food storage, secretion, and wound repair."
       },
       {
-        "name": "Primary cell wall",
-        "icon": "🧱",
-        "group": "plantSpecific",
-        "clue": "Thin flexible wall laid down while a cell is growing",
-        "detail": "The primary wall is relatively thin and extensible so young plant cells can enlarge."
+        "name": "Collenchyma",
+        "icon": "↔️",
+        "group": "ground",
+        "clue": "Living cells with unevenly thick primary walls that give flexible support",
+        "detail": "Collenchyma cells support young, growing parts of a plant. Their walls are thicker at the corners, so they strengthen stems and leaves while still allowing them to bend and grow."
       },
       {
-        "name": "Secondary cell wall",
-        "icon": "🏰",
-        "group": "plantSpecific",
-        "clue": "Strong inner wall deposited after growth; often lignified",
-        "detail": "Many specialized plant cells add a thick secondary wall inside the primary wall after expansion stops."
+        "name": "Sclerenchyma",
+        "icon": "⬛",
+        "group": "ground",
+        "clue": "Usually dead at maturity; thick lignified secondary walls provide rigid support",
+        "detail": "Sclerenchyma cells have very thick secondary walls strengthened with lignin. They are usually dead when mature and provide tough, rigid support and protection."
       },
       {
-        "name": "Middle lamella",
-        "icon": "🧴",
-        "group": "plantSpecific",
-        "clue": "Pectin-rich layer that glues neighboring plant cells together",
-        "detail": "The middle lamella lies between adjacent primary walls and acts like a cellular cement."
+        "name": "Fibers",
+        "icon": "〰️",
+        "group": "ground",
+        "clue": "Long, slender sclerenchyma cells specialized for strength",
+        "detail": "Fibers are elongated sclerenchyma cells with thick lignified walls. They occur in bundles and give strong mechanical support to stems, leaves, and vascular tissue."
       },
       {
-        "name": "Central vacuole",
-        "icon": "💧",
-        "group": "plantSpecific",
-        "clue": "Large storage compartment; maintains turgor pressure",
-        "detail": "The central vacuole stores water, ions, pigments, and wastes and helps maintain cell rigidity through turgor pressure."
+        "name": "Sclereids",
+        "icon": "◆",
+        "group": "ground",
+        "clue": "Short, irregular sclerenchyma cells that make tissues hard or gritty",
+        "detail": "Sclereids are short, thick-walled sclerenchyma cells. They form hard structures such as nutshells and seed coats and create the gritty texture in fruits such as pears."
       },
       {
-        "name": "Tonoplast",
-        "icon": "🫧",
-        "group": "plantSpecific",
-        "clue": "Membrane surrounding the central vacuole",
-        "detail": "The tonoplast regulates transport between the cytosol and the vacuole."
+        "name": "Tracheids",
+        "icon": "│",
+        "group": "xylem",
+        "clue": "Long, narrow, tapered xylem cells; dead at maturity; conduct water through pits",
+        "detail": "Tracheids are dead, lignified water-conducting cells found in all vascular plants. Water moves between them through pits in their walls. Their narrow shape also provides structural support."
       },
       {
-        "name": "Plasmodesmata",
-        "icon": "🔗",
-        "group": "plantSpecific",
-        "clue": "Channels through cell walls connecting neighboring cytoplasm",
-        "detail": "Plasmodesmata allow water, solutes, and signals to pass directly between adjacent plant cells."
+        "name": "Vessel elements",
+        "icon": "║",
+        "group": "xylem",
+        "clue": "Shorter, wider xylem cells that join end-to-end into vessels for rapid water transport",
+        "detail": "Vessel elements are dead at maturity and have perforated end walls. Many vessel elements line up to form a continuous vessel, allowing water to move efficiently through the plant."
       },
       {
-        "name": "Chloroplast",
-        "icon": "☀️",
-        "group": "chloroplast",
-        "clue": "Organelle of photosynthesis; has its own DNA",
-        "detail": "Chloroplasts convert light energy into chemical energy and contain thylakoid membranes suspended in stroma."
+        "name": "Sieve-tube elements",
+        "icon": "⇣",
+        "group": "phloem",
+        "clue": "Living phloem cells that transport sugars and other organic nutrients",
+        "detail": "Sieve-tube elements form long tubes that move sugar-rich sap through the plant. They are alive but lose their nucleus at maturity and depend on companion cells for metabolic support."
       },
       {
-        "name": "Thylakoid",
-        "icon": "🥞",
-        "group": "chloroplast",
-        "clue": "Membrane sac where light reactions occur",
-        "detail": "Thylakoid membranes contain chlorophyll, photosystems, electron carriers, and ATP synthase."
+        "name": "Companion cells",
+        "icon": "●",
+        "group": "phloem",
+        "clue": "Nucleated cells that support sieve-tube elements and help load and unload sugars",
+        "detail": "Companion cells sit next to sieve-tube elements and keep them functioning. They use active transport to help move sugars into and out of the phloem."
       },
       {
-        "name": "Granum",
-        "sub": "plural: grana",
-        "icon": "🥞",
-        "group": "chloroplast",
-        "clue": "Stack of thylakoids",
-        "detail": "Grana are stacks of thylakoid discs that increase membrane surface area for the light reactions."
+        "name": "Epidermal cells",
+        "icon": "▭",
+        "group": "dermal",
+        "clue": "Outer protective cells covering young plant organs",
+        "detail": "Epidermal cells form the outer surface of leaves, stems, and roots. They protect internal tissues and often secrete a waxy cuticle that reduces water loss."
       },
       {
-        "name": "Stroma",
-        "icon": "🟢",
-        "group": "chloroplast",
-        "clue": "Fluid around thylakoids; Calvin cycle occurs here",
-        "detail": "The chloroplast stroma contains enzymes for the Calvin cycle plus chloroplast DNA and ribosomes."
+        "name": "Guard cells",
+        "icon": "()",
+        "group": "dermal",
+        "clue": "Paired cells that open and close stomata to control gas exchange and water loss",
+        "detail": "Guard cells change shape as their water pressure changes. This opens or closes the stomatal pore, regulating carbon dioxide entry and limiting water loss through transpiration."
       },
       {
-        "name": "Nucleus",
-        "icon": "🧠",
-        "group": "shared",
-        "clue": "Stores most DNA; controls gene expression",
-        "detail": "The nucleus houses most chromosomes and is the main site of DNA replication and transcription."
+        "name": "Root hair cells",
+        "icon": "〰",
+        "group": "dermal",
+        "clue": "Epidermal cells with long extensions that increase absorption surface area",
+        "detail": "Root hair cells greatly increase the root's surface area, helping the plant absorb water and mineral ions from the soil."
       },
       {
-        "name": "Mitochondrion",
-        "icon": "⚡",
-        "group": "shared",
-        "clue": "Cellular respiration + most aerobic ATP production",
-        "detail": "Mitochondria oxidize fuels and generate ATP through the citric acid cycle and oxidative phosphorylation."
+        "name": "Trichomes",
+        "icon": "⌁",
+        "group": "dermal",
+        "clue": "Hairlike epidermal outgrowths used for protection, defense, or reduced water loss",
+        "detail": "Trichomes are hairlike structures that grow from the epidermis. Depending on the plant, they can deter herbivores, reflect excess light, reduce evaporation, or secrete chemicals."
       },
       {
-        "name": "Ribosome",
-        "icon": "🏭",
-        "group": "shared",
-        "clue": "Translates mRNA into protein",
-        "detail": "Ribosomes synthesize polypeptides; free ribosomes make many cytosolic proteins while bound ribosomes feed proteins into rough ER."
+        "name": "Cork cells",
+        "icon": "▦",
+        "group": "dermal",
+        "clue": "Dead, suberin-rich protective cells that replace epidermis in older stems and roots",
+        "detail": "Cork cells form part of the periderm in woody plants. Their walls contain suberin, a waxy material that reduces water loss and protects underlying tissues."
       },
       {
-        "name": "Rough ER",
-        "icon": "🧵",
-        "group": "shared",
-        "clue": "Ribosome-studded; makes secreted and membrane proteins",
-        "detail": "Rough ER synthesizes and begins processing proteins destined for secretion, membranes, or the endomembrane system."
+        "name": "Meristematic cells",
+        "icon": "+",
+        "group": "growth",
+        "clue": "Undifferentiated cells that actively divide and produce new plant growth",
+        "detail": "Meristematic cells are small, actively dividing cells that can develop into specialized tissues. Apical meristems lengthen roots and shoots, while lateral meristems increase thickness."
       },
       {
-        "name": "Smooth ER",
-        "icon": "🫧",
-        "group": "shared",
-        "clue": "Lipid synthesis + detoxification + Ca²⁺ storage",
-        "detail": "Smooth ER produces lipids, metabolizes carbohydrates, detoxifies chemicals, and stores calcium in some cells."
+        "name": "Palisade mesophyll cells",
+        "icon": "|||",
+        "group": "growth",
+        "clue": "Tightly packed leaf cells rich in chloroplasts; major site of photosynthesis",
+        "detail": "Palisade mesophyll cells are column-shaped cells just below the upper epidermis. They contain many chloroplasts and carry out much of a leaf's photosynthesis."
       },
       {
-        "name": "Golgi apparatus",
-        "icon": "📦",
-        "group": "shared",
-        "clue": "Modify + sort + package proteins and lipids",
-        "detail": "Golgi cisternae receive vesicles from the ER and modify, sort, and ship their contents."
-      },
-      {
-        "name": "Plasma membrane",
-        "icon": "🚪",
-        "group": "shared",
-        "clue": "Selective phospholipid-bilayer barrier",
-        "detail": "The plasma membrane regulates exchange with the environment and participates in cell signaling."
-      },
-      {
-        "name": "Peroxisome",
-        "icon": "🧯",
-        "group": "shared",
-        "clue": "Oxidation reactions; catalase breaks down H₂O₂",
-        "detail": "Peroxisomes contain oxidative enzymes that remove hydrogens from substrates and catalase that converts hydrogen peroxide to water."
-      },
-      {
-        "name": "Cytoskeleton",
-        "icon": "🏗️",
-        "group": "shared",
-        "clue": "Shape + internal transport + cell division",
-        "detail": "Microtubules, microfilaments, and intermediate filaments organize the cell, move components, and help divide it."
-      },
-      {
-        "name": "Amyloplast",
-        "icon": "🥔",
-        "group": "extras",
-        "clue": "Colorless plastid that stores starch",
-        "detail": "Amyloplasts synthesize and store starch, especially in roots and storage tissues; dense amyloplasts also help gravity sensing."
-      },
-      {
-        "name": "Glyoxysome",
-        "icon": "🌱",
-        "group": "extras",
-        "clue": "Specialized plant peroxisome that converts stored fats toward sugars in germinating seeds",
-        "detail": "Glyoxysomes contain enzymes of the glyoxylate cycle, allowing seedlings to use stored lipids before photosynthesis is established."
+        "name": "Spongy mesophyll cells",
+        "icon": "⋯",
+        "group": "growth",
+        "clue": "Loosely arranged leaf cells with air spaces that aid gas exchange",
+        "detail": "Spongy mesophyll cells are separated by large air spaces. These spaces allow carbon dioxide and oxygen to diffuse through the leaf while the cells also perform some photosynthesis."
       }
     ]
   },
