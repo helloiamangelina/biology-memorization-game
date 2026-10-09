@@ -449,7 +449,7 @@
       <div class="hero">
         <div class="hero-emoji">🧬</div>
         <h1>Biology Memorization Game</h1>
-        <p>Learn it once, then spam Level 1 and Level 2 until it is automatic.</p>
+        <p>Learn it once, then spam Level 1, Level 2, and Level 3 until it is automatic.</p>
       </div>
       <div id="topicGrid" class="topic-grid"></div>
     </section>
@@ -475,8 +475,12 @@
             <span class="emoji">🎮</span><strong>Level 1 — Match</strong>
             <span>See the clue and match it to the correct item.</span>
           </button>
+          <button class="mode-card" id="reverseWriteBtn">
+            <strong>Level 2 — Name It</strong>
+            <span>See the definition or function and type the correct term.</span>
+          </button>
           <button class="mode-card" id="writeBtn">
-            <span class="emoji">✍️</span><strong>Level 2 — Write</strong>
+            <strong>Level 3 — Explain It</strong>
             <span>See the item and type the key words for what it does.</span>
           </button>
           <button class="mode-card" id="codonBtn" hidden>
@@ -498,8 +502,12 @@
             <span class="emoji">🎯</span><strong>Deficiencies — Level 1</strong>
             <span>See the key deficiency terms and match them to the vitamin.</span>
           </button>
+          <button class="mode-card" id="defReverseWriteBtn">
+            <strong>Deficiencies — Level 2</strong>
+            <span>See the deficiency description and type the vitamin.</span>
+          </button>
           <button class="mode-card" id="defWriteBtn">
-            <span class="emoji">✍️</span><strong>Deficiencies — Level 2</strong>
+            <strong>Deficiencies — Level 3</strong>
             <span>See the vitamin and type the key deficiency signs in your own words.</span>
           </button>
         </div>
@@ -544,7 +552,7 @@
         <button class="nav-btn" id="writeBackBtn">← Back</button>
         <div class="topic-heading">
           <h2 id="writeTitle"></h2>
-          <p>Level 2: type the key words from memory. You do not need a full sentence.</p>
+          <p id="writeModeDescription">Type your answer from memory.</p>
         </div>
         <button class="nav-btn" id="writeRestartBtn">↻ Restart</button>
       </div>
@@ -1081,6 +1089,113 @@
       }
     ]
   },
+  "cranialNerves": {
+    "title": "Cranial Nerves",
+    "icon": "🧠",
+    "groups": {
+      "sensory": "Sensory only",
+      "motor": "Motor only",
+      "both": "Both sensory + motor"
+    },
+    "items": [
+      {
+        "name": "CN I",
+        "sub": "Olfactory",
+        "icon": "👃",
+        "group": "sensory",
+        "clue": "Smell",
+        "detail": "The olfactory nerve is sensory only. It carries information from smell receptors in the nose to the brain."
+      },
+      {
+        "name": "CN II",
+        "sub": "Optic",
+        "icon": "👁️",
+        "group": "sensory",
+        "clue": "Vision",
+        "detail": "The optic nerve is sensory only. It carries visual information from the retina to the brain."
+      },
+      {
+        "name": "CN III",
+        "sub": "Oculomotor",
+        "icon": "👀",
+        "group": "motor",
+        "clue": "Most eye movements + raises eyelid + constricts pupil",
+        "detail": "The oculomotor nerve is mainly motor. It controls most muscles that move the eye, lifts the upper eyelid, and carries parasympathetic fibers that constrict the pupil."
+      },
+      {
+        "name": "CN IV",
+        "sub": "Trochlear",
+        "icon": "↘️",
+        "group": "motor",
+        "clue": "Superior oblique muscle; moves eye down and inward",
+        "detail": "The trochlear nerve is motor only. It controls the superior oblique muscle, which helps turn the eye downward and inward."
+      },
+      {
+        "name": "CN V",
+        "sub": "Trigeminal",
+        "icon": "🙂",
+        "group": "both",
+        "clue": "Facial sensation + chewing",
+        "detail": "The trigeminal nerve carries most sensation from the face and also controls the major muscles used for chewing."
+      },
+      {
+        "name": "CN VI",
+        "sub": "Abducens",
+        "icon": "↔️",
+        "group": "motor",
+        "clue": "Lateral rectus; moves eye outward",
+        "detail": "The abducens nerve is motor only. It controls the lateral rectus muscle, which abducts the eye—moving it away from the nose."
+      },
+      {
+        "name": "CN VII",
+        "sub": "Facial",
+        "icon": "😊",
+        "group": "both",
+        "clue": "Facial expression + taste from front 2/3 of tongue + tears/saliva",
+        "detail": "The facial nerve controls muscles of facial expression, carries taste from the anterior two-thirds of the tongue, and helps stimulate tear and salivary glands."
+      },
+      {
+        "name": "CN VIII",
+        "sub": "Vestibulocochlear",
+        "icon": "👂",
+        "group": "sensory",
+        "clue": "Hearing + balance",
+        "detail": "The vestibulocochlear nerve is sensory only. Its cochlear branch carries hearing information, while its vestibular branch carries information about balance and head movement."
+      },
+      {
+        "name": "CN IX",
+        "sub": "Glossopharyngeal",
+        "icon": "👅",
+        "group": "both",
+        "clue": "Taste from back 1/3 of tongue + swallowing + parotid saliva",
+        "detail": "The glossopharyngeal nerve carries taste from the posterior one-third of the tongue, helps with swallowing, stimulates the parotid salivary gland, and carries sensory information from the throat and carotid region."
+      },
+      {
+        "name": "CN X",
+        "sub": "Vagus",
+        "icon": "🫀",
+        "group": "both",
+        "clue": "Parasympathetic control of heart, lungs, and gut + swallowing/voice",
+        "detail": "The vagus nerve carries major parasympathetic signals to organs in the chest and abdomen, including the heart and digestive tract. It also helps control swallowing and the voice and carries visceral sensory information."
+      },
+      {
+        "name": "CN XI",
+        "sub": "Accessory",
+        "icon": "💪",
+        "group": "motor",
+        "clue": "Turns head + shrugs shoulders",
+        "detail": "The accessory nerve is motor only. It controls the sternocleidomastoid and trapezius muscles, allowing head turning and shoulder shrugging."
+      },
+      {
+        "name": "CN XII",
+        "sub": "Hypoglossal",
+        "icon": "👅",
+        "group": "motor",
+        "clue": "Tongue movement",
+        "detail": "The hypoglossal nerve is motor only. It controls most muscles that move the tongue for speaking and swallowing."
+      }
+    ]
+  },
   "aminoAcids": {
     "title": "Amino Acids",
     "icon": "🧬",
@@ -1425,134 +1540,169 @@
     ]
   },
   "plantCells": {
-    "title": "Plant Cell Types",
+    "title": "Plant Cells",
     "icon": "🌱",
     "groups": {
-      "ground": "Ground tissue cell types",
-      "xylem": "Xylem water-conducting cells",
-      "phloem": "Phloem sugar-conducting cells",
-      "dermal": "Dermal tissue cell types",
-      "growth": "Growth and leaf cell types"
+      "plantSpecific": "🌿 Plant-specific / especially important",
+      "chloroplast": "☀️ Chloroplast details",
+      "shared": "🔬 Shared eukaryotic organelles",
+      "extras": "🏆 Science Bowl extras"
     },
     "items": [
       {
-        "name": "Parenchyma",
-        "icon": "◻️",
-        "group": "ground",
-        "clue": "Living, thin-walled cells for photosynthesis, storage, metabolism, and repair",
-        "detail": "Parenchyma cells are the most common plant cell type. They are usually alive at maturity, have thin primary walls, and perform jobs such as photosynthesis, food storage, secretion, and wound repair."
+        "name": "Cell wall",
+        "icon": "🧱",
+        "group": "plantSpecific",
+        "clue": "Cellulose-rich support layer outside plasma membrane",
+        "detail": "Plant cell walls resist expansion, provide support, protect the cell, and help prevent excessive water uptake."
       },
       {
-        "name": "Collenchyma",
-        "icon": "↔️",
-        "group": "ground",
-        "clue": "Living cells with unevenly thick primary walls that give flexible support",
-        "detail": "Collenchyma cells support young, growing parts of a plant. Their walls are thicker at the corners, so they strengthen stems and leaves while still allowing them to bend and grow."
+        "name": "Primary cell wall",
+        "icon": "🧱",
+        "group": "plantSpecific",
+        "clue": "Thin flexible wall laid down while a cell is growing",
+        "detail": "The primary wall is relatively thin and extensible so young plant cells can enlarge."
       },
       {
-        "name": "Sclerenchyma",
-        "icon": "⬛",
-        "group": "ground",
-        "clue": "Usually dead at maturity; thick lignified secondary walls provide rigid support",
-        "detail": "Sclerenchyma cells have very thick secondary walls strengthened with lignin. They are usually dead when mature and provide tough, rigid support and protection."
+        "name": "Secondary cell wall",
+        "icon": "🏰",
+        "group": "plantSpecific",
+        "clue": "Strong inner wall deposited after growth; often lignified",
+        "detail": "Many specialized plant cells add a thick secondary wall inside the primary wall after expansion stops."
       },
       {
-        "name": "Fibers",
-        "icon": "〰️",
-        "group": "ground",
-        "clue": "Long, slender sclerenchyma cells specialized for strength",
-        "detail": "Fibers are elongated sclerenchyma cells with thick lignified walls. They occur in bundles and give strong mechanical support to stems, leaves, and vascular tissue."
+        "name": "Middle lamella",
+        "icon": "🧴",
+        "group": "plantSpecific",
+        "clue": "Pectin-rich layer that glues neighboring plant cells together",
+        "detail": "The middle lamella lies between adjacent primary walls and acts like a cellular cement."
       },
       {
-        "name": "Sclereids",
-        "icon": "◆",
-        "group": "ground",
-        "clue": "Short, irregular sclerenchyma cells that make tissues hard or gritty",
-        "detail": "Sclereids are short, thick-walled sclerenchyma cells. They form hard structures such as nutshells and seed coats and create the gritty texture in fruits such as pears."
+        "name": "Central vacuole",
+        "icon": "💧",
+        "group": "plantSpecific",
+        "clue": "Large storage compartment; maintains turgor pressure",
+        "detail": "The central vacuole stores water, ions, pigments, and wastes and helps maintain cell rigidity through turgor pressure."
       },
       {
-        "name": "Tracheids",
-        "icon": "│",
-        "group": "xylem",
-        "clue": "Long, narrow, tapered xylem cells; dead at maturity; conduct water through pits",
-        "detail": "Tracheids are dead, lignified water-conducting cells found in all vascular plants. Water moves between them through pits in their walls. Their narrow shape also provides structural support."
+        "name": "Tonoplast",
+        "icon": "🫧",
+        "group": "plantSpecific",
+        "clue": "Membrane surrounding the central vacuole",
+        "detail": "The tonoplast regulates transport between the cytosol and the vacuole."
       },
       {
-        "name": "Vessel elements",
-        "icon": "║",
-        "group": "xylem",
-        "clue": "Shorter, wider xylem cells that join end-to-end into vessels for rapid water transport",
-        "detail": "Vessel elements are dead at maturity and have perforated end walls. Many vessel elements line up to form a continuous vessel, allowing water to move efficiently through the plant."
+        "name": "Plasmodesmata",
+        "icon": "🔗",
+        "group": "plantSpecific",
+        "clue": "Channels through cell walls connecting neighboring cytoplasm",
+        "detail": "Plasmodesmata allow water, solutes, and signals to pass directly between adjacent plant cells."
       },
       {
-        "name": "Sieve-tube elements",
-        "icon": "⇣",
-        "group": "phloem",
-        "clue": "Living phloem cells that transport sugars and other organic nutrients",
-        "detail": "Sieve-tube elements form long tubes that move sugar-rich sap through the plant. They are alive but lose their nucleus at maturity and depend on companion cells for metabolic support."
+        "name": "Chloroplast",
+        "icon": "☀️",
+        "group": "chloroplast",
+        "clue": "Organelle of photosynthesis; has its own DNA",
+        "detail": "Chloroplasts convert light energy into chemical energy and contain thylakoid membranes suspended in stroma."
       },
       {
-        "name": "Companion cells",
-        "icon": "●",
-        "group": "phloem",
-        "clue": "Nucleated cells that support sieve-tube elements and help load and unload sugars",
-        "detail": "Companion cells sit next to sieve-tube elements and keep them functioning. They use active transport to help move sugars into and out of the phloem."
+        "name": "Thylakoid",
+        "icon": "🥞",
+        "group": "chloroplast",
+        "clue": "Membrane sac where light reactions occur",
+        "detail": "Thylakoid membranes contain chlorophyll, photosystems, electron carriers, and ATP synthase."
       },
       {
-        "name": "Epidermal cells",
-        "icon": "▭",
-        "group": "dermal",
-        "clue": "Outer protective cells covering young plant organs",
-        "detail": "Epidermal cells form the outer surface of leaves, stems, and roots. They protect internal tissues and often secrete a waxy cuticle that reduces water loss."
+        "name": "Granum",
+        "sub": "plural: grana",
+        "icon": "🥞",
+        "group": "chloroplast",
+        "clue": "Stack of thylakoids",
+        "detail": "Grana are stacks of thylakoid discs that increase membrane surface area for the light reactions."
       },
       {
-        "name": "Guard cells",
-        "icon": "()",
-        "group": "dermal",
-        "clue": "Paired cells that open and close stomata to control gas exchange and water loss",
-        "detail": "Guard cells change shape as their water pressure changes. This opens or closes the stomatal pore, regulating carbon dioxide entry and limiting water loss through transpiration."
+        "name": "Stroma",
+        "icon": "🟢",
+        "group": "chloroplast",
+        "clue": "Fluid around thylakoids; Calvin cycle occurs here",
+        "detail": "The chloroplast stroma contains enzymes for the Calvin cycle plus chloroplast DNA and ribosomes."
       },
       {
-        "name": "Root hair cells",
-        "icon": "〰",
-        "group": "dermal",
-        "clue": "Epidermal cells with long extensions that increase absorption surface area",
-        "detail": "Root hair cells greatly increase the root's surface area, helping the plant absorb water and mineral ions from the soil."
+        "name": "Nucleus",
+        "icon": "🧠",
+        "group": "shared",
+        "clue": "Stores most DNA; controls gene expression",
+        "detail": "The nucleus houses most chromosomes and is the main site of DNA replication and transcription."
       },
       {
-        "name": "Trichomes",
-        "icon": "⌁",
-        "group": "dermal",
-        "clue": "Hairlike epidermal outgrowths used for protection, defense, or reduced water loss",
-        "detail": "Trichomes are hairlike structures that grow from the epidermis. Depending on the plant, they can deter herbivores, reflect excess light, reduce evaporation, or secrete chemicals."
+        "name": "Mitochondrion",
+        "icon": "⚡",
+        "group": "shared",
+        "clue": "Cellular respiration + most aerobic ATP production",
+        "detail": "Mitochondria oxidize fuels and generate ATP through the citric acid cycle and oxidative phosphorylation."
       },
       {
-        "name": "Cork cells",
-        "icon": "▦",
-        "group": "dermal",
-        "clue": "Dead, suberin-rich protective cells that replace epidermis in older stems and roots",
-        "detail": "Cork cells form part of the periderm in woody plants. Their walls contain suberin, a waxy material that reduces water loss and protects underlying tissues."
+        "name": "Ribosome",
+        "icon": "🏭",
+        "group": "shared",
+        "clue": "Translates mRNA into protein",
+        "detail": "Ribosomes synthesize polypeptides; free ribosomes make many cytosolic proteins while bound ribosomes feed proteins into rough ER."
       },
       {
-        "name": "Meristematic cells",
-        "icon": "+",
-        "group": "growth",
-        "clue": "Undifferentiated cells that actively divide and produce new plant growth",
-        "detail": "Meristematic cells are small, actively dividing cells that can develop into specialized tissues. Apical meristems lengthen roots and shoots, while lateral meristems increase thickness."
+        "name": "Rough ER",
+        "icon": "🧵",
+        "group": "shared",
+        "clue": "Ribosome-studded; makes secreted and membrane proteins",
+        "detail": "Rough ER synthesizes and begins processing proteins destined for secretion, membranes, or the endomembrane system."
       },
       {
-        "name": "Palisade mesophyll cells",
-        "icon": "|||",
-        "group": "growth",
-        "clue": "Tightly packed leaf cells rich in chloroplasts; major site of photosynthesis",
-        "detail": "Palisade mesophyll cells are column-shaped cells just below the upper epidermis. They contain many chloroplasts and carry out much of a leaf's photosynthesis."
+        "name": "Smooth ER",
+        "icon": "🫧",
+        "group": "shared",
+        "clue": "Lipid synthesis + detoxification + Ca²⁺ storage",
+        "detail": "Smooth ER produces lipids, metabolizes carbohydrates, detoxifies chemicals, and stores calcium in some cells."
       },
       {
-        "name": "Spongy mesophyll cells",
-        "icon": "⋯",
-        "group": "growth",
-        "clue": "Loosely arranged leaf cells with air spaces that aid gas exchange",
-        "detail": "Spongy mesophyll cells are separated by large air spaces. These spaces allow carbon dioxide and oxygen to diffuse through the leaf while the cells also perform some photosynthesis."
+        "name": "Golgi apparatus",
+        "icon": "📦",
+        "group": "shared",
+        "clue": "Modify + sort + package proteins and lipids",
+        "detail": "Golgi cisternae receive vesicles from the ER and modify, sort, and ship their contents."
+      },
+      {
+        "name": "Plasma membrane",
+        "icon": "🚪",
+        "group": "shared",
+        "clue": "Selective phospholipid-bilayer barrier",
+        "detail": "The plasma membrane regulates exchange with the environment and participates in cell signaling."
+      },
+      {
+        "name": "Peroxisome",
+        "icon": "🧯",
+        "group": "shared",
+        "clue": "Oxidation reactions; catalase breaks down H₂O₂",
+        "detail": "Peroxisomes contain oxidative enzymes that remove hydrogens from substrates and catalase that converts hydrogen peroxide to water."
+      },
+      {
+        "name": "Cytoskeleton",
+        "icon": "🏗️",
+        "group": "shared",
+        "clue": "Shape + internal transport + cell division",
+        "detail": "Microtubules, microfilaments, and intermediate filaments organize the cell, move components, and help divide it."
+      },
+      {
+        "name": "Amyloplast",
+        "icon": "🥔",
+        "group": "extras",
+        "clue": "Colorless plastid that stores starch",
+        "detail": "Amyloplasts synthesize and store starch, especially in roots and storage tissues; dense amyloplasts also help gravity sensing."
+      },
+      {
+        "name": "Glyoxysome",
+        "icon": "🌱",
+        "group": "extras",
+        "clue": "Specialized plant peroxisome that converts stored fats toward sugars in germinating seeds",
+        "detail": "Glyoxysomes contain enzymes of the glyoxylate cycle, allowing seedlings to use stored lipids before photosynthesis is established."
       }
     ]
   },
@@ -2333,6 +2483,7 @@
     let writeMistakes = 0;
     let writeLocked = false;
     let writeWrongStreak = 0;
+    let writeLevel = 3; // Level 2 = clue -> term; Level 3 = term -> function/traits
 
     let codonOrder = [];
     let codonIndex = 0;
@@ -2511,7 +2662,9 @@
       $("mistakeStat").textContent = mistakes;
     }
 
-    // ---------- LEVEL 2: WRITE KEY WORDS ----------
+    // ---------- LEVEL 2 + LEVEL 3 WRITTEN RECALL ----------
+    // Level 2: definition/function -> write the term.
+    // Level 3: term -> write the key function/traits (the old Level 2).
     const STOP_WORDS = new Set([
       "a","an","the","and","or","of","to","in","on","for","with","from","by","as","at","is","are","be","being","that","this","these","those","it","its","their","into","through","during","used","use","uses","helps","help","important","major","often","usually","can","may","many","some","one","two","three","most","more","less","normal"
     ]);
@@ -2591,15 +2744,53 @@
       if (keyCount === 2) needed = 2;
       else if (keyCount >= 3 && keyCount <= 5) needed = 2;
       else if (keyCount >= 6) needed = 3;
-      // Very short answers that directly contain the full clue should pass.
       const fullPhrase = (userText || "").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
       const cluePhrase = item.clue.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
       const pass = uniqueMatches >= needed || (cluePhrase && fullPhrase.includes(cluePhrase));
       return { pass, matched: uniqueMatches, needed, clueTokens: clue };
     }
 
-    function startWriteGame() {
-      finishMode = "level2";
+    function normalizeNameAnswer(text) {
+      return (text || "")
+        .toLowerCase()
+        .replace(/β/g, "beta")
+        .replace(/α/g, "alpha")
+        .replace(/κ/g, "kappa")
+        .replace(/λ/g, "lambda")
+        .replace(/[^a-z0-9]+/g, " ")
+        .replace(/\b(vitamin|the)\b/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function nameAnswerVariants(item) {
+      const variants = new Set();
+      const add = value => {
+        const v = normalizeNameAnswer(value);
+        if (!v) return;
+        variants.add(v);
+        // Also allow a harmless omitted final "cell/cells" in plant-cell-type answers.
+        variants.add(v.replace(/\bcell(s)?\b/g, "").replace(/\s+/g, " ").trim());
+      };
+      add(item.name);
+      if (item.sub) add(item.sub);
+      add((item.name || "").replace(/\([^)]*\)/g, ""));
+      if (item.sub) add(`${item.name} ${item.sub}`);
+      return [...variants].filter(Boolean);
+    }
+
+    function nameAnswerScore(userText, item) {
+      const user = normalizeNameAnswer(userText);
+      if (!user) return { pass: false };
+      const userNoCell = user.replace(/\bcell(s)?\b/g, "").replace(/\s+/g, " ").trim();
+      const variants = nameAnswerVariants(item);
+      const pass = variants.some(v => user === v || userNoCell === v);
+      return { pass, variants };
+    }
+
+    function startWriteGame(level = 3) {
+      writeLevel = level;
+      finishMode = level === 2 ? "level2" : "level3";
       const topic = practiceTopic();
       writeOrder = shuffle(topic.items);
       writeIndex = 0;
@@ -2607,20 +2798,39 @@
       writeMistakes = 0;
       writeLocked = false;
       writeWrongStreak = 0;
-      $("writeTitle").textContent = `${topic.title} — Level 2`;
-      $("writeInstruction").textContent = practiceMode === "deficiency"
-        ? "What are the key deficiency signs when this vitamin is lacking?"
-        : "What are the key function / traits of this item?";
+
+      if (writeLevel === 2) {
+        $("writeTitle").textContent = `${topic.title} — Level 2`;
+        $("writeModeDescription").textContent = "Level 2: read the definition or function and type the correct term.";
+        $("writeInstruction").textContent = practiceMode === "deficiency"
+          ? "Which vitamin matches this deficiency description?"
+          : "What term matches this definition or function?";
+        $("writeInput").placeholder = practiceMode === "deficiency" ? "Type the vitamin…" : "Type the term…";
+      } else {
+        $("writeTitle").textContent = `${topic.title} — Level 3`;
+        $("writeModeDescription").textContent = "Level 3: see the term and type its key function or defining traits.";
+        $("writeInstruction").textContent = practiceMode === "deficiency"
+          ? "What are the key deficiency signs when this vitamin is lacking?"
+          : "What are the key function / traits of this item?";
+        $("writeInput").placeholder = "Type key words here…";
+      }
+
       showScreen("writeGameScreen");
       showWriteQuestion();
     }
 
     function showWriteQuestion() {
-      if (writeIndex >= writeOrder.length) { finishGame("level2"); return; }
+      if (writeIndex >= writeOrder.length) { finishGame(writeLevel === 2 ? "level2" : "level3"); return; }
       writeLocked = false;
       writeWrongStreak = 0;
       const item = writeOrder[writeIndex];
-      $("writePrompt").innerHTML = `<div><div class="prompt-name">${item.name}</div>${item.sub ? `<div class="prompt-sub">${item.sub}</div>` : ""}</div>`;
+
+      if (writeLevel === 2) {
+        $("writePrompt").innerHTML = `<div><div class="prompt-name">${item.clue}</div></div>`;
+      } else {
+        $("writePrompt").innerHTML = `<div><div class="prompt-name">${item.name}</div>${item.sub ? `<div class="prompt-sub">${item.sub}</div>` : ""}</div>`;
+      }
+
       $("writeInput").value = "";
       $("writeInput").disabled = false;
       $("writeSubmitBtn").disabled = false;
@@ -2634,6 +2844,13 @@
     }
 
     function fullWriteExplanation(item, heading = "Full explanation") {
+      if (writeLevel === 2) {
+        return `
+          <div class="quick-answer"><strong>Answer:</strong> ${item.name}${item.sub ? ` — ${item.sub}` : ""}</div>
+          <div class="quick-answer"><strong>Key clue:</strong> ${item.clue}</div>
+          <div class="full-explanation"><strong>${heading}:</strong> ${item.detail}</div>
+        `;
+      }
       return `
         <div class="quick-answer"><strong>Key answer:</strong> ${item.clue}</div>
         <div class="full-explanation"><strong>${heading}:</strong> ${item.detail}</div>
@@ -2651,7 +2868,9 @@
         $("writeFeedback").textContent = "Answer revealed — read the explanation, then continue.";
         $("writeFeedback").className = "feedback";
       } else {
-        $("writeFeedback").textContent = "Correct key idea! Read the full explanation below.";
+        $("writeFeedback").textContent = writeLevel === 2
+          ? "Correct term. Read the full explanation below."
+          : "Correct key idea. Read the full explanation below.";
         $("writeFeedback").className = "feedback good";
       }
       writeIndex++;
@@ -2662,24 +2881,30 @@
       if (writeLocked) return;
       const text = $("writeInput").value.trim();
       if (!text) {
-        $("writeFeedback").textContent = "Type at least one key word first.";
+        $("writeFeedback").textContent = "Type an answer first.";
         $("writeFeedback").className = "feedback bad";
         return;
       }
+
       writeAttempts++;
       const item = writeOrder[writeIndex];
-      const score = keywordScore(text, item);
+      const score = writeLevel === 2 ? nameAnswerScore(text, item) : keywordScore(text, item);
+
       if (score.pass) {
         writeWrongStreak = 0;
         completeWriteQuestion(item, false);
       } else {
         writeMistakes++;
         writeWrongStreak++;
-        $("writeFeedback").textContent = `Not enough yet — you matched ${score.matched} key idea${score.matched === 1 ? "" : "s"}. Try again.`;
+        $("writeFeedback").textContent = writeLevel === 2
+          ? "Not quite — try the exact biological term again."
+          : `Not enough yet — you matched ${score.matched} key idea${score.matched === 1 ? "" : "s"}. Try again.`;
         $("writeFeedback").className = "feedback bad";
         $("writeReveal").textContent = writeWrongStreak >= 3
           ? "Three misses on this item. You can keep trying or reveal the answer."
-          : "Think of the shortest phrase you would put on a flashcard.";
+          : (writeLevel === 2
+              ? "Think of the exact name you would put on a flashcard."
+              : "Think of the shortest phrase you would put on a flashcard.");
         if (writeWrongStreak >= 3) $("writeRevealBtn").hidden = false;
         updateWriteStats();
       }
@@ -2801,16 +3026,17 @@
           ? "Perfect: all 64 codons with no mistakes."
           : `You finished all 64 codons with ${codonMistakes} mistake${codonMistakes === 1 ? "" : "s"}.`;
         $("reviewBtn").textContent = "📖 Review codons";
-      } else if (mode === "level2") {
+      } else if (mode === "level2" || mode === "level3") {
         const topic = practiceTopic();
-        $("finishTitle").textContent = `${topic.title} Level 2 complete!`;
+        const levelLabel = mode === "level2" ? "Level 2" : "Level 3";
+        $("finishTitle").textContent = `${topic.title} ${levelLabel} complete!`;
         $("finishText").textContent = writeMistakes === 0
           ? `Perfect recall: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
-          : `You recalled all ${topic.items.length} items with ${writeMistakes} mistake${writeMistakes === 1 ? "" : "s"}.`;
-        $("reviewBtn").textContent = "📚 Review";
+          : `You finished all ${topic.items.length} items with ${writeMistakes} mistake${writeMistakes === 1 ? "" : "s"}.`;
+        $("reviewBtn").textContent = "Review";
       } else {
         const topic = practiceTopic();
-        $("finishTitle").textContent = `${topic.icon} ${topic.title} Level 1 complete!`;
+        $("finishTitle").textContent = `${topic.title} Level 1 complete!`;
         $("finishText").textContent = mistakes === 0
           ? `Perfect run: ${topic.items.length} out of ${topic.items.length} with no mistakes.`
           : `You finished all ${topic.items.length} items with ${mistakes} mistake${mistakes === 1 ? "" : "s"}.`;
@@ -2821,7 +3047,8 @@
 
     function playAgainFromFinish() {
       if (finishMode === "codon") startCodonGame();
-      else if (finishMode === "level2") startWriteGame();
+      else if (finishMode === "level2") startWriteGame(2);
+      else if (finishMode === "level3") startWriteGame(3);
       else startGame();
     }
 
@@ -2843,12 +3070,14 @@
     $("writeBackBtn").addEventListener("click", () => showScreen("topicScreen"));
     $("learnBtn").addEventListener("click", () => { practiceMode = "function"; startLearn(); });
     $("playBtn").addEventListener("click", () => { practiceMode = "function"; startGame(); });
-    $("writeBtn").addEventListener("click", () => { practiceMode = "function"; startWriteGame(); });
+    $("reverseWriteBtn").addEventListener("click", () => { practiceMode = "function"; startWriteGame(2); });
+    $("writeBtn").addEventListener("click", () => { practiceMode = "function"; startWriteGame(3); });
     $("defLearnBtn").addEventListener("click", () => { practiceMode = "deficiency"; startLearn(); });
     $("defPlayBtn").addEventListener("click", () => { practiceMode = "deficiency"; startGame(); });
-    $("defWriteBtn").addEventListener("click", () => { practiceMode = "deficiency"; startWriteGame(); });
+    $("defReverseWriteBtn").addEventListener("click", () => { practiceMode = "deficiency"; startWriteGame(2); });
+    $("defWriteBtn").addEventListener("click", () => { practiceMode = "deficiency"; startWriteGame(3); });
     $("restartBtn").addEventListener("click", startGame);
-    $("writeRestartBtn").addEventListener("click", startWriteGame);
+    $("writeRestartBtn").addEventListener("click", () => startWriteGame(writeLevel));
     $("writeSubmitBtn").addEventListener("click", submitWriteAnswer);
     $("writeRevealBtn").addEventListener("click", revealWriteAnswer);
     $("writeNextBtn").addEventListener("click", nextWriteQuestion);
