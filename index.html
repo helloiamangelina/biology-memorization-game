@@ -3077,6 +3077,760 @@
       }
     ]
   },
+  "virusConcepts": {
+  "title": "Virus Core Concepts",
+  "icon": "🦠",
+  "sessionSize": 24,
+  "groups": {
+    "structure": "Structure & host interaction",
+    "replication": "Replication cycles",
+    "defense": "Host defense & biotechnology",
+    "other": "Viroids, prions & emerging viruses"
+  },
+  "items": [
+    {
+      "name": "Virus",
+      "sub": "Acellular infectious particle",
+      "icon": "🦠",
+      "group": "structure",
+      "clue": "Nucleic acid in a protein coat; cannot reproduce or carry out metabolism outside a host cell",
+      "detail": "Viruses are much simpler than cells. They contain a DNA or RNA genome packaged in a protein coat and depend on host cells for reproduction and metabolism."
+    },
+    {
+      "name": "Capsid",
+      "sub": "Protein shell",
+      "icon": "🧩",
+      "group": "structure",
+      "clue": "Protein coat that encloses the viral genome",
+      "detail": "The capsid surrounds and protects the viral nucleic acid. The genome plus capsid together are called the nucleocapsid."
+    },
+    {
+      "name": "Capsomere",
+      "sub": "Capsid protein subunit",
+      "icon": "🧱",
+      "group": "structure",
+      "clue": "Repeated protein subunit used to build a viral capsid",
+      "detail": "Capsids are assembled from many protein subunits called capsomeres, often using only a small number of different protein types."
+    },
+    {
+      "name": "Viral envelope",
+      "sub": "Host-derived membrane around some viruses",
+      "icon": "⭕",
+      "group": "structure",
+      "clue": "Membranous outer layer derived largely from a previous host cell; contains viral glycoproteins",
+      "detail": "Many animal viruses, including influenza viruses and coronaviruses, have a lipid envelope derived from host membranes and studded with viral proteins."
+    },
+    {
+      "name": "Viral glycoprotein",
+      "sub": "Attachment/fusion protein",
+      "icon": "🔑",
+      "group": "structure",
+      "clue": "Surface protein that binds host receptors and can help the viral envelope fuse with the cell membrane",
+      "detail": "Viral glycoproteins are encoded by the virus and protrude from the envelope. Their fit with host receptors is a major determinant of which cells a virus can infect."
+    },
+    {
+      "name": "Bacteriophage",
+      "sub": "Phage",
+      "icon": "🧫",
+      "group": "structure",
+      "clue": "Virus that infects bacteria",
+      "detail": "Bacteriophages, or phages, infect bacterial cells. Many have an icosahedral head containing DNA plus a tail used to attach to and inject the genome into bacteria."
+    },
+    {
+      "name": "Host range",
+      "sub": "Which hosts/cells a virus can infect",
+      "icon": "🎯",
+      "group": "structure",
+      "clue": "Limited set of host species or cell types that a particular virus can infect",
+      "detail": "Host range depends largely on whether viral surface proteins can recognize appropriate receptors on a host cell. Many viruses are also restricted to particular tissues."
+    },
+    {
+      "name": "Obligate intracellular parasite",
+      "sub": "Virus replication requirement",
+      "icon": "🏠",
+      "group": "structure",
+      "clue": "Must reproduce inside a living host cell because it lacks its own complete metabolic and protein-making machinery",
+      "detail": "Viruses lack ribosomes and many metabolic enzymes, so they depend on host cells for nucleotides, amino acids, ATP, translation machinery, and other components needed to make new virions."
+    },
+    {
+      "name": "Lytic cycle",
+      "sub": "Host cell is lysed",
+      "icon": "💥",
+      "group": "replication",
+      "clue": "Viral replication cycle that ends with the host cell breaking open and releasing new viruses",
+      "detail": "During a lytic cycle, viral genes redirect the host to make viral genomes and proteins, new virions assemble, and the cell is ultimately lysed to release them."
+    },
+    {
+      "name": "Lysogenic cycle",
+      "sub": "Viral genome persists in host",
+      "icon": "🧬",
+      "group": "replication",
+      "clue": "Phage genome is maintained in the host without immediately killing it and can later switch to the lytic cycle",
+      "detail": "In lysogeny, a temperate phage genome can integrate into the bacterial chromosome and be copied whenever the bacterium divides. Environmental signals can later induce a switch to lytic growth."
+    },
+    {
+      "name": "Virulent phage",
+      "sub": "Lytic-only phage",
+      "icon": "💥",
+      "group": "replication",
+      "clue": "Phage that replicates only through the lytic cycle",
+      "detail": "A virulent phage immediately uses the host to make progeny and ultimately lyses the bacterial cell rather than establishing a lysogenic state."
+    },
+    {
+      "name": "Temperate phage",
+      "sub": "Can be lytic or lysogenic",
+      "icon": "🔀",
+      "group": "replication",
+      "clue": "Phage capable of both lytic growth and lysogeny",
+      "detail": "Temperate phages such as lambda can either begin a lytic cycle or integrate into the host chromosome and remain largely silent as a prophage."
+    },
+    {
+      "name": "Prophage",
+      "sub": "Integrated phage DNA",
+      "icon": "🧬",
+      "group": "replication",
+      "clue": "Phage genome integrated into a bacterial chromosome during lysogeny",
+      "detail": "A prophage is copied together with bacterial DNA and passed to daughter cells. It can later leave the chromosome and initiate a lytic cycle."
+    },
+    {
+      "name": "Provirus",
+      "sub": "Integrated animal-virus DNA",
+      "icon": "🧬",
+      "group": "replication",
+      "clue": "Viral DNA integrated into a eukaryotic host chromosome, as in retroviral infection",
+      "detail": "Retroviruses such as HIV make DNA from their RNA genome and integrate that DNA into a host chromosome. The integrated viral DNA is called a provirus."
+    },
+    {
+      "name": "Reverse transcriptase",
+      "sub": "RNA → DNA enzyme",
+      "icon": "↩️",
+      "group": "replication",
+      "clue": "Uses viral RNA as a template to synthesize DNA",
+      "detail": "Retroviruses carry reverse transcriptase, which reverses the usual direction of transcription by making a DNA copy from an RNA template."
+    },
+    {
+      "name": "RNA-dependent RNA polymerase",
+      "sub": "RNA → RNA enzyme",
+      "icon": "🧬",
+      "group": "replication",
+      "clue": "Viral enzyme that copies RNA from an RNA template",
+      "detail": "Cells generally do not have enzymes that copy RNA genomes from RNA templates, so RNA viruses encode or carry RNA-dependent RNA polymerases for genome replication."
+    },
+    {
+      "name": "Restriction enzyme",
+      "sub": "Bacterial defense nuclease",
+      "icon": "✂️",
+      "group": "defense",
+      "clue": "Bacterial enzyme that recognizes particular DNA sequences and cuts foreign DNA such as phage DNA",
+      "detail": "Restriction enzymes can destroy invading phage DNA. A bacterium protects its own recognition sites by DNA modifications such as methylation."
+    },
+    {
+      "name": "CRISPR-Cas system",
+      "sub": "Adaptive prokaryotic defense",
+      "icon": "🧬",
+      "group": "defense",
+      "clue": "Bacterial/archaeal defense that stores pieces of past phage DNA and uses guide RNAs with Cas nucleases to cut matching invaders",
+      "detail": "CRISPR spacer DNA can originate from previous phage infections. After transcription, guide RNAs direct Cas proteins such as Cas9 to complementary phage DNA for cleavage."
+    },
+    {
+      "name": "Vaccine",
+      "sub": "Preventive immune training",
+      "icon": "💉",
+      "group": "defense",
+      "clue": "Harmless pathogen component or information that stimulates protective immune defenses before exposure to the dangerous pathogen",
+      "detail": "Vaccination prepares adaptive immunity to recognize a pathogen. Vaccines have been central to preventing viral diseases and were used to eradicate smallpox."
+    },
+    {
+      "name": "Viroid",
+      "sub": "Tiny infectious RNA",
+      "icon": "🧬",
+      "group": "other",
+      "clue": "Small circular RNA pathogen of plants with no protein capsid",
+      "detail": "Viroids are only a few hundred nucleotides long and replicate in plant cells using cellular enzymes. They can disrupt gene regulation and cause abnormal plant development."
+    },
+    {
+      "name": "Prion",
+      "sub": "Infectious misfolded protein",
+      "icon": "🧠",
+      "group": "other",
+      "clue": "Misfolded protein that converts normal versions of the protein into the same abnormal form",
+      "detail": "Prions contain no nucleic acid. Their aggregation damages brain function and can cause slowly developing degenerative diseases such as mad cow disease and kuru."
+    },
+    {
+      "name": "Emerging virus",
+      "sub": "Newly apparent viral threat",
+      "icon": "📈",
+      "group": "other",
+      "clue": "Virus that suddenly becomes apparent or expands as a disease threat",
+      "detail": "Emergence can result from viral mutation, spread from a previously isolated population, or transmission from other animal species into humans."
+    },
+    {
+      "name": "Reassortment",
+      "sub": "Segmented-virus genome mixing",
+      "icon": "🔀",
+      "group": "other",
+      "clue": "Mixing of genome segments when different strains of a segmented virus infect the same cell",
+      "detail": "Influenza viruses have segmented RNA genomes. Coinfection by different strains can allow RNA segments to be packaged in new combinations, producing genetically novel viruses."
+    }
+  ]
+},
+  "virusClasses": {
+  "title": "Virus Classes & Groups",
+  "icon": "🧬",
+  "groups": {
+    "dsDNA": "Class I — double-stranded DNA",
+    "ssDNA": "Class II — single-stranded DNA",
+    "dsRNA": "Class III — double-stranded RNA",
+    "posRNA": "Class IV — positive-sense ssRNA",
+    "negRNA": "Class V — negative-sense ssRNA",
+    "retro": "Class VI — ssRNA → DNA (retroviruses)"
+  },
+  "items": [
+    {
+      "name": "Class I",
+      "sub": "Double-stranded DNA (dsDNA)",
+      "aliases": [
+        "class 1",
+        "dsDNA",
+        "double stranded DNA"
+      ],
+      "icon": "1️⃣",
+      "group": "dsDNA",
+      "clue": "Genome is double-stranded DNA",
+      "detail": "The chapter's Class I animal viruses have dsDNA genomes. Examples listed are adenovirus, papillomavirus, polyomavirus, herpesvirus, and poxvirus."
+    },
+    {
+      "name": "Adenovirus",
+      "sub": "Class I dsDNA",
+      "icon": "🧬",
+      "group": "dsDNA",
+      "clue": "Non-enveloped dsDNA group associated with respiratory infections",
+      "detail": "Adenoviruses are listed as non-enveloped double-stranded DNA viruses that can infect the respiratory tract."
+    },
+    {
+      "name": "Papillomavirus",
+      "sub": "Class I dsDNA",
+      "aliases": [
+        "HPV",
+        "human papillomavirus"
+      ],
+      "icon": "🧬",
+      "group": "dsDNA",
+      "clue": "Non-enveloped dsDNA group; warts and cervical cancer",
+      "detail": "Papillomaviruses are non-enveloped dsDNA viruses. Human papillomaviruses can cause warts, and some types are associated with cervical cancer."
+    },
+    {
+      "name": "Polyomavirus",
+      "sub": "Class I dsDNA",
+      "icon": "🧬",
+      "group": "dsDNA",
+      "clue": "Non-enveloped dsDNA group associated with tumors",
+      "detail": "Polyomaviruses are listed in the chapter as non-enveloped double-stranded DNA viruses associated with tumors."
+    },
+    {
+      "name": "Herpesvirus",
+      "sub": "Class I dsDNA",
+      "aliases": [
+        "herpes virus"
+      ],
+      "icon": "🧬",
+      "group": "dsDNA",
+      "clue": "Enveloped dsDNA group that includes Epstein-Barr virus",
+      "detail": "Herpesviruses are enveloped double-stranded DNA viruses and include Epstein-Barr virus among many medically important members."
+    },
+    {
+      "name": "Poxvirus",
+      "sub": "Class I dsDNA",
+      "icon": "🧬",
+      "group": "dsDNA",
+      "clue": "Enveloped dsDNA group that includes smallpox and cowpox viruses",
+      "detail": "Poxviruses are enveloped double-stranded DNA viruses. The chapter lists smallpox and cowpox as examples."
+    },
+    {
+      "name": "Class II",
+      "sub": "Single-stranded DNA (ssDNA)",
+      "aliases": [
+        "class 2",
+        "ssDNA",
+        "single stranded DNA"
+      ],
+      "icon": "2️⃣",
+      "group": "ssDNA",
+      "clue": "Genome is single-stranded DNA",
+      "detail": "The chapter's Class II animal viruses have ssDNA genomes. Parvovirus is the example listed."
+    },
+    {
+      "name": "Parvovirus",
+      "sub": "Class II ssDNA",
+      "icon": "🧬",
+      "group": "ssDNA",
+      "clue": "Non-enveloped ssDNA group; includes parvovirus B19",
+      "detail": "Parvoviruses are non-enveloped single-stranded DNA viruses. The chapter gives parvovirus B19, which can cause a mild rash, as an example."
+    },
+    {
+      "name": "Class III",
+      "sub": "Double-stranded RNA (dsRNA)",
+      "aliases": [
+        "class 3",
+        "dsRNA",
+        "double stranded RNA"
+      ],
+      "icon": "3️⃣",
+      "group": "dsRNA",
+      "clue": "Genome is double-stranded RNA",
+      "detail": "The chapter's Class III animal viruses have dsRNA genomes. Reovirus is the group listed."
+    },
+    {
+      "name": "Reovirus",
+      "sub": "Class III dsRNA",
+      "icon": "🧬",
+      "group": "dsRNA",
+      "clue": "Non-enveloped dsRNA group; diarrhea and Colorado tick fever are listed examples",
+      "detail": "Reoviruses are non-enveloped double-stranded RNA viruses. The chapter associates this group with diarrhea and Colorado tick fever virus."
+    },
+    {
+      "name": "Class IV",
+      "sub": "Positive-sense single-stranded RNA (+ssRNA)",
+      "aliases": [
+        "class 4",
+        "positive sense ssRNA",
+        "+ssRNA",
+        "positive RNA"
+      ],
+      "icon": "4️⃣",
+      "group": "posRNA",
+      "clue": "ssRNA genome can directly serve as mRNA after infection",
+      "detail": "Class IV viruses have positive-sense single-stranded RNA genomes that can be translated directly as mRNA. The chapter lists picornavirus, coronavirus, flavivirus, and togavirus groups."
+    },
+    {
+      "name": "Picornavirus",
+      "sub": "Class IV +ssRNA",
+      "aliases": [
+        "picornaviruses"
+      ],
+      "icon": "🧬",
+      "group": "posRNA",
+      "clue": "Non-enveloped +ssRNA group; rhinovirus, poliovirus, and hepatitis A virus",
+      "detail": "Picornaviruses are non-enveloped positive-sense ssRNA viruses. The chapter lists rhinovirus, poliovirus, and hepatitis A virus as examples."
+    },
+    {
+      "name": "Coronavirus",
+      "sub": "Class IV +ssRNA",
+      "aliases": [
+        "coronaviruses"
+      ],
+      "icon": "🧬",
+      "group": "posRNA",
+      "clue": "Enveloped +ssRNA group; SARS, MERS, and COVID-19 viruses",
+      "detail": "Coronaviruses are enveloped positive-sense ssRNA viruses. The chapter lists SARS virus, MERS-CoV, and SARS-CoV-2/COVID-19 among the important examples."
+    },
+    {
+      "name": "Flavivirus",
+      "sub": "Class IV +ssRNA",
+      "aliases": [
+        "flaviviruses"
+      ],
+      "icon": "🧬",
+      "group": "posRNA",
+      "clue": "Enveloped +ssRNA group; Zika, yellow fever, and West Nile viruses",
+      "detail": "Flaviviruses are enveloped positive-sense ssRNA viruses. The chapter lists Zika virus, yellow fever virus, and West Nile virus."
+    },
+    {
+      "name": "Togavirus",
+      "sub": "Class IV +ssRNA",
+      "aliases": [
+        "togaviruses"
+      ],
+      "icon": "🧬",
+      "group": "posRNA",
+      "clue": "Enveloped +ssRNA group; chikungunya, rubella, and equine encephalitis viruses",
+      "detail": "Togaviruses are listed as enveloped positive-sense ssRNA viruses, with chikungunya, rubella, and equine encephalitis as examples."
+    },
+    {
+      "name": "Class V",
+      "sub": "Negative-sense single-stranded RNA (−ssRNA)",
+      "aliases": [
+        "class 5",
+        "negative sense ssRNA",
+        "-ssRNA",
+        "negative RNA"
+      ],
+      "icon": "5️⃣",
+      "group": "negRNA",
+      "clue": "ssRNA genome must first be copied into complementary mRNA",
+      "detail": "Class V viruses have negative-sense single-stranded RNA genomes that serve as templates for mRNA synthesis. The chapter lists filo-, orthomyxo-, paramyxo-, and rhabdovirus groups."
+    },
+    {
+      "name": "Filovirus",
+      "sub": "Class V −ssRNA",
+      "aliases": [
+        "filoviruses"
+      ],
+      "icon": "🧬",
+      "group": "negRNA",
+      "clue": "Enveloped −ssRNA group; Ebola virus",
+      "detail": "Filoviruses are enveloped negative-sense ssRNA viruses. Ebola virus is the major example listed in the chapter."
+    },
+    {
+      "name": "Orthomyxovirus",
+      "sub": "Class V −ssRNA",
+      "aliases": [
+        "orthomyxoviruses"
+      ],
+      "icon": "🧬",
+      "group": "negRNA",
+      "clue": "Enveloped −ssRNA group; influenza viruses",
+      "detail": "Orthomyxoviruses are enveloped negative-sense ssRNA viruses. Influenza viruses are the major example, and their segmented genomes allow reassortment."
+    },
+    {
+      "name": "Paramyxovirus",
+      "sub": "Class V −ssRNA",
+      "aliases": [
+        "paramyxoviruses"
+      ],
+      "icon": "🧬",
+      "group": "negRNA",
+      "clue": "Enveloped −ssRNA group; measles and mumps viruses",
+      "detail": "Paramyxoviruses are enveloped negative-sense ssRNA viruses. The chapter lists measles virus and mumps virus as examples."
+    },
+    {
+      "name": "Rhabdovirus",
+      "sub": "Class V −ssRNA",
+      "aliases": [
+        "rhabdoviruses"
+      ],
+      "icon": "🧬",
+      "group": "negRNA",
+      "clue": "Enveloped −ssRNA group; rabies virus",
+      "detail": "Rhabdoviruses are enveloped negative-sense ssRNA viruses. Rabies virus is the example listed in the chapter."
+    },
+    {
+      "name": "Class VI",
+      "sub": "ssRNA → DNA (retroviruses)",
+      "aliases": [
+        "class 6",
+        "retrovirus class",
+        "RNA to DNA"
+      ],
+      "icon": "6️⃣",
+      "group": "retro",
+      "clue": "ssRNA genome is reverse-transcribed into DNA before integration into the host genome",
+      "detail": "Class VI retroviruses carry RNA but use reverse transcriptase to make DNA, which integrates into the host chromosome as a provirus."
+    },
+    {
+      "name": "Retrovirus",
+      "sub": "Class VI ssRNA → DNA",
+      "aliases": [
+        "retroviruses"
+      ],
+      "icon": "🧬",
+      "group": "retro",
+      "clue": "Enveloped RNA group that uses reverse transcriptase; includes HIV and HTLV-1",
+      "detail": "Retroviruses are enveloped viruses that reverse-transcribe their RNA genome into DNA. The chapter lists HIV and HTLV-1 as examples."
+    }
+  ]
+},
+  "majorViruses": {
+  "title": "Major Viruses",
+  "icon": "🦠",
+  "sessionSize": 28,
+  "groups": {
+    "dna": "DNA viruses",
+    "positive": "Positive-sense RNA viruses",
+    "negative": "Negative-sense RNA viruses",
+    "retro": "Retroviruses",
+    "phage": "Bacteriophages & plant virus"
+  },
+  "items": [
+    {
+      "name": "Adenovirus",
+      "sub": "Non-enveloped dsDNA virus",
+      "icon": "🦠",
+      "group": "dna",
+      "clue": "Respiratory-tract virus; non-enveloped double-stranded DNA",
+      "detail": "Adenoviruses are non-enveloped dsDNA viruses that can infect the respiratory tract."
+    },
+    {
+      "name": "Human papillomavirus",
+      "sub": "HPV; papillomavirus",
+      "aliases": [
+        "HPV",
+        "papillomavirus"
+      ],
+      "icon": "🦠",
+      "group": "dna",
+      "clue": "Non-enveloped dsDNA virus associated with warts and cervical cancer",
+      "detail": "Human papillomaviruses are non-enveloped dsDNA viruses. Some cause warts, while high-risk types are associated with cervical cancer."
+    },
+    {
+      "name": "Epstein-Barr virus",
+      "sub": "EBV; herpesvirus",
+      "aliases": [
+        "EBV",
+        "Epstein Barr virus"
+      ],
+      "icon": "🦠",
+      "group": "dna",
+      "clue": "Enveloped dsDNA herpesvirus highlighted as an important herpesvirus example",
+      "detail": "Epstein-Barr virus is a member of the enveloped dsDNA herpesvirus group and is one of the medically important herpesviruses highlighted in the chapter."
+    },
+    {
+      "name": "Variola virus",
+      "sub": "Smallpox; poxvirus",
+      "aliases": [
+        "smallpox virus",
+        "smallpox",
+        "variola"
+      ],
+      "icon": "🦠",
+      "group": "dna",
+      "clue": "Enveloped dsDNA poxvirus that causes smallpox; disease eradicated by vaccination",
+      "detail": "Variola virus is the smallpox virus, a poxvirus. A worldwide vaccination program eradicated smallpox."
+    },
+    {
+      "name": "Parvovirus B19",
+      "sub": "Non-enveloped ssDNA virus",
+      "aliases": [
+        "B19",
+        "B19 parvovirus"
+      ],
+      "icon": "🦠",
+      "group": "dna",
+      "clue": "Non-enveloped single-stranded DNA virus; mild rash is a classic clue",
+      "detail": "Parvovirus B19 is a non-enveloped ssDNA virus listed in the chapter as causing a mild rash."
+    },
+    {
+      "name": "Rhinovirus",
+      "sub": "Picornavirus; +ssRNA",
+      "aliases": [
+        "rhinoviruses"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Non-enveloped +ssRNA picornavirus; classic common-cold virus of the upper respiratory tract",
+      "detail": "Rhinoviruses are picornaviruses with positive-sense ssRNA genomes. They are major causes of the common cold and infect cells lining the upper respiratory tract."
+    },
+    {
+      "name": "Poliovirus",
+      "sub": "Picornavirus; +ssRNA",
+      "aliases": [
+        "polio virus"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Non-enveloped +ssRNA picornavirus that can permanently damage mature nerve cells",
+      "detail": "Poliovirus is a picornavirus. The chapter contrasts repairable respiratory epithelium with permanent damage to mature nerve cells caused by poliovirus."
+    },
+    {
+      "name": "Hepatitis A virus",
+      "sub": "HAV; picornavirus; +ssRNA",
+      "aliases": [
+        "HAV",
+        "hepatitis A"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Non-enveloped +ssRNA picornavirus; hepatitis A",
+      "detail": "Hepatitis A virus is listed as a member of the non-enveloped positive-sense ssRNA picornavirus group."
+    },
+    {
+      "name": "SARS-CoV-2",
+      "sub": "Coronavirus; +ssRNA",
+      "aliases": [
+        "SARS CoV 2",
+        "COVID virus",
+        "COVID-19 virus"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Enveloped +ssRNA coronavirus that causes COVID-19; Spike binds ACE2 on airway cells",
+      "detail": "SARS-CoV-2 is an enveloped coronavirus that causes COVID-19. Its Spike protein binds ACE2 receptors on human airway cells."
+    },
+    {
+      "name": "MERS-CoV",
+      "sub": "Coronavirus; +ssRNA",
+      "aliases": [
+        "MERS",
+        "Middle East respiratory syndrome coronavirus"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Enveloped +ssRNA coronavirus that causes Middle East respiratory syndrome",
+      "detail": "MERS-CoV is an enveloped coronavirus listed alongside SARS viruses as an important human coronavirus."
+    },
+    {
+      "name": "Zika virus",
+      "sub": "Flavivirus; +ssRNA",
+      "aliases": [
+        "Zika"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Enveloped +ssRNA flavivirus; infection during pregnancy linked to babies with abnormally small brains",
+      "detail": "Zika virus is an enveloped flavivirus. The chapter notes that infections are often mild but infection during pregnancy was associated with a major increase in babies born with abnormally small brains."
+    },
+    {
+      "name": "West Nile virus",
+      "sub": "Flavivirus; +ssRNA",
+      "aliases": [
+        "West Nile"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Enveloped +ssRNA flavivirus with a broad host range",
+      "detail": "West Nile virus is an enveloped flavivirus. The chapter uses it as an example of a virus that can infect multiple host species."
+    },
+    {
+      "name": "Yellow fever virus",
+      "sub": "Flavivirus; +ssRNA",
+      "aliases": [
+        "yellow fever"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Enveloped +ssRNA flavivirus; yellow fever",
+      "detail": "Yellow fever virus is listed as an enveloped positive-sense RNA flavivirus."
+    },
+    {
+      "name": "Chikungunya virus",
+      "sub": "Togavirus; +ssRNA",
+      "aliases": [
+        "chikungunya"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Mosquito-borne enveloped +ssRNA virus; fever, rash, and persistent joint pain",
+      "detail": "The chapter describes chikungunya as a mosquito-borne virus that can cause fever, rashes, and persistent joint pain."
+    },
+    {
+      "name": "Rubella virus",
+      "sub": "Togavirus; +ssRNA",
+      "aliases": [
+        "rubella"
+      ],
+      "icon": "🦠",
+      "group": "positive",
+      "clue": "Enveloped +ssRNA virus in the togavirus group; vaccine-preventable rubella",
+      "detail": "Rubella virus is listed in the enveloped positive-sense RNA togavirus group. The chapter also notes that vaccination is available against rubella."
+    },
+    {
+      "name": "Ebola virus",
+      "sub": "Filovirus; −ssRNA",
+      "aliases": [
+        "Ebola"
+      ],
+      "icon": "🦠",
+      "group": "negative",
+      "clue": "Enveloped −ssRNA filovirus; hemorrhagic fever with severe bleeding and circulatory collapse",
+      "detail": "Ebola virus is an enveloped filovirus. The chapter describes Ebola disease as a potentially fatal hemorrhagic fever with fever, vomiting, massive bleeding, and circulatory collapse."
+    },
+    {
+      "name": "Influenza virus",
+      "sub": "Orthomyxovirus; −ssRNA",
+      "aliases": [
+        "influenza",
+        "flu virus"
+      ],
+      "icon": "🦠",
+      "group": "negative",
+      "clue": "Enveloped −ssRNA orthomyxovirus with a segmented RNA genome that can reassort",
+      "detail": "Influenza viruses are enveloped orthomyxoviruses. Their genomes are segmented, allowing reassortment when different strains infect the same host cell."
+    },
+    {
+      "name": "Measles virus",
+      "sub": "Paramyxovirus; −ssRNA",
+      "aliases": [
+        "measles"
+      ],
+      "icon": "🦠",
+      "group": "negative",
+      "clue": "Enveloped −ssRNA paramyxovirus with a very narrow human host range; vaccine-preventable",
+      "detail": "Measles virus is an enveloped paramyxovirus. The chapter gives it as an example of a virus with a narrow host range and notes that an effective vaccine exists."
+    },
+    {
+      "name": "Mumps virus",
+      "sub": "Paramyxovirus; −ssRNA",
+      "aliases": [
+        "mumps"
+      ],
+      "icon": "🦠",
+      "group": "negative",
+      "clue": "Enveloped −ssRNA paramyxovirus; vaccine-preventable mumps",
+      "detail": "Mumps virus is listed as an enveloped negative-sense RNA paramyxovirus, and vaccination is available to prevent mumps."
+    },
+    {
+      "name": "Rabies virus",
+      "sub": "Rhabdovirus; −ssRNA",
+      "aliases": [
+        "rabies"
+      ],
+      "icon": "🦠",
+      "group": "negative",
+      "clue": "Enveloped −ssRNA rhabdovirus; rabies",
+      "detail": "Rabies virus is the major example listed for the enveloped negative-sense RNA rhabdovirus group."
+    },
+    {
+      "name": "HIV",
+      "sub": "Retrovirus; RNA → DNA",
+      "aliases": [
+        "human immunodeficiency virus"
+      ],
+      "icon": "🦠",
+      "group": "retro",
+      "clue": "Enveloped retrovirus that uses reverse transcriptase and integrates a provirus; causes AIDS",
+      "detail": "HIV is a retrovirus. Reverse transcriptase makes viral DNA from the RNA genome, and that DNA integrates into the host chromosome as a provirus."
+    },
+    {
+      "name": "HTLV-1",
+      "sub": "Retrovirus; RNA → DNA",
+      "aliases": [
+        "HTLV1",
+        "human T cell leukemia virus 1"
+      ],
+      "icon": "🦠",
+      "group": "retro",
+      "clue": "Enveloped retrovirus associated with leukemia",
+      "detail": "HTLV-1 is listed with HIV as a retrovirus and is associated with leukemia."
+    },
+    {
+      "name": "T4 bacteriophage",
+      "sub": "T-even phage of E. coli",
+      "aliases": [
+        "T4 phage",
+        "T4"
+      ],
+      "icon": "🦠",
+      "group": "phage",
+      "clue": "Virulent E. coli phage with an icosahedral head, tail, and tail fibers; classic lytic cycle",
+      "detail": "T4 is a T-even bacteriophage that attaches to E. coli using tail fibers, injects its DNA, makes phage parts, self-assembles, and lyses the bacterium to release progeny."
+    },
+    {
+      "name": "Lambda phage",
+      "sub": "Temperate bacteriophage",
+      "aliases": [
+        "phage lambda",
+        "lambda bacteriophage",
+        "lambda"
+      ],
+      "icon": "🦠",
+      "group": "phage",
+      "clue": "Temperate E. coli phage that can choose lytic or lysogenic growth and form a prophage",
+      "detail": "Lambda phage can either replicate lytically or integrate into the E. coli chromosome as a prophage during the lysogenic cycle."
+    },
+    {
+      "name": "Tobacco mosaic virus",
+      "sub": "TMV; plant RNA virus",
+      "aliases": [
+        "TMV",
+        "tobacco mosaic"
+      ],
+      "icon": "🦠",
+      "group": "phage",
+      "clue": "Plant RNA virus with a rigid rod-shaped helical capsid",
+      "detail": "Tobacco mosaic virus has a rigid rod-shaped capsid built from many copies of one protein arranged helically. It is a classic plant RNA virus."
+    }
+  ]
+},
   "aminoAcids": {
     "title": "Amino Acids",
     "icon": "🧬",
@@ -4403,6 +5157,9 @@
         "cranialNerves",
         "majorEnzymes",
         "enzymeMega",
+        "virusConcepts",
+        "virusClasses",
+        "majorViruses",
         "aminoAcids",
         "antibodies",
         "plantCells",
@@ -4682,6 +5439,7 @@
       };
       add(item.name);
       if (item.sub) add(item.sub);
+      if (Array.isArray(item.aliases)) item.aliases.forEach(add);
       add((item.name || "").replace(/\([^)]*\)/g, ""));
       if (item.sub) add(`${item.name} ${item.sub}`);
       return [...variants].filter(Boolean);
