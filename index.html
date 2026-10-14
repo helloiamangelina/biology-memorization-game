@@ -5445,9 +5445,75 @@
       return [...variants].filter(Boolean);
     }
 
+    function isCranialNerveItem(item) {
+      return Boolean(
+        item &&
+        item.sub &&
+        /^CN\s+(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)$/i.test(item.name || "")
+      );
+    }
+
+    function romanCranialNumberToArabic(roman) {
+      const map = {
+        I: "1", II: "2", III: "3", IV: "4", V: "5", VI: "6",
+        VII: "7", VIII: "8", IX: "9", X: "10", XI: "11", XII: "12"
+      };
+      return map[(roman || "").toUpperCase()] || "";
+    }
+
+    function cranialNerveNumber(item) {
+      const match = (item.name || "").match(/^CN\s+(I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)$/i);
+      if (!match) return { roman: "", arabic: "" };
+      return {
+        roman: match[1].toLowerCase(),
+        arabic: romanCranialNumberToArabic(match[1])
+      };
+    }
+
+    function cranialNameOnly(text) {
+      return normalizeNameAnswer(text)
+        .replace(/\b(?:cranial|nerve|cn)\b/g, " ")
+        .replace(/\b(?:i|ii|iii|iv|v|vi|vii|viii|ix|x|xi|xii|[1-9]|1[0-2])\b/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
     function nameAnswerScore(userText, item) {
       const user = normalizeNameAnswer(userText);
       if (!user) return { pass: false };
+
+      // Cranial nerves are intentionally forgiving:
+      // - the nerve NAME by itself is enough;
+      // - the CN number is optional;
+      // - if a number is included, its position does not matter;
+      // - writing "nerve" / "cranial nerve" is optional.
+      // This means "optic", "optic nerve", "CN II optic",
+      // "optic CN II", "2 optic", etc. all count.
+      if (isCranialNerveItem(item)) {
+        const expectedName = cranialNameOnly(item.sub);
+        const typedName = cranialNameOnly(userText);
+
+        if (typedName && typedName === expectedName) {
+          return { pass: true, variants: [item.sub, item.name, `${item.name} ${item.sub}`] };
+        }
+
+        // Also allow the correct CN number by itself if the student chooses to answer that way.
+        const number = cranialNerveNumber(item);
+        const userTokens = new Set(user.split(/\s+/).filter(Boolean));
+        const hasCorrectNumber =
+          (number.roman && userTokens.has(number.roman)) ||
+          (number.arabic && userTokens.has(number.arabic));
+
+        const onlyGenericOrNumber =
+          cranialNameOnly(userText) === "";
+
+        if (hasCorrectNumber && onlyGenericOrNumber) {
+          return { pass: true, variants: [item.sub, item.name, `${item.name} ${item.sub}`] };
+        }
+
+        return { pass: false, variants: [item.sub, item.name, `${item.name} ${item.sub}`] };
+      }
+
       const userNoCell = user.replace(/\bcell(s)?\b/g, "").replace(/\s+/g, " ").trim();
       const variants = nameAnswerVariants(item);
       const pass = variants.some(v => user === v || userNoCell === v);
