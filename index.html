@@ -512,6 +512,29 @@
           </button>
         </div>
       </div>
+
+      <div id="vitaminFoodSection" class="practice-section" hidden>
+        <h3>🍎 Vitamin food sources</h3>
+        <p class="section-note">A third vitamin track: learn the representative foods that are especially useful to associate with each vitamin. These are high-yield examples, not exhaustive food lists.</p>
+        <div class="mode-grid">
+          <button class="mode-card" id="foodLearnBtn">
+            <span class="emoji">📖</span><strong>Food Sources — Learn</strong>
+            <span>Click each vitamin to see representative foods that supply it.</span>
+          </button>
+          <button class="mode-card" id="foodPlayBtn">
+            <strong>Food Sources — Level 1</strong>
+            <span>See a set of foods and match them to the vitamin.</span>
+          </button>
+          <button class="mode-card" id="foodReverseWriteBtn">
+            <strong>Food Sources — Level 2</strong>
+            <span>See representative foods and type the vitamin.</span>
+          </button>
+          <button class="mode-card" id="foodWriteBtn">
+            <strong>Food Sources — Level 3</strong>
+            <span>See the vitamin and type at least two representative food sources.</span>
+          </button>
+        </div>
+      </div>
     </section>
 
     <section id="learnScreen" class="screen" hidden>
@@ -4471,6 +4494,12 @@
       {
         "name": "Syndermata / Rotifera",
         "sub": "Rotifers + acanthocephalans",
+        "aliases": [
+          "Syndermata",
+          "Rotifera",
+          "rotifer",
+          "rotifers"
+        ],
         "icon": "⚙️",
         "group": "loph",
         "clue": "Microscopic rotifers with ciliated corona; complete digestive tract",
@@ -5105,7 +5134,85 @@
       "codonMenuScreen","codonLearnScreen","codonGameScreen","finishScreen"
     ];
     let currentTopicKey = null;
-    let practiceMode = "function"; // "function" or the separate vitamin "deficiency" track
+    // Separate vitamin food-source practice track.
+    // These are representative high-yield foods, not exhaustive lists.
+    const vitaminFoodTopic = {
+      title: "Vitamin Food Sources",
+      icon: "🍎",
+      groups: {
+        water: "💧 Water-soluble vitamins",
+        fat: "🧈 Fat-soluble vitamins (ADEK)"
+      },
+      items: [
+        {
+          name: "B1", sub: "Thiamine", icon: "🍖", group: "water", requiredMatches: 2,
+          clue: "Pork + whole or enriched grains + beans and legumes",
+          detail: "Good sources of thiamine include pork, whole grains and enriched grain products, beans, lentils, peas, nuts, and seeds. For fast recall, associate B1 especially with pork, grains, and legumes."
+        },
+        {
+          name: "B2", sub: "Riboflavin", icon: "🥛", group: "water", requiredMatches: 2,
+          clue: "Milk and dairy + eggs + meat + enriched grains",
+          detail: "Riboflavin is found in milk and other dairy foods, eggs, meat, liver, mushrooms, almonds, and enriched grains. Dairy is one of the easiest high-yield associations for B2."
+        },
+        {
+          name: "B3", sub: "Niacin", icon: "🐟", group: "water", requiredMatches: 2,
+          clue: "Poultry + fish + meat + peanuts + enriched grains",
+          detail: "Niacin is abundant in poultry, fish, meat, peanuts, legumes, and enriched or whole grains. The body can also make some niacin from the amino acid tryptophan."
+        },
+        {
+          name: "B5", sub: "Pantothenic acid", icon: "🥑", group: "water", requiredMatches: 2,
+          clue: "Widely distributed: chicken or beef + potatoes + mushrooms + avocados",
+          detail: "Pantothenic acid is widespread in foods. Useful examples are chicken, beef, organ meats, potatoes, mushrooms, avocados, whole grains, eggs, and legumes. Its name comes from a root meaning 'from everywhere,' which is a good memory cue."
+        },
+        {
+          name: "B6", sub: "Pyridoxine", icon: "🍌", group: "water", requiredMatches: 2,
+          clue: "Poultry + fish + chickpeas + potatoes + bananas",
+          detail: "Vitamin B6 is found in poultry, fish, chickpeas, potatoes and other starchy vegetables, bananas, and fortified cereals. Chickpeas and poultry are especially useful anchors."
+        },
+        {
+          name: "B7", sub: "Biotin", icon: "🥚", group: "water", requiredMatches: 2,
+          clue: "Egg yolk + liver + nuts and seeds + legumes",
+          detail: "Biotin occurs in egg yolk, liver and other organ meats, nuts, seeds, legumes, and some vegetables. Raw egg white contains avidin, a protein that can bind biotin and reduce its absorption if consumed in very large amounts over time."
+        },
+        {
+          name: "B9", sub: "Folate", icon: "🥬", group: "water", requiredMatches: 2,
+          clue: "Dark leafy greens + beans or lentils + citrus + fortified grains",
+          detail: "Folate is found naturally in dark leafy green vegetables, beans, lentils, peas, asparagus, avocado, and citrus fruits. Folic acid is the fortified form added to many breads, cereals, and grain products."
+        },
+        {
+          name: "B12", sub: "Cobalamin", icon: "🐚", group: "water", requiredMatches: 2,
+          clue: "Animal foods: meat or shellfish + fish + eggs + dairy; fortified foods",
+          detail: "Vitamin B12 is naturally concentrated in animal foods such as meat, liver, fish, shellfish, eggs, milk, and other dairy products. People eating no animal products rely on fortified foods or supplements because ordinary plant foods are not reliable natural sources."
+        },
+        {
+          name: "C", sub: "Ascorbic acid", icon: "🍊", group: "water", requiredMatches: 2,
+          clue: "Citrus + strawberries + bell peppers + broccoli",
+          detail: "Vitamin C is abundant in citrus fruits, strawberries, kiwi, guava, bell peppers, broccoli, Brussels sprouts, tomatoes, and many other fruits and vegetables. Orange or citrus plus bell pepper is an easy pair to remember."
+        },
+        {
+          name: "A", sub: "Retinoids / carotenoids", icon: "🥕", group: "fat", requiredMatches: 2,
+          clue: "Liver + eggs or dairy; beta-carotene from carrots + sweet potatoes + dark leafy greens",
+          detail: "Preformed vitamin A is found in liver, fish oils, eggs, and dairy foods. Plants provide carotenoids such as beta-carotene, which the body can convert to vitamin A; rich sources include carrots, sweet potatoes, pumpkin, spinach, and other dark leafy greens."
+        },
+        {
+          name: "D", sub: "Calciferol", icon: "🐟", group: "fat", requiredMatches: 2,
+          clue: "Fatty fish + egg yolks + fortified milk or plant milks",
+          detail: "Food sources of vitamin D include fatty fish such as salmon, trout, sardines, and tuna, egg yolks, and foods fortified with vitamin D such as many milks, plant milks, and cereals. The skin can also make vitamin D after UVB exposure, but sunlight is not a food source."
+        },
+        {
+          name: "E", sub: "Tocopherols", icon: "🌻", group: "fat", requiredMatches: 2,
+          clue: "Nuts and seeds + vegetable oils + wheat germ + avocado",
+          detail: "Vitamin E is especially abundant in nuts, seeds, and plant oils. Useful examples include almonds, sunflower seeds, sunflower or safflower oil, wheat-germ oil, peanuts, avocado, and spinach."
+        },
+        {
+          name: "K", sub: "Phylloquinone / menaquinones", icon: "🥦", group: "fat", requiredMatches: 2,
+          clue: "Leafy greens such as kale or spinach + broccoli + Brussels sprouts",
+          detail: "Vitamin K1 is especially abundant in green leafy vegetables such as kale, spinach, collard greens, and other greens, as well as broccoli and Brussels sprouts. Some fermented and animal foods also provide forms of vitamin K2."
+        }
+      ]
+    };
+
+    let practiceMode = "function"; // "function", vitamin "deficiency", or vitamin "food" track
     let quizOrder = [];
     let level1Items = [];
     let quizIndex = 0;
@@ -5188,9 +5295,10 @@
       $("topicTitle").textContent = `${topic.icon} ${topic.title}`;
       $("codonBtn").hidden = key !== "aminoAcids";
       $("vitaminDeficiencySection").hidden = key !== "vitamins";
+      $("vitaminFoodSection").hidden = key !== "vitamins";
       $("primaryModeHeading").textContent = key === "vitamins" ? "Functions & roles" : "Functions & defining traits";
       $("primaryModeNote").textContent = key === "vitamins"
-        ? "First master what each vitamin does, then use the separate deficiency section below."
+        ? "First master what each vitamin does, then use the separate deficiency and food-source sections below."
         : (topic.sessionSize
             ? `Learn the full bank here. Each game session samples ${topic.sessionSize} items so the board stays usable; replay for a new mix.`
             : "Learn what each item does, then practice matching and written recall.");
@@ -5199,9 +5307,9 @@
 
     function currentTopic() { return topics[currentTopicKey]; }
     function practiceTopic() {
-      return currentTopicKey === "vitamins" && practiceMode === "deficiency"
-        ? vitaminDeficiencyTopic
-        : currentTopic();
+      if (currentTopicKey === "vitamins" && practiceMode === "deficiency") return vitaminDeficiencyTopic;
+      if (currentTopicKey === "vitamins" && practiceMode === "food") return vitaminFoodTopic;
+      return currentTopic();
     }
 
     function createItemCard(item, className, showIcon = true) {
@@ -5218,7 +5326,11 @@
     // ---------- LEARN ----------
     function startLearn() {
       const topic = practiceTopic();
-      $("learnTitle").textContent = practiceMode === "deficiency" ? `📖 Learn ${topic.title}` : `📚 Learn ${topic.title}`;
+      $("learnTitle").textContent = practiceMode === "deficiency"
+        ? `📖 Learn ${topic.title}`
+        : practiceMode === "food"
+          ? `📖 Learn ${topic.title}`
+          : `📚 Learn ${topic.title}`;
       const wrap = $("learnGroups");
       wrap.innerHTML = "";
 
@@ -5240,7 +5352,12 @@
         wrap.appendChild(grid);
       });
 
-      $("infoPanel").innerHTML = `<div class="big-emoji">👆</div><div><h3>Click any card</h3><p>${practiceMode === "deficiency" ? "Its key deficiency signs and a plain-language explanation will appear here." : "Its quick clue and explanation will appear here."}</p></div>`;
+      const introCopy = practiceMode === "deficiency"
+        ? "Its key deficiency signs and a plain-language explanation will appear here."
+        : practiceMode === "food"
+          ? "Representative food sources and a short explanation will appear here."
+          : "Its quick clue and explanation will appear here.";
+      $("infoPanel").innerHTML = `<div class="big-emoji">👆</div><div><h3>Click any card</h3><p>${introCopy}</p></div>`;
       showScreen("learnScreen");
     }
 
@@ -5249,7 +5366,7 @@
         <div class="big-emoji">${item.icon || "🔹"}</div>
         <div>
           <h3>${item.name}${item.sub ? ` — ${item.sub}` : ""}</h3>
-          <p><strong>${practiceMode === "deficiency" ? "Deficiency signature" : "Quick clue"}:</strong> ${item.clue}<br><br>${item.detail}</p>
+          <p><strong>${practiceMode === "deficiency" ? "Deficiency signature" : practiceMode === "food" ? "Representative food sources" : "Quick clue"}:</strong> ${item.clue}<br><br>${item.detail}</p>
         </div>`;
     }
 
@@ -5406,7 +5523,8 @@
       const uniqueMatches = new Set([...matched, ...clueMatched]).size;
       const keyCount = clue.length;
       let needed = 1;
-      if (keyCount === 2) needed = 2;
+      if (typeof item.requiredMatches === "number") needed = item.requiredMatches;
+      else if (keyCount === 2) needed = 2;
       else if (keyCount >= 3 && keyCount <= 5) needed = 2;
       else if (keyCount >= 6) needed = 3;
       const fullPhrase = (userText || "").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -5514,9 +5632,44 @@
         return { pass: false, variants: [item.sub, item.name, `${item.name} ${item.sub}`] };
       }
 
-      const userNoCell = user.replace(/\bcell(s)?\b/g, "").replace(/\s+/g, " ").trim();
+      const cleanLoose = value => (value || "")
+        .replace(/\b(?:cell|cells|phylum|group|class|type|nerve|cranial)\b/g, " ")
+        .replace(/\b(?:and|or|the|a|an)\b/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      const userLoose = cleanLoose(user);
       const variants = nameAnswerVariants(item);
-      const pass = variants.some(v => user === v || userNoCell === v);
+
+      const containsWholePhrase = (haystack, needle) => {
+        if (!needle) return false;
+        const h = ` ${haystack} `;
+        const n = ` ${needle} `;
+        return h.includes(n);
+      };
+
+      const sameWordsAnyOrder = (a, b) => {
+        const aa = a.split(" ").filter(Boolean).sort();
+        const bb = b.split(" ").filter(Boolean).sort();
+        return aa.length === bb.length && aa.every((word, i) => word === bb[i]);
+      };
+
+      const pass = variants.some(v => {
+        const variantLoose = cleanLoose(v);
+
+        // Exact match.
+        if (user === v || userLoose === variantLoose) return true;
+
+        // Same correct words in a different order.
+        if (variantLoose && sameWordsAnyOrder(userLoose, variantLoose)) return true;
+
+        // Allow harmless extra wording around a recognized answer/alias.
+        // Example: "rotifers and syndermata" still contains the valid alias "syndermata".
+        if (variantLoose && containsWholePhrase(userLoose, variantLoose)) return true;
+
+        return false;
+      });
+
       return { pass, variants };
     }
 
@@ -5539,15 +5692,19 @@
         $("writeModeDescription").textContent = "Level 2: read the definition or function and type the correct term.";
         $("writeInstruction").textContent = practiceMode === "deficiency"
           ? "Which vitamin matches this deficiency description?"
-          : "What term matches this definition or function?";
-        $("writeInput").placeholder = practiceMode === "deficiency" ? "Type the vitamin…" : "Type the term…";
+          : practiceMode === "food"
+            ? "Which vitamin is strongly associated with these food sources?"
+            : "What term matches this definition or function?";
+        $("writeInput").placeholder = (practiceMode === "deficiency" || practiceMode === "food") ? "Type the vitamin…" : "Type the term…";
       } else {
         $("writeTitle").textContent = `${topic.title} — Level 3`;
         $("writeModeDescription").textContent = "Level 3: see the term and type its key function or defining traits.";
         $("writeInstruction").textContent = practiceMode === "deficiency"
           ? "What are the key deficiency signs when this vitamin is lacking?"
-          : "What are the key function / traits of this item?";
-        $("writeInput").placeholder = "Type key words here…";
+          : practiceMode === "food"
+            ? "Type at least two representative food sources for this vitamin."
+            : "What are the key function / traits of this item?";
+        $("writeInput").placeholder = practiceMode === "food" ? "Type food sources here…" : "Type key words here…";
       }
 
       showScreen("writeGameScreen");
@@ -5639,7 +5796,9 @@
           ? "Three misses on this item. You can keep trying or reveal the answer."
           : (writeLevel === 2
               ? "Think of the exact name you would put on a flashcard."
-              : "Think of the shortest phrase you would put on a flashcard.");
+              : practiceMode === "food"
+                ? "Try naming two foods you strongly associate with this vitamin."
+                : "Think of the shortest phrase you would put on a flashcard.");
         if (writeWrongStreak >= 3) $("writeRevealBtn").hidden = false;
         updateWriteStats();
       }
@@ -5811,6 +5970,10 @@
     $("defPlayBtn").addEventListener("click", () => { practiceMode = "deficiency"; startGame(); });
     $("defReverseWriteBtn").addEventListener("click", () => { practiceMode = "deficiency"; startWriteGame(2); });
     $("defWriteBtn").addEventListener("click", () => { practiceMode = "deficiency"; startWriteGame(3); });
+    $("foodLearnBtn").addEventListener("click", () => { practiceMode = "food"; startLearn(); });
+    $("foodPlayBtn").addEventListener("click", () => { practiceMode = "food"; startGame(); });
+    $("foodReverseWriteBtn").addEventListener("click", () => { practiceMode = "food"; startWriteGame(2); });
+    $("foodWriteBtn").addEventListener("click", () => { practiceMode = "food"; startWriteGame(3); });
     $("restartBtn").addEventListener("click", startGame);
     $("writeRestartBtn").addEventListener("click", () => startWriteGame(writeLevel));
     $("writeSubmitBtn").addEventListener("click", submitWriteAnswer);
