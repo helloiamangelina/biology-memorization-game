@@ -278,6 +278,19 @@
     .action-btn { padding: 13px 18px; font-weight: 800; }
     .action-btn.primary { background: linear-gradient(135deg, var(--primary), var(--primary2)); color: white; }
 
+    .species-learn-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }
+    .species-example-card { border:2px solid transparent; border-radius:18px; background:var(--card); box-shadow:0 7px 20px rgba(38,49,82,.10); padding:16px; text-align:left; cursor:pointer; transition:transform .14s ease,border-color .14s ease; }
+    .species-example-card:hover { transform:translateY(-3px); border-color:rgba(90,103,216,.35); }
+    .species-latin { font-size:18px; font-weight:850; font-style:italic; margin-bottom:4px; }
+    .species-common { color:var(--muted); font-size:13px; font-weight:700; margin-bottom:8px; }
+    .species-mini-clue { color:#4f5a6a; font-size:14px; line-height:1.45; }
+    .species-question { width:min(720px,100%); margin:14px auto 16px; min-height:150px; border:3px solid #8b93d8; background:linear-gradient(135deg,#f4f5ff,#e9ebff); border-radius:22px; box-shadow:0 10px 26px rgba(60,70,130,.14); padding:24px; text-align:center; }
+    .species-question .species-latin { font-size:27px; margin-bottom:6px; }
+    .species-question .species-common { font-size:15px; margin-bottom:14px; }
+    .species-question .species-trait { font-size:18px; line-height:1.5; font-weight:750; color:#3f4858; }
+    .classification-answer-grid .answer-card { min-height:92px; }
+    #speciesInfoPanel { grid-template-columns:1fr; }
+
     @media (max-width: 700px) {
       .mode-grid { grid-template-columns: 1fr; }
       .topbar { align-items: flex-start; }
@@ -490,6 +503,21 @@
         </div>
       </div>
 
+      <div id="speciesChallengeSection" class="practice-section" hidden>
+        <h3>Organism → Group Classification</h3>
+        <p id="speciesChallengeNote" class="section-note">Use an actual organism and its traits to infer the most specific phylum or group in this course list.</p>
+        <div class="mode-grid">
+          <button class="mode-card" id="speciesLearnBtn">
+            <strong>Species Examples — Learn</strong>
+            <span>Study real species, their useful traits, and the group they belong to.</span>
+          </button>
+          <button class="mode-card" id="speciesPlayBtn">
+            <strong>Species Challenge — Play</strong>
+            <span>See a real organism and biological clues, then click the phylum or group it belongs to.</span>
+          </button>
+        </div>
+      </div>
+
       <div id="vitaminDeficiencySection" class="practice-section" hidden>
         <h3>⚠️ Vitamin deficiencies</h3>
         <p class="section-note">A second vitamin track: learn the real deficiency terms you may see on a test, with plain-English explanations of what those terms mean.</p>
@@ -596,6 +624,41 @@
         <button id="writeRevealBtn" class="reveal-btn" hidden>Reveal answer</button>
         <button id="writeNextBtn" class="next-btn" hidden>Next →</button>
       </div>
+    </section>
+
+    <section id="speciesLearnScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="speciesLearnBackBtn">← Back</button>
+        <div class="topic-heading">
+          <h2 id="speciesLearnTitle">Species Examples</h2>
+          <p>Study real organisms and the traits that let you classify them.</p>
+        </div>
+        <div style="width:86px"></div>
+      </div>
+      <div id="speciesLearnGroups"></div>
+      <div id="speciesInfoPanel" class="info-panel">
+        <div><h3>Click any species card</h3><p>You will see why it belongs to that group.</p></div>
+      </div>
+    </section>
+
+    <section id="speciesGameScreen" class="screen" hidden>
+      <div class="topbar">
+        <button class="nav-btn" id="speciesGameBackBtn">← Back</button>
+        <div class="topic-heading">
+          <h2 id="speciesGameTitle">Species Classification Challenge</h2>
+          <p>Use the organism and its traits. Click the most specific group that fits.</p>
+        </div>
+        <button class="nav-btn" id="speciesRestartBtn">↻ Restart</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Progress</small><strong id="speciesProgressStat">0 / 0</strong></div>
+        <div class="stat"><small>Attempts</small><strong id="speciesAttemptStat">0</strong></div>
+        <div class="stat"><small>Mistakes</small><strong id="speciesMistakeStat">0</strong></div>
+      </div>
+      <div id="speciesInstruction" class="instruction">Which phylum or group does this organism belong to?</div>
+      <div id="speciesQuestion" class="species-question"></div>
+      <div id="speciesFeedback" class="feedback"></div>
+      <div id="speciesAnswerGrid" class="answer-grid classification-answer-grid"></div>
     </section>
 
     <section id="codonMenuScreen" class="screen" hidden>
@@ -5129,8 +5192,124 @@
       Threonine:"Thr", Tryptophan:"Trp", Tyrosine:"Tyr", Valine:"Val", Stop:"STOP"
     };
 
+    // Real-organism classification tracks for Animal Phyla, Protist Groups, and Plant Groups.
+    // The quiz asks for the most specific answer available in this course list.
+    const classificationChallenges = {
+      animalPhyla: {
+        title: "Animal Species Classification",
+        answerWord: "phylum / group",
+        targetLimit: 16,
+        sessionSize: 24,
+        note: "Use morphology and life-history clues to classify actual animal species.",
+        entries: [
+          {species:"Spongia officinalis",common:"bath sponge",target:"Porifera",clue:"Porous body; choanocytes drive filter feeding; no true tissues.",explanation:"Sponges lack true tissues and use choanocytes to move water through a porous body, which identifies Porifera."},
+          {species:"Euplectella aspergillum",common:"Venus' flower basket",target:"Porifera",clue:"Glass-sponge skeleton with many pores and a canal system.",explanation:"Its porous filter-feeding body and sponge organization place it in Porifera."},
+          {species:"Hydra vulgaris",common:"freshwater hydra",target:"Cnidaria",clue:"Polyp with tentacles bearing stinging cnidocytes; radial body plan.",explanation:"Cnidocytes with nematocysts are the defining feature of Cnidaria."},
+          {species:"Aurelia aurita",common:"moon jelly",target:"Cnidaria",clue:"Radial medusa with tentacles and stinging cells surrounding a gastrovascular cavity.",explanation:"A jellyfish body plan plus cnidocytes identifies Cnidaria."},
+          {species:"Mnemiopsis leidyi",common:"warty comb jelly",target:"Ctenophora",clue:"Moves using eight rows of ciliary comb plates and captures prey with sticky cells.",explanation:"Comb rows and colloblasts distinguish ctenophores from cnidarians."},
+          {species:"Schmidtea mediterranea",common:"planarian",target:"Platyhelminthes",clue:"Dorsoventrally flattened bilateral worm with remarkable regeneration.",explanation:"A flat, acoelomate worm body plan is characteristic of Platyhelminthes."},
+          {species:"Taenia solium",common:"pork tapeworm",target:"Platyhelminthes",clue:"Flattened parasitic worm made of repeating proglottids; lacks a digestive tract.",explanation:"Tapeworms are parasitic flatworms in Platyhelminthes."},
+          {species:"Brachionus plicatilis",common:"rotifer",target:"Syndermata / Rotifera",clue:"Microscopic animal with a ciliated corona and a complete digestive tract.",explanation:"The ciliated corona is the classic rotifer feature, placing it in Syndermata / Rotifera."},
+          {species:"Bugula neritina",common:"bryozoan / moss animal",target:"Ectoprocta",clue:"Colonial sessile animal; zooids extend a ciliated lophophore for suspension feeding.",explanation:"Colonial bryozoans with lophophores are ectoprocts."},
+          {species:"Lingula anatina",common:"lamp shell",target:"Brachiopoda",clue:"Marine lophophorate enclosed by dorsal and ventral shell valves.",explanation:"Dorsal/ventral valves plus a lophophore identify a brachiopod."},
+          {species:"Octopus vulgaris",common:"common octopus",target:"Mollusca",clue:"Soft-bodied cephalopod with mantle, muscular appendages, and a beak.",explanation:"Cephalopods are molluscs; the mantle and muscular body plan are key clues."},
+          {species:"Mytilus edulis",common:"blue mussel",target:"Mollusca",clue:"Bivalve with mantle and muscular foot; shell has left and right valves.",explanation:"Bivalves are molluscs, sharing the mantle, visceral mass, and muscular foot body plan."},
+          {species:"Lumbricus terrestris",common:"common earthworm",target:"Annelida",clue:"Clearly segmented worm with repeated body units and a true coelom.",explanation:"Repeated segmentation is a major clue for Annelida."},
+          {species:"Hirudo medicinalis",common:"medicinal leech",target:"Annelida",clue:"Segmented worm with suckers; specialized for blood feeding.",explanation:"Leeches are annelids despite their modified external segmentation."},
+          {species:"Caenorhabditis elegans",common:"C. elegans",target:"Nematoda",clue:"Unsegmented roundworm with a complete digestive tract and tough cuticle.",explanation:"A cylindrical unsegmented body plus molted cuticle identifies Nematoda."},
+          {species:"Ascaris lumbricoides",common:"giant intestinal roundworm",target:"Nematoda",clue:"Parasitic cylindrical worm; unsegmented and covered by a cuticle that molts.",explanation:"Ascaris is a roundworm, so it belongs to Nematoda."},
+          {species:"Drosophila melanogaster",common:"fruit fly",target:"Arthropoda",clue:"Jointed appendages, segmented body, chitinous exoskeleton, and molting.",explanation:"Jointed appendages and an exoskeleton are defining arthropod traits."},
+          {species:"Apis mellifera",common:"western honey bee",target:"Arthropoda",clue:"Insect with jointed legs, segmented body, and chitinous exoskeleton.",explanation:"Insects are arthropods."},
+          {species:"Limulus polyphemus",common:"Atlantic horseshoe crab",target:"Arthropoda",clue:"Jointed appendages and exoskeleton; chelicerate rather than a true crab.",explanation:"Horseshoe crabs are chelicerate arthropods."},
+          {species:"Asterias rubens",common:"common sea star",target:"Echinodermata",clue:"Adult pentaradial symmetry with tube feet powered by a water vascular system.",explanation:"Tube feet and the water vascular system identify Echinodermata."},
+          {species:"Strongylocentrotus purpuratus",common:"purple sea urchin",target:"Echinodermata",clue:"Spiny marine deuterostome with tube feet and a water vascular system.",explanation:"Sea urchins are echinoderms."},
+          {species:"Saccoglossus kowalevskii",common:"acorn worm",target:"Hemichordata",clue:"Marine deuterostome with proboscis, collar, trunk, and pharyngeal slits.",explanation:"The acorn-worm body plan is characteristic of Hemichordata."},
+          {species:"Homo sapiens",common:"human",target:"Chordata",clue:"Vertebrate with a dorsal hollow nerve cord and notochord during development.",explanation:"Vertebrates are chordates; chordate features appear during embryonic development."},
+          {species:"Danio rerio",common:"zebrafish",target:"Chordata",clue:"Vertebrate fish with dorsal hollow nerve cord, notochord, and post-anal tail during development.",explanation:"These are classic chordate synapomorphies."},
+          {species:"Branchiostoma lanceolatum",common:"lancelet",target:"Chordata",clue:"Small marine animal retaining a notochord, dorsal hollow nerve cord, pharyngeal slits, and post-anal tail as an adult.",explanation:"Lancelets display the basic chordate body plan especially clearly."},
+          {species:"Symsagittifera roscoffensis",common:"acoel flatworm",target:"Acoela",clue:"Tiny simple bilateral marine worm lacking a conventional through-gut.",explanation:"Its simple acoel body plan places it in Acoela in this course's classification."},
+          {species:"Trichoplax adhaerens",common:"placozoan",target:"Placozoa",clue:"Extremely simple flattened animal with only a few cell types and no true organs.",explanation:"The very simple plate-like body is characteristic of Placozoa."}
+        ]
+      },
+      protistPhyla: {
+        title: "Protist Species Classification",
+        answerWord: "most specific protist group",
+        targetLimit: 12,
+        sessionSize: 16,
+        note: "Choose the most specific group listed in this game. Broad supergroups such as SAR or Excavata are not used when a narrower option exists.",
+        entries: [
+          {species:"Giardia duodenalis",common:"Giardia",target:"Diplomonads",clue:"Intestinal parasite with two nuclei and multiple flagella; reduced mitochondria.",explanation:"Giardia is the classic diplomonad example."},
+          {species:"Trichomonas vaginalis",common:"Trichomonas",target:"Parabasalids",clue:"Flagellated parasite with an undulating membrane and hydrogenosomes.",explanation:"Hydrogenosomes and the parabasal apparatus are characteristic of parabasalids."},
+          {species:"Euglena gracilis",common:"Euglena",target:"Euglenozoans",clue:"Flagellated protist with a flexible pellicle; many cells photosynthesize.",explanation:"Euglena is a euglenozoan."},
+          {species:"Trypanosoma brucei",common:"African trypanosome",target:"Euglenozoans",clue:"Flagellated blood parasite with a kinetoplast; causes African sleeping sickness.",explanation:"Trypanosomes are kinetoplastid euglenozoans."},
+          {species:"Thalassiosira pseudonana",common:"marine diatom",target:"Diatoms",clue:"Photosynthetic stramenopile enclosed by a two-part silica cell wall.",explanation:"Silica frustules are the signature trait of diatoms."},
+          {species:"Navicula pelliculosa",common:"pennate diatom",target:"Diatoms",clue:"Boat-shaped unicellular alga with a glasslike silica frustule.",explanation:"Its silica frustule identifies a diatom."},
+          {species:"Dinobryon divergens",common:"golden alga",target:"Golden algae",clue:"Photosynthetic chrysophyte often forming colonies in vase-like loricae.",explanation:"Dinobryon is a classic golden alga."},
+          {species:"Macrocystis pyrifera",common:"giant kelp",target:"Brown algae",clue:"Large multicellular stramenopile forming kelp forests; contains fucoxanthin.",explanation:"Kelp are brown algae."},
+          {species:"Fucus vesiculosus",common:"bladderwrack",target:"Brown algae",clue:"Marine seaweed with flattened brown thallus and air bladders.",explanation:"Fucus is a brown alga."},
+          {species:"Phytophthora infestans",common:"potato late-blight pathogen",target:"Oomycetes",clue:"Water mold relative with cellulose-rich walls; produces swimming zoospores.",explanation:"Phytophthora is an oomycete, not a true fungus."},
+          {species:"Saprolegnia parasitica",common:"water mold",target:"Oomycetes",clue:"Filamentous water mold that can infect fish and produces motile zoospores.",explanation:"Water molds such as Saprolegnia are oomycetes."},
+          {species:"Alexandrium catenella",common:"toxic red-tide dinoflagellate",target:"Dinoflagellates",clue:"Two flagella in grooves; armored plates; can produce paralytic shellfish toxins.",explanation:"Two-groove flagellation is characteristic of dinoflagellates."},
+          {species:"Karenia brevis",common:"Florida red-tide organism",target:"Dinoflagellates",clue:"Marine unicellular alga with two flagella; blooms can release brevetoxins.",explanation:"Karenia is a dinoflagellate."},
+          {species:"Plasmodium falciparum",common:"malaria parasite",target:"Apicomplexans",clue:"Obligate parasite with an apical complex used to enter host cells.",explanation:"The apical complex is the defining feature of apicomplexans."},
+          {species:"Toxoplasma gondii",common:"Toxoplasma",target:"Apicomplexans",clue:"Intracellular parasite with an apical complex; cats are definitive hosts.",explanation:"Toxoplasma is an apicomplexan."},
+          {species:"Paramecium caudatum",common:"Paramecium",target:"Ciliates",clue:"Covered in cilia; has macro- and micronuclei and an oral groove.",explanation:"Extensive cilia and nuclear dimorphism identify ciliates."},
+          {species:"Tetrahymena thermophila",common:"Tetrahymena",target:"Ciliates",clue:"Freshwater protist covered with cilia and possessing macro- and micronuclei.",explanation:"Tetrahymena is a model ciliate."},
+          {species:"Globigerina bulloides",common:"planktonic foram",target:"Foraminiferans",clue:"Marine protist with a chambered calcium-carbonate test and threadlike pseudopodia.",explanation:"Chambered tests and reticulose pseudopodia identify foraminiferans."},
+          {species:"Ammonia tepida",common:"benthic foram",target:"Foraminiferans",clue:"Shelled marine protist with a multi-chambered test and fine branching pseudopodia.",explanation:"This is a foraminiferan."},
+          {species:"Collozoum inerme",common:"colonial radiolarian",target:"Radiolarians",clue:"Marine planktonic rhizarian living in gelatinous colonies; radiolarians often have mineral skeletons.",explanation:"Collozoum is a radiolarian lineage within Rhizaria."},
+          {species:"Bigelowiella natans",common:"chlorarachniophyte",target:"Cercozoans",clue:"Rhizarian alga with thin pseudopodia and a complex plastid acquired by secondary endosymbiosis.",explanation:"Bigelowiella is a cercozoan."},
+          {species:"Paulinella chromatophora",common:"photosynthetic amoeboid cercozoan",target:"Cercozoans",clue:"Amoeboid rhizarian famous for independently acquiring a photosynthetic organelle.",explanation:"Paulinella belongs among cercozoans."},
+          {species:"Porphyra umbilicalis",common:"nori-like red alga",target:"Red algae",clue:"Multicellular marine alga with phycoerythrin and no flagellated stages.",explanation:"Phycoerythrin-rich marine algae such as Porphyra are red algae."},
+          {species:"Chondrus crispus",common:"Irish moss",target:"Red algae",clue:"Red marine seaweed used as a source of carrageenan.",explanation:"Chondrus is a red alga."},
+          {species:"Chlamydomonas reinhardtii",common:"Chlamydomonas",target:"Chlorophytes",clue:"Unicellular green alga with two flagella and a cup-shaped chloroplast.",explanation:"Chlamydomonas is a chlorophyte green alga."},
+          {species:"Volvox carteri",common:"Volvox",target:"Chlorophytes",clue:"Spherical colonial green alga made of many flagellated cells.",explanation:"Volvox is a chlorophyte."},
+          {species:"Ulva lactuca",common:"sea lettuce",target:"Chlorophytes",clue:"Flat multicellular green seaweed with chlorophyll a and b.",explanation:"Ulva is a chlorophyte green alga."},
+          {species:"Chara braunii",common:"stonewort",target:"Charophytes",clue:"Freshwater green alga closely related to land plants; complex multicellular body.",explanation:"Chara is a charophyte."},
+          {species:"Spirogyra pratensis",common:"Spirogyra",target:"Charophytes",clue:"Filamentous freshwater green alga with spiral chloroplasts.",explanation:"Spirogyra belongs to the charophyte lineage."},
+          {species:"Dictyostelium discoideum",common:"cellular slime mold",target:"Slime molds",clue:"Amoeboid cells aggregate into a multicellular slug-like stage when food is scarce.",explanation:"Dictyostelium is a cellular slime mold."},
+          {species:"Physarum polycephalum",common:"plasmodial slime mold",target:"Slime molds",clue:"Forms a large multinucleate creeping plasmodium that engulfs food.",explanation:"Physarum is a plasmodial slime mold."},
+          {species:"Amoeba proteus",common:"Amoeba",target:"Tubulinids",clue:"Large freshwater amoeba that moves and feeds using broad lobose pseudopodia.",explanation:"Amoeba proteus is a tubulinid amoebozoan."},
+          {species:"Entamoeba histolytica",common:"amoebic dysentery parasite",target:"Entamoebas",clue:"Anaerobic intestinal amoeba that can invade the colon and liver.",explanation:"Entamoeba histolytica belongs to the entamoebas."}
+        ]
+      },
+      plantPhyla: {
+        title: "Plant Species Classification",
+        answerWord: "most specific plant group",
+        targetLimit: 12,
+        sessionSize: 20,
+        note: "Choose the most specific group offered. For example, corn should be Monocots rather than the broader Angiosperms.",
+        entries: [
+          {species:"Marchantia polymorpha",common:"common liverwort",target:"Liverworts",clue:"Flat thalloid bryophyte with gemma cups; nonvascular and gametophyte-dominant.",explanation:"Marchantia is the classic liverwort example."},
+          {species:"Riccia fluitans",common:"crystalwort",target:"Liverworts",clue:"Simple nonvascular thalloid plant lacking true roots, stems, and leaves.",explanation:"Its thalloid bryophyte form identifies a liverwort."},
+          {species:"Physcomitrium patens",common:"model moss",target:"Mosses",clue:"Nonvascular bryophyte with leafy gametophytes and sporophyte capsules on setae.",explanation:"Physcomitrium is a moss."},
+          {species:"Sphagnum palustre",common:"peat moss",target:"Mosses",clue:"Bryophyte forming peatlands; leafy gametophyte dominates the life cycle.",explanation:"Sphagnum is a moss genus."},
+          {species:"Anthoceros punctatus",common:"hornwort",target:"Hornworts",clue:"Nonvascular plant with a flat gametophyte and long horn-shaped sporophytes.",explanation:"The horn-shaped sporophyte is the giveaway for hornworts."},
+          {species:"Selaginella moellendorffii",common:"spikemoss",target:"Lycophytes",clue:"Seedless vascular plant with microphyll leaves and strobili.",explanation:"Microphylls and strobili identify a lycophyte."},
+          {species:"Lycopodium clavatum",common:"club moss",target:"Lycophytes",clue:"Seedless vascular plant with small microphylls and cone-like strobili.",explanation:"Club mosses are lycophytes, not true mosses."},
+          {species:"Pteridium aquilinum",common:"bracken fern",target:"Monilophytes",clue:"Seedless vascular plant with large fronds and sori containing sporangia.",explanation:"Ferns belong to the monilophytes."},
+          {species:"Equisetum arvense",common:"field horsetail",target:"Monilophytes",clue:"Jointed hollow stems; seedless vascular plant producing spores in strobili.",explanation:"Horsetails are monilophytes."},
+          {species:"Cycas revoluta",common:"sago cycad",target:"Cycads",clue:"Palm-like gymnosperm with large compound leaves and exposed seeds in cones.",explanation:"Cycas is a cycad gymnosperm."},
+          {species:"Ginkgo biloba",common:"ginkgo",target:"Ginkgo",clue:"Gymnosperm with distinctive fan-shaped leaves; only living species of its lineage.",explanation:"Ginkgo biloba is the sole living representative of the ginkgo lineage."},
+          {species:"Ephedra sinica",common:"ma huang",target:"Gnetophytes",clue:"Gymnosperm with jointed green stems and reduced scale-like leaves.",explanation:"Ephedra is one of the major gnetophyte genera."},
+          {species:"Welwitschia mirabilis",common:"Welwitschia",target:"Gnetophytes",clue:"Desert gymnosperm that grows only two persistent strap-like leaves.",explanation:"Welwitschia is a highly distinctive gnetophyte."},
+          {species:"Pinus strobus",common:"eastern white pine",target:"Conifers",clue:"Needle leaves and woody seed cones; naked seeds borne on cone scales.",explanation:"Pines are conifers."},
+          {species:"Sequoia sempervirens",common:"coast redwood",target:"Conifers",clue:"Cone-bearing gymnosperm with scale/needle-like leaves and enormous woody trunks.",explanation:"Redwoods are conifers."},
+          {species:"Magnolia grandiflora",common:"southern magnolia",target:"Angiosperms",clue:"Flowering seed plant with fruits; a magnoliid rather than a monocot or eudicot.",explanation:"Magnolia is an angiosperm outside the monocot/eudicot split used here."},
+          {species:"Nymphaea odorata",common:"American white water lily",target:"Angiosperms",clue:"Flowering aquatic plant from an early-diverging angiosperm lineage.",explanation:"Water lilies are angiosperms but are not monocots or eudicots."},
+          {species:"Zea mays",common:"corn / maize",target:"Monocots",clue:"One cotyledon, parallel leaf veins, fibrous roots, and scattered vascular bundles.",explanation:"Grasses such as corn are monocots."},
+          {species:"Lilium longiflorum",common:"Easter lily",target:"Monocots",clue:"Flower parts in multiples of three and parallel-veined leaves.",explanation:"Lilies are monocots."},
+          {species:"Oryza sativa",common:"rice",target:"Monocots",clue:"Grass with one cotyledon, parallel venation, and fibrous roots.",explanation:"Rice is a monocot grass."},
+          {species:"Arabidopsis thaliana",common:"thale cress",target:"Eudicots",clue:"Two cotyledons; netted leaf venation; flowers typically organized in fours.",explanation:"Arabidopsis is a model eudicot."},
+          {species:"Helianthus annuus",common:"sunflower",target:"Eudicots",clue:"Two cotyledons, netted veins, and vascular bundles arranged in a ring.",explanation:"Sunflowers are eudicots."},
+          {species:"Pisum sativum",common:"garden pea",target:"Eudicots",clue:"Two cotyledons, netted venation, taproot system; legume flowers.",explanation:"Peas are eudicots."}
+        ]
+      }
+    };
+
     const screenIds = [
       "homeScreen","topicScreen","learnScreen","gameScreen","writeGameScreen",
+      "speciesLearnScreen","speciesGameScreen",
       "codonMenuScreen","codonLearnScreen","codonGameScreen","finishScreen"
     ];
     let currentTopicKey = null;
@@ -5236,6 +5415,13 @@
 
     let finishMode = "level1";
 
+    let speciesOrder = [];
+    let speciesTargets = [];
+    let speciesIndex = 0;
+    let speciesAttempts = 0;
+    let speciesMistakes = 0;
+    let speciesLocked = false;
+
     const $ = id => document.getElementById(id);
 
     function showScreen(id) {
@@ -5296,6 +5482,8 @@
       $("codonBtn").hidden = key !== "aminoAcids";
       $("vitaminDeficiencySection").hidden = key !== "vitamins";
       $("vitaminFoodSection").hidden = key !== "vitamins";
+      $("speciesChallengeSection").hidden = !classificationChallenges[key];
+      if (classificationChallenges[key]) $("speciesChallengeNote").textContent = classificationChallenges[key].note;
       $("primaryModeHeading").textContent = key === "vitamins" ? "Functions & roles" : "Functions & defining traits";
       $("primaryModeNote").textContent = key === "vitamins"
         ? "First master what each vitamin does, then use the separate deficiency and food-source sections below."
@@ -5821,6 +6009,136 @@
       $("writeMistakeStat").textContent = writeMistakes;
     }
 
+    // ---------- SPECIES / ORGANISM CLASSIFICATION ----------
+    function currentClassificationChallenge() {
+      return classificationChallenges[currentTopicKey] || null;
+    }
+
+    function classificationTargetSub(targetName) {
+      const topic = currentTopic();
+      const found = topic && topic.items ? topic.items.find(item => item.name === targetName) : null;
+      return found && found.sub ? found.sub : "";
+    }
+
+    function startSpeciesLearn() {
+      const challenge = currentClassificationChallenge();
+      if (!challenge) return;
+      $("speciesLearnTitle").textContent = challenge.title + " — Learn";
+      const wrap = $("speciesLearnGroups");
+      wrap.innerHTML = "";
+      const targets = [...new Set(challenge.entries.map(entry => entry.target))];
+
+      targets.forEach(target => {
+        const heading = document.createElement("h3");
+        heading.className = "group-title";
+        const sub = classificationTargetSub(target);
+        heading.textContent = sub ? `${target} — ${sub}` : target;
+        wrap.appendChild(heading);
+
+        const grid = document.createElement("div");
+        grid.className = "species-learn-grid";
+        challenge.entries.filter(entry => entry.target === target).forEach(entry => {
+          const card = document.createElement("div");
+          card.className = "species-example-card";
+          card.innerHTML = `<div class="species-latin">${entry.species}</div><div class="species-common">${entry.common}</div><div class="species-mini-clue">${entry.clue}</div>`;
+          card.addEventListener("click", () => {
+            const targetSub = classificationTargetSub(entry.target);
+            $("speciesInfoPanel").innerHTML = `<div><h3><em>${entry.species}</em>${entry.common ? ` — ${entry.common}` : ""}</h3><p><strong>Classification:</strong> ${entry.target}${targetSub ? ` — ${targetSub}` : ""}<br><br><strong>Reasoning:</strong> ${entry.explanation}</p></div>`;
+          });
+          grid.appendChild(card);
+        });
+        wrap.appendChild(grid);
+      });
+
+      $("speciesInfoPanel").innerHTML = `<div><h3>Click any species card</h3><p>Use the traits to understand why the organism belongs to that group.</p></div>`;
+      showScreen("speciesLearnScreen");
+    }
+
+    function buildSpeciesSession(challenge) {
+      const allTargets = [...new Set(challenge.entries.map(entry => entry.target))];
+      speciesTargets = challenge.targetLimit && challenge.targetLimit < allTargets.length
+        ? shuffle(allTargets).slice(0, challenge.targetLimit)
+        : allTargets;
+
+      const seeded = speciesTargets.map(target => {
+        const options = challenge.entries.filter(entry => entry.target === target);
+        return shuffle(options)[0];
+      });
+
+      const seededSpecies = new Set(seeded.map(entry => entry.species));
+      const remaining = shuffle(challenge.entries.filter(entry => speciesTargets.includes(entry.target) && !seededSpecies.has(entry.species)));
+      speciesOrder = shuffle([...seeded, ...remaining]).slice(0, Math.min(challenge.sessionSize || challenge.entries.length, seeded.length + remaining.length));
+    }
+
+    function startSpeciesGame() {
+      const challenge = currentClassificationChallenge();
+      if (!challenge) return;
+      finishMode = "classification";
+      buildSpeciesSession(challenge);
+      speciesIndex = 0;
+      speciesAttempts = 0;
+      speciesMistakes = 0;
+      speciesLocked = false;
+      $("speciesGameTitle").textContent = challenge.title;
+      $("speciesInstruction").textContent = `Which ${challenge.answerWord} does this organism belong to?`;
+      buildSpeciesAnswerGrid();
+      showScreen("speciesGameScreen");
+      showSpeciesQuestion();
+    }
+
+    function buildSpeciesAnswerGrid() {
+      const grid = $("speciesAnswerGrid");
+      grid.innerHTML = "";
+      speciesTargets.forEach(target => {
+        const card = document.createElement("div");
+        card.className = "answer-card";
+        const sub = classificationTargetSub(target);
+        card.innerHTML = `<div class="item-name">${target}</div>${sub ? `<div class="item-sub">${sub}</div>` : ""}`;
+        card.addEventListener("click", () => checkSpeciesAnswer(target, card));
+        grid.appendChild(card);
+      });
+    }
+
+    function showSpeciesQuestion() {
+      if (speciesIndex >= speciesOrder.length) { finishGame("classification"); return; }
+      speciesLocked = false;
+      document.querySelectorAll("#speciesAnswerGrid .answer-card").forEach(card => card.classList.remove("correct", "wrong"));
+      const entry = speciesOrder[speciesIndex];
+      // Hide common names during the game because names like “moss” or “golden alga” can give the answer away.
+      $("speciesQuestion").innerHTML = `<div class="species-latin">${entry.species}</div><div class="species-trait">${entry.clue}</div>`;
+      $("speciesFeedback").textContent = "";
+      $("speciesFeedback").className = "feedback";
+      updateSpeciesStats();
+    }
+
+    function checkSpeciesAnswer(target, card) {
+      if (speciesLocked) return;
+      speciesAttempts++;
+      const correct = speciesOrder[speciesIndex];
+      if (target === correct.target) {
+        speciesLocked = true;
+        card.classList.add("correct");
+        $("speciesFeedback").textContent = `Correct — ${correct.target}. ${correct.explanation}`;
+        $("speciesFeedback").className = "feedback good";
+        speciesIndex++;
+        updateSpeciesStats();
+        setTimeout(showSpeciesQuestion, 1250);
+      } else {
+        speciesMistakes++;
+        card.classList.add("wrong");
+        $("speciesFeedback").textContent = "Wrong — keep using the organism's traits and try again.";
+        $("speciesFeedback").className = "feedback bad";
+        updateSpeciesStats();
+        setTimeout(() => card.classList.remove("wrong"), 420);
+      }
+    }
+
+    function updateSpeciesStats() {
+      $("speciesProgressStat").textContent = `${speciesIndex} / ${speciesOrder.length}`;
+      $("speciesAttemptStat").textContent = speciesAttempts;
+      $("speciesMistakeStat").textContent = speciesMistakes;
+    }
+
     // ---------- GENETIC CODE ----------
     function openCodonMenu() { showScreen("codonMenuScreen"); }
 
@@ -5914,7 +6232,14 @@
     // ---------- FINISH ----------
     function finishGame(mode) {
       finishMode = mode;
-      if (mode === "codon") {
+      if (mode === "classification") {
+        const challenge = currentClassificationChallenge();
+        $("finishTitle").textContent = `${challenge.title} complete!`;
+        $("finishText").textContent = speciesMistakes === 0
+          ? `Perfect classification run: ${speciesOrder.length} out of ${speciesOrder.length} with no mistakes.`
+          : `You classified ${speciesOrder.length} organisms with ${speciesMistakes} mistake${speciesMistakes === 1 ? "" : "s"}.`;
+        $("reviewBtn").textContent = "Review species";
+      } else if (mode === "codon") {
         $("finishTitle").textContent = "🧬 Genetic Code complete!";
         $("finishText").textContent = codonMistakes === 0
           ? "Perfect: all 64 codons with no mistakes."
@@ -5940,14 +6265,16 @@
     }
 
     function playAgainFromFinish() {
-      if (finishMode === "codon") startCodonGame();
+      if (finishMode === "classification") startSpeciesGame();
+      else if (finishMode === "codon") startCodonGame();
       else if (finishMode === "level2") startWriteGame(2);
       else if (finishMode === "level3") startWriteGame(3);
       else startGame();
     }
 
     function reviewFromFinish() {
-      if (finishMode === "codon") startCodonLearn();
+      if (finishMode === "classification") startSpeciesLearn();
+      else if (finishMode === "codon") startCodonLearn();
       else startLearn();
     }
 
@@ -5980,6 +6307,12 @@
     $("writeRevealBtn").addEventListener("click", revealWriteAnswer);
     $("writeNextBtn").addEventListener("click", nextWriteQuestion);
     $("writeInput").addEventListener("keydown", e => { if (e.key === "Enter") submitWriteAnswer(); });
+
+    $("speciesLearnBtn").addEventListener("click", startSpeciesLearn);
+    $("speciesPlayBtn").addEventListener("click", startSpeciesGame);
+    $("speciesLearnBackBtn").addEventListener("click", () => showScreen("topicScreen"));
+    $("speciesGameBackBtn").addEventListener("click", () => showScreen("topicScreen"));
+    $("speciesRestartBtn").addEventListener("click", startSpeciesGame);
 
     $("codonBtn").addEventListener("click", openCodonMenu);
     $("codonMenuBackBtn").addEventListener("click", () => showScreen("topicScreen"));
